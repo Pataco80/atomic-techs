@@ -1,3 +1,16 @@
+## 2026-06-25 - Portfolio Back-Office CRUD (Spec 02)
+
+### 🚀 **New Features & Components**
+
+- **FEAT: Full CRUD for the `/studio` back-office** — the **Projets**, **Stacks** and **À-propos** pages are now fully editable by the owner; every write goes through an `authAction` server action with Zod validation and soft-delete (`deletedAt`)
+- **Projets (`/studio/projects`)**: create / edit / delete projects with title, auto-generated (editable) slug, long description, **Vercel Blob image upload**, live & GitHub URLs, a `featured` switch and a display `order`; technologies are selected as **checkboxes** from existing stacks (writing the `ProjectStack` join) and the list supports **drag-and-drop reordering** (`@dnd-kit`)
+- **Stacks (`/studio/stacks`)**: create / edit / delete technologies with name, inline **SVG icon**, mastery date and drag-and-drop order; the list shows a **computed seniority** badge (`dayjs`)
+- **À-propos (`/studio/about`)**: a single accordion page managing the **PersonProfile** singleton (TipTap bios), the **OrgProfile** singleton (+ socials), the **CareerEvent** timeline (TipTap descriptions, chronological order, “poste actuel” open-ended dates, no DnD) and **ContentPage** entries (slug + title + TipTap body)
+
+### 🧪 **Testing**
+
+- Added unit tests for the pure helpers backing the feature: `slugify`, `computeSeniority`, `sortCareerEventsChrono` and `emptyToNull`
+
 ## 2026-06-25 - Portfolio Back-Office Foundation (Spec 01)
 
 ### 🚀 **New Features & Components**

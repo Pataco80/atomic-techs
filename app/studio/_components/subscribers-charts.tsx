@@ -12,11 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { ChartConfig } from "@/components/ui/chart";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 
 const chartData = [
   { month: "January", 2023: 186, 2024: 80 },

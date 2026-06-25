@@ -10,6 +10,7 @@ workflow. Each spec is a self-contained unit of work; the APEX run artifacts
 | #   | Spec                                         | Status  |
 | --- | -------------------------------------------- | ------- |
 | 01  | [Build Foundation](./01-build-foundation.md) | ✅ Done |
+| 02  | [Build Admin CRUD](./02-build-admin-crud.md) | ✅ Done |
 
 ## Conventions
 
