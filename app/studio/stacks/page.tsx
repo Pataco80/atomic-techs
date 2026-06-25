@@ -1,9 +1,14 @@
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Layout,
+  LayoutContent,
   LayoutDescription,
   LayoutHeader,
   LayoutTitle,
 } from "@/features/page/layout";
+import { getStacks } from "@/query/portfolio/get-stacks";
+import { Suspense } from "react";
+import { StacksList } from "./_components/stacks-list";
 
 export default function StacksPage() {
   return (
@@ -11,9 +16,30 @@ export default function StacksPage() {
       <LayoutHeader>
         <LayoutTitle>Stacks</LayoutTitle>
         <LayoutDescription>
-          Gestion des technologies — le CRUD arrive en spec 02.
+          Gérez les technologies maîtrisées et leur séniorité.
         </LayoutDescription>
       </LayoutHeader>
+      <LayoutContent>
+        <Suspense fallback={<StacksSkeleton />}>
+          <StacksSection />
+        </Suspense>
+      </LayoutContent>
     </Layout>
+  );
+}
+
+async function StacksSection() {
+  const stacks = await getStacks();
+
+  return <StacksList stacks={stacks} />;
+}
+
+function StacksSkeleton() {
+  return (
+    <div className="flex flex-col gap-2">
+      {["a", "b", "c", "d"].map((key) => (
+        <Skeleton key={key} className="h-16 w-full" />
+      ))}
+    </div>
   );
 }
