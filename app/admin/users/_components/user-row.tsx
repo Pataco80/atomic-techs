@@ -87,7 +87,8 @@ export const UserRow = ({ user }: UserRowProps) => {
       toast.success("Impersonation started");
       // Refresh the page to update the session
       void queryClient.invalidateQueries();
-      router.push("/app");
+      // Land on the user-facing account area (any role) — /studio is owner-only.
+      router.push("/account");
     },
     onError: (error: Error) => {
       toast.error(`Failed to impersonate user: ${error.message}`);

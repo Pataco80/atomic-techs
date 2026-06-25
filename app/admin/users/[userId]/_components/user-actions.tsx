@@ -40,7 +40,8 @@ export function UserActions({ user }: UserActionsProps) {
     },
     onSuccess: () => {
       toast.success("Impersonation started");
-      router.push("/app");
+      // Land on the user-facing account area (any role) — /studio is owner-only.
+      router.push("/account");
     },
     onError: (error: Error) => {
       toast.error(`Failed to impersonate user: ${error.message}`);

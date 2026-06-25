@@ -57,7 +57,7 @@ export const UserDropdown = ({ children }: PropsWithChildren) => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/app">
+          <Link href="/studio">
             <LayoutDashboard className="mr-2 size-4" />
             Dashboard
           </Link>

@@ -1,0 +1,142 @@
+// Portfolio domain models — Atomic Tech's OneShoot.
+// Mono-tenant: content is global, NO organizationId / userId.
+// Conventions: nanoid(11) ids (see Feedback), timestamps, soft-delete via `deletedAt`,
+// unique slugs. Rich-text fields store TipTap JSON. See .agents/tasks/01-build-foundation.md.
+
+enum ContactSubject {
+  QUESTIONS_SERVICES
+  DEVIS
+  AUTRE
+}
+
+model Project {
+  id              String  @id @default(nanoid(11))
+  title           String
+  slug            String  @unique
+  longDescription String // plain textarea text — NOT TipTap
+  imageUrl        String?
+  liveUrl         String?
+  githubUrl       String?
+  featured        Boolean @default(false)
+  order           Int     @default(0)
+
+  stacks ProjectStack[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([featured, order])
+  @@index([deletedAt])
+}
+
+model ProjectStack {
+  id          String @id @default(nanoid(11))
+  projectId   String
+  stackItemId String
+
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  stackItem StackItem @relation(fields: [stackItemId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([projectId, stackItemId])
+  @@index([stackItemId])
+}
+
+model StackItem {
+  id          String   @id @default(nanoid(11))
+  name        String
+  iconSvg     String // inline SVG markup
+  validatedAt DateTime // start of mastery → seniority computed in app layer
+  order       Int      @default(0)
+
+  projects ProjectStack[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([order])
+  @@index([deletedAt])
+}
+
+model CareerEvent {
+  id          String  @id @default(nanoid(11))
+  jobTitle    String
+  companyName String
+  companyLogo String?
+  startMonth  Int
+  startYear   Int
+  endMonth    Int?
+  endYear     Int?
+  description Json? // TipTap document
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([startYear, startMonth])
+  @@index([deletedAt])
+}
+
+// Singleton — accessed via findFirst / upsert (single-row enforced in app layer).
+model PersonProfile {
+  id        String  @id @default(nanoid(11))
+  fullName  String?
+  headline  String?
+  email     String?
+  phone     String?
+  location  String?
+  avatarUrl String?
+  bioHome   Json? // TipTap document
+  bioWork   Json? // TipTap document
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+// Singleton — accessed via findFirst / upsert.
+model OrgProfile {
+  id      String  @id @default(nanoid(11))
+  logo    String?
+  name    String?
+  email   String?
+  phone   String?
+  website String?
+  address String?
+  socials Json? // { github?, linkedin?, x?, ... }
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model Contact {
+  id      String         @id @default(nanoid(11))
+  name    String
+  email   String
+  subject ContactSubject
+  message String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([createdAt])
+  @@index([deletedAt])
+}
+
+model ContentPage {
+  id    String @id @default(nanoid(11))
+  slug  String @unique
+  title String
+  body  Json? // TipTap document
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([deletedAt])
+}

@@ -27,10 +27,10 @@ const ACCOUNT_LINKS: NavigationGroup[] = [
     ],
   },
   {
-    title: "App",
+    title: "Studio",
     links: [
       {
-        href: "/app",
+        href: "/studio",
         Icon: LayoutDashboard,
         label: "Dashboard",
       },

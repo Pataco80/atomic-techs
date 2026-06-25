@@ -1,11 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
-import {
-  admin,
-  emailOTP,
-  lastLoginMethod,
-} from "better-auth/plugins";
+import { admin, emailOTP, lastLoginMethod } from "better-auth/plugins";
 
 import { sendEmail } from "@/lib/mail/send-email";
 import { SiteConfig } from "@/site-config";
@@ -65,6 +61,9 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
+    // Mono-tenant: public signup is disabled. The single owner account is
+    // provisioned via seed/promotion; password sign-in stays enabled.
+    disableSignUp: true,
     async sendResetPassword({ user, url }) {
       await sendEmail({
         to: user.email,

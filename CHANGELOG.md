@@ -1,3 +1,26 @@
+## 2026-06-25 - Portfolio Back-Office Foundation (Spec 01)
+
+### 🚀 **New Features & Components**
+
+- **Portfolio Back-Office (`/studio`)**: The owner-only back-office lives at `/studio` — the authenticated dashboard (route renamed from `/app`) now hosts **Projets**, **Stacks**, and **À-propos** pages in the sidebar (Portfolio group) with French breadcrumb labels, on the existing responsive navigation and mobile Sheet drawer
+- **Administration shortcut**: the `/studio` sidebar gains an **Administration** group linking to the existing super-admin section (`/admin`, Users, Feedback), so the single owner starts from one place; `/admin` keeps its own shell
+- **Rich Text Editor & Renderer**: Minimal TipTap 3 editor (`RichTextEditor`) and a safe read-only renderer (`RichTextRenderer`) sharing one restricted schema; content is stored as JSON
+- **Utopia Fluid Type Scale**: Eight viewport-fluid `--step--2`…`--step-5` `clamp()` tokens added to the global theme for consistent responsive typography
+
+### 🗄️ **Database & Domain Model**
+
+- **Portfolio schema (mono-tenant)**: Added `Project`, `ProjectStack`, `StackItem`, `CareerEvent`, `PersonProfile`, `OrgProfile`, `Contact`, and `ContentPage` models in `prisma/schema/portfolio.prisma` with the `ContactSubject` enum; migration `20260625093533_portfolio_models`
+- Content is global (no `organizationId`/`userId`); `nanoid(11)` ids and soft-delete (`deletedAt`) on content entities
+
+### 🔐 **Authentication**
+
+- **Owner-only access**: The whole `/studio` section is gated by the existing `getRequiredAdmin()` guard (owner = the single `admin` user). Public sign-up is disabled via Better Auth (`emailAndPassword.disableSignUp: true`)
+- **Impersonation redirect fix**: starting an impersonation from `/admin` now lands on `/account` (reachable by any role) instead of the owner-only `/studio`, which would have thrown `unauthorized()` when the impersonated target is a non-admin user
+
+### 🧪 **Testing**
+
+- Added unit tests for the rich-text renderer (stored JSON → DOM, marks and headings) and the Utopia token contract in `app/globals.css`
+
 ## 2025-08-23 - Major Platform Updates & Infrastructure Improvements
 
 ### 🚀 **New Features & Components**
