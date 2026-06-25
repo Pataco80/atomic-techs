@@ -12,11 +12,18 @@ import { Home } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
 
+const LABELS: Record<string, string> = {
+  users: "Analytics",
+  projects: "Projets",
+  stacks: "Stacks",
+  about: "À Propos",
+};
+
 export function AppBreadcrumb() {
   const pathname = usePathname();
 
   const paths = pathname.split("/").filter(Boolean);
-  const basePath = "/app";
+  const basePath = "/studio";
 
   return (
     <Breadcrumb>
@@ -32,7 +39,7 @@ export function AppBreadcrumb() {
           const isLast = index === paths.slice(1).length - 1;
           const currentPath = `/${paths.slice(0, index + 2).join("/")}`;
 
-          const displayName = path;
+          const displayName = LABELS[path] ?? path;
 
           return (
             <Fragment key={path + index}>

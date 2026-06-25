@@ -9,8 +9,8 @@
       "Bash(cd *)",
       "Bash(ls *)",
       "Bash(node *)",
-      "WebFetch(:*)",
-      "Edit(:*)",
+      "WebFetch(domain:*)",
+      "Edit(**)",
       "mcp_context7"
     ]
   },
