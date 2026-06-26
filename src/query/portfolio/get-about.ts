@@ -37,6 +37,13 @@ export const getContentPages = async () => {
   });
 };
 
+/** A single non-deleted content page by slug (e.g. "legal", "changelog"), or null. */
+export const getContentPageBySlug = async (slug: string) => {
+  return prisma.contentPage.findFirst({
+    where: { slug, deletedAt: null },
+  });
+};
+
 export type PersonProfileRecord = NonNullable<
   Prisma.PromiseReturnType<typeof getPersonProfile>
 >;

@@ -14,9 +14,24 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: SiteConfig.title,
+  title: {
+    default: SiteConfig.title,
+    template: `%s · ${SiteConfig.title}`,
+  },
   description: SiteConfig.description,
   metadataBase: new URL(getServerUrl()),
+  openGraph: {
+    type: "website",
+    siteName: SiteConfig.title,
+    title: SiteConfig.title,
+    description: SiteConfig.description,
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SiteConfig.title,
+    description: SiteConfig.description,
+  },
 };
 
 const CaptionFont = Space_Grotesk({

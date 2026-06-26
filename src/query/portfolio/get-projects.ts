@@ -23,6 +23,14 @@ export const getProjectById = async (id: string) => {
   });
 };
 
+/** A single non-deleted project by its public slug, or null. */
+export const getProjectBySlug = async (slug: string) => {
+  return prisma.project.findFirst({
+    where: { slug, deletedAt: null },
+    include: projectInclude,
+  });
+};
+
 type ProjectList = Prisma.PromiseReturnType<typeof getProjects>;
 
 export type ProjectWithStacks = ProjectList[number];

@@ -53,7 +53,7 @@ const BaseSidebar = () => {
             </SidebarMenuButtonLink>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButtonLink href="/home">
+            <SidebarMenuButtonLink href="/">
               <Home />
               <span>Home</span>
             </SidebarMenuButtonLink>
