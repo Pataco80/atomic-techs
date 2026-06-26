@@ -44,6 +44,37 @@
   --color-info: var(--info);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+
+  /* Portfolio (public) palette — additive; used by app/(public)/* only,
+     so the back-office keeps the neutral shadcn tokens. */
+  --color-blue-ribbon: #0055ff;
+  --color-blue-ribbon-50: #e0ebff;
+  --color-blue-ribbon-100: #ccddff;
+  --color-blue-ribbon-200: #a3c2ff;
+  --color-blue-ribbon-300: #7aa7ff;
+  --color-blue-ribbon-400: #528bff;
+  --color-blue-ribbon-500: #2970ff;
+  --color-blue-ribbon-600: #0055ff;
+  --color-blue-ribbon-700: #0042c7;
+  --color-blue-ribbon-800: #00308f;
+  --color-blue-ribbon-900: #001d57;
+  --color-blue-ribbon-950: #00143b;
+  --color-pale-sky: #6b7280;
+  --color-pale-sky-50: #e3e5e8;
+  --color-pale-sky-100: #d8dadf;
+  --color-pale-sky-200: #c2c5cc;
+  --color-pale-sky-300: #acb0ba;
+  --color-pale-sky-400: #969ba7;
+  --color-pale-sky-500: #7f8694;
+  --color-pale-sky-600: #6b7280;
+  --color-pale-sky-700: #515761;
+  --color-pale-sky-800: #383c43;
+  --color-pale-sky-900: #1e2024;
+  --color-pale-sky-950: #121315;
+  --color-alt-section: var(--alt-section);
+  --color-hero: var(--hero);
+  --shadow-glow: 0 0 68px 7px rgb(0 85 255 / 0.4);
+  --shadow-glow-sm: 0 0 15px 0 rgb(0 85 255 / 0.4);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -76,6 +107,8 @@
   --foreground: oklch(0.3211 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.3211 0 0);
+  --alt-section: hsl(223 10% 86.1%);
+  --hero: hsl(228 85% 14%);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.3211 0 0);
   --primary: oklch(0.6231 0.188 259.8145);
@@ -143,6 +176,8 @@
   --foreground: oklch(0.9219 0 0);
   --card: oklch(0.2686 0 0);
   --card-foreground: oklch(0.9219 0 0);
+  --alt-section: hsl(220 8% 7.6%);
+  --hero: hsl(228 85% 14%);
   --popover: oklch(0.2686 0 0);
   --popover-foreground: oklch(0.9219 0 0);
   --primary: oklch(0.6231 0.188 259.8145);
@@ -498,6 +533,22 @@
 }
 
 @layer utils {
+  .bg-section-glow {
+    background-image:
+      radial-gradient(
+        900px circle at 75% 12%,
+        rgb(0 85 255 / 0.18),
+        transparent 60%
+      ),
+      radial-gradient(
+        820px circle at 15% 85%,
+        rgb(41 112 255 / 0.14),
+        transparent 60%
+      );
+  }
+  .bg-hero-portfolio {
+    background-image: url("/images/background/bg-portfolio-hero.webp");
+  }
   .text-gradient {
     @apply bg-clip-text text-transparent;
   }

@@ -1,3 +1,21 @@
+## 2026-06-26 - Public Portfolio Front + Contact + SEO (Spec 03)
+
+### 🚀 **New Features & Components**
+
+- **FEAT: Public portfolio front (feature-organized)** — new `app/(public)/` thin pages compose domain features under `src/features/` (home, projects, projects-details, work-experiences, knowtecks, content-page, seo) and shared primitives under `src/components/shared/` (section, section-title, animated circuit-divider); the base `contact` and `layout` features are extended, not duplicated.
+- **Home `/`** (replacing the starter landing): hero + bio (`RichTextRenderer`), **KnowTech** cards (stacks + seniority), **featured projects**, chronological **work experience** (with the parcours bio + socials), animated **CircuitDividers** between sections.
+- **Portfolio**: `/portfolio` paginated **12/page** (2/3 cols) and `/portfolio/[slug]` detail; `/legal` + `/changelog` render `ContentPage` bodies by slug.
+- **Public contact**: anonymous `<ContactForm>` (name/email/subject/message + **honeypot**) via the **public `action` client** (never `authAction`) → `Contact` row + sonner toast, **zero email**; submissions listed in `/studio`.
+
+### 🔍 **SEO, Theme & Infra**
+
+- `generateMetadata` per page, `app/sitemap.ts`, `app/robots.ts`, OpenGraph/Twitter, **JSON-LD** (Person/CreativeWork), canonical; **dark theme** by default; a11y AA + empty states.
+- Disabled `cacheComponents` (Next 16 Dynamic IO corrupted next-safe-action server actions); fixed TipTap links via `@tiptap/extension-link`.
+
+### 🧪 **Testing**
+
+- Unit tests for the pure helpers: `paginate` / `getTotalPages` and the JSON-LD builders.
+
 ## 2026-06-25 - Portfolio Back-Office CRUD (Spec 02)
 
 ### 🚀 **New Features & Components**

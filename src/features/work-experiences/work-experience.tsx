@@ -1,0 +1,132 @@
+import { RichTextRenderer } from "@/components/nowts/rich-text-renderer";
+import { SectionTitle } from "@/components/shared/section-title";
+import { SectionLayout } from "@/features/landing/section-layout";
+import { Badge } from "@/components/ui/badge";
+import { SocialLinks } from "@/features/layout/social-links";
+import { sortCareerEventsChrono } from "@/lib/format/career-order";
+import type {
+  CareerEventRecord,
+  OrgProfileRecord,
+  PersonProfileRecord,
+} from "@/query/portfolio/get-about";
+import type { JSONContent } from "@tiptap/react";
+import Image from "next/image";
+
+const MONTHS = [
+  "janv.",
+  "févr.",
+  "mars",
+  "avr.",
+  "mai",
+  "juin",
+  "juil.",
+  "août",
+  "sept.",
+  "oct.",
+  "nov.",
+  "déc.",
+];
+
+function monthYear(month: number, year: number): string {
+  return `${MONTHS[month - 1] ?? ""} ${year}`.trim();
+}
+
+function period(event: CareerEventRecord): string {
+  const start = monthYear(event.startMonth, event.startYear);
+  const end =
+    event.endYear == null
+      ? "Aujourd'hui"
+      : monthYear(event.endMonth ?? 1, event.endYear);
+  return `${start} – ${end}`;
+}
+
+function ExperienceItem({
+  event,
+  isLast,
+}: {
+  event: CareerEventRecord;
+  isLast: boolean;
+}) {
+  return (
+    <article className="grid grid-cols-[44px_1fr] gap-4">
+      <div className="flex flex-col items-center gap-2">
+        <div className="border-primary/60 bg-primary/10 grid size-11 shrink-0 place-items-center overflow-hidden rounded-full border-2 shadow-[0_0_12px_rgba(0,85,255,0.25)]">
+          {event.companyLogo ? (
+            <Image
+              src={event.companyLogo}
+              alt={event.companyName}
+              width={44}
+              height={44}
+              className="size-full object-cover"
+            />
+          ) : (
+            <span className="text-primary text-sm font-semibold">
+              {event.companyName.slice(0, 1).toUpperCase()}
+            </span>
+          )}
+        </div>
+        <div className="from-primary/50 to-border h-full w-0.5 bg-gradient-to-b" />
+      </div>
+
+      <div className="flex flex-col gap-2 pb-10">
+        <div className="flex flex-wrap items-center gap-2">
+          <h3 className="text-lg font-semibold">{event.jobTitle}</h3>
+          {event.endYear == null ? <Badge>Poste actuel</Badge> : null}
+        </div>
+        <p className="text-sm">
+          <span className="text-primary">@</span> {event.companyName}
+        </p>
+        <p className="text-muted-foreground font-mono text-xs">
+          {period(event)}
+        </p>
+        {event.description ? (
+          <div className="text-muted-foreground mt-1">
+            <RichTextRenderer content={event.description as JSONContent} />
+          </div>
+        ) : null}
+      </div>
+    </article>
+  );
+}
+
+export function WorkExperience({
+  events,
+  person,
+  org,
+}: {
+  events: CareerEventRecord[];
+  person: PersonProfileRecord | null;
+  org: OrgProfileRecord | null;
+}) {
+  if (events.length === 0) return null;
+  const sorted = sortCareerEventsChrono(events);
+
+  return (
+    <SectionLayout
+      variant="alt-section"
+      glow
+      aria-label="Parcours professionnel"
+      className="flex flex-col gap-10 md:flex-row md:gap-12"
+    >
+      <article className="flex flex-col gap-6 md:max-w-[280px] md:shrink-0 lg:max-w-[420px]">
+        <SectionTitle subtitle="expériences" title="Parcours professionnel" />
+        {person?.bioWork ? (
+          <div className="text-muted-foreground">
+            <RichTextRenderer content={person.bioWork as JSONContent} />
+          </div>
+        ) : null}
+        <SocialLinks socials={org?.socials} />
+      </article>
+
+      <div className="flex flex-1 flex-col">
+        {sorted.map((event, index) => (
+          <ExperienceItem
+            key={event.id}
+            event={event}
+            isLast={index === sorted.length - 1}
+          />
+        ))}
+      </div>
+    </SectionLayout>
+  );
+}
