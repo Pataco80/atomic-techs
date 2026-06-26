@@ -40,13 +40,7 @@ function period(event: CareerEventRecord): string {
   return `${start} – ${end}`;
 }
 
-function ExperienceItem({
-  event,
-  isLast,
-}: {
-  event: CareerEventRecord;
-  isLast: boolean;
-}) {
+function ExperienceItem({ event }: { event: CareerEventRecord }) {
   return (
     <article className="grid grid-cols-[44px_1fr] gap-4">
       <div className="flex flex-col items-center gap-2">
@@ -119,12 +113,8 @@ export function WorkExperience({
       </article>
 
       <div className="flex flex-1 flex-col">
-        {sorted.map((event, index) => (
-          <ExperienceItem
-            key={event.id}
-            event={event}
-            isLast={index === sorted.length - 1}
-          />
+        {sorted.map((event, _index) => (
+          <ExperienceItem key={event.id} event={event} />
         ))}
       </div>
     </SectionLayout>

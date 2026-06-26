@@ -1,13 +1,27 @@
 import { RichTextRenderer } from "@/components/nowts/rich-text-renderer";
 import { buttonVariants } from "@/components/ui/button";
-import type { PersonProfileRecord } from "@/query/portfolio/get-about";
+import { SocialLinks } from "@/features/layout/social-links";
+import { TechBadge } from "@/features/knowtecks/tech-badge";
+import type {
+  OrgProfileRecord,
+  PersonProfileRecord,
+} from "@/query/portfolio/get-about";
+import type { StackItemRecord } from "@/query/portfolio/get-stacks";
 import { SiteConfig } from "@/site-config";
 import type { JSONContent } from "@tiptap/react";
 import { ArrowRight, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export function HomeHero({ person }: { person: PersonProfileRecord | null }) {
+export function HomeHero({
+  person,
+  stacks,
+  org,
+}: {
+  person: PersonProfileRecord | null;
+  stacks: StackItemRecord[];
+  org: OrgProfileRecord | null;
+}) {
   const name = person?.fullName ?? SiteConfig.title;
 
   return (
@@ -38,17 +52,21 @@ export function HomeHero({ person }: { person: PersonProfileRecord | null }) {
               <RichTextRenderer content={person.bioHome as JSONContent} />
             </div>
           ) : null}
+          {stacks.length > 0 ? (
+            <ul className="mt-6 flex max-w-[440px] list-none flex-wrap gap-2">
+              {stacks.slice(0, 8).map((stack) => (
+                <li key={stack.id}>
+                  <TechBadge name={stack.name} />
+                </li>
+              ))}
+            </ul>
+          ) : null}
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <Link href="/#contact" className={buttonVariants({ size: "lg" })}>
               Contactez-moi
               <ArrowRight className="size-4" />
             </Link>
-            <Link
-              href="/portfolio"
-              className="text-pale-sky-200 hover:text-blue-ribbon-300 rounded-sm font-medium transition-colors"
-            >
-              Voir le portfolio
-            </Link>
+            <SocialLinks socials={org?.socials ?? null} />
           </div>
         </div>
 
