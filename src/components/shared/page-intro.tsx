@@ -43,12 +43,9 @@ export function PageIntro({
         title={title}
         className="relative z-10 items-center text-center [&>:last-child]:text-4xl sm:[&>:last-child]:text-5xl"
       />
-      <div className="relative z-10 mt-4 flex max-w-[650px] flex-col items-center">
+      <div className="relative z-10 mt-8 flex max-w-[650px] flex-col items-center gap-8">
         {description ? (
-          <Typography
-            variant="muted"
-            className="text-pale-sky-400 my-6 text-center sm:my-10"
-          >
+          <Typography variant="muted" className="text-pale-sky-400 text-center">
             {description}
           </Typography>
         ) : null}

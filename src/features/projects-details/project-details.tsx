@@ -1,7 +1,6 @@
-import { Typography } from "@/components/nowts/typography";
+import { Button } from "@/components/nowts/button";
 import { CircuitDivider } from "@/components/shared/circuit-divider";
 import { PageIntro } from "@/components/shared/page-intro";
-import { buttonVariants } from "@/components/ui/button";
 import { TechBadge } from "@/features/knowtecks/tech-badge";
 import { SectionLayout } from "@/features/landing/section-layout";
 import { projectPlaceholder } from "@/features/projects/project-placeholder";
@@ -29,12 +28,10 @@ export async function ProjectDetails({ slug }: { slug: string }) {
       <PageIntro
         subtitle="projet"
         title={project.title}
+        description={project.longDescription}
         backHref="/portfolio"
         backLabel="Voir tous les projets"
       >
-        <Typography variant="muted" className="max-w-[600px] text-center">
-          {project.longDescription}
-        </Typography>
         {project.stacks.length > 0 ? (
           <ul className="flex max-w-[420px] list-none flex-wrap justify-center gap-2">
             {project.stacks.map((s) => (
@@ -45,28 +42,18 @@ export async function ProjectDetails({ slug }: { slug: string }) {
           </ul>
         ) : null}
         {(project.liveUrl ?? project.githubUrl) ? (
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             {project.liveUrl ? (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noreferrer noopener"
-                className={buttonVariants({ size: "lg" })}
-              >
+              <Button href={project.liveUrl} external size="lg">
                 <Icon name="globe" className="size-4" />
                 Voir en ligne
-              </a>
+              </Button>
             ) : null}
             {project.githubUrl ? (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noreferrer noopener"
-                className={buttonVariants({ variant: "outline", size: "lg" })}
-              >
+              <Button href={project.githubUrl} external variant="outline" size="lg">
                 <Icon name="github" className="size-4" />
                 Code source
-              </a>
+              </Button>
             ) : null}
           </div>
         ) : null}

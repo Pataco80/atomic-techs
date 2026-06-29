@@ -1,3 +1,4 @@
+import { Link } from "@/components/nowts/link";
 import { Typography } from "@/components/nowts/typography";
 import { SectionTitle } from "@/components/shared/section-title";
 import { SectionLayout } from "@/features/landing/section-layout";
@@ -6,7 +7,6 @@ import { projectPlaceholder } from "@/features/projects/project-placeholder";
 import type { ProjectWithStacks } from "@/query/portfolio/get-projects";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 
 function HighlightCard({ project }: { project: ProjectWithStacks }) {
   return (
@@ -38,10 +38,7 @@ function HighlightCard({ project }: { project: ProjectWithStacks }) {
             ))}
           </ul>
         ) : null}
-        <Link
-          href={`/portfolio/${project.slug}`}
-          className="text-primary inline-flex w-fit items-center gap-1 font-medium hover:underline"
-        >
+        <Link href={`/portfolio/${project.slug}`}>
           Voir le projet <ArrowRight className="size-4" />
         </Link>
       </div>
@@ -70,10 +67,7 @@ export function FeaturedProjects({
       </div>
       <Typography variant="muted" className="mt-12 flex items-center gap-2">
         Envie d'en voir plus ?
-        <Link
-          href="/portfolio"
-          className="text-primary inline-flex items-center gap-1 font-medium hover:underline"
-        >
+        <Link href="/portfolio">
           Voir tous les projets <ArrowRight className="size-4" />
         </Link>
       </Typography>

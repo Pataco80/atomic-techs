@@ -3,15 +3,6 @@ import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 import type { ComponentPropsWithoutRef, ElementType } from "react";
 
-// Ré-exports pour un import unique (texte + lien + lien-bouton) :
-//   import { Typography, Link, buttonVariants } from "@/components/nowts/typography";
-// - Link (next/link) : balise typée pour les liens internes (href vérifié).
-// - buttonVariants (Shadcn) : pour styliser un lien EN bouton, sans composant dédié.
-//   <Typography variant="link" as={Link} href="/contact">Lien interne</Typography>
-//   <Link href="/contact" className={buttonVariants()}>Lien-bouton</Link>
-export { default as Link } from "next/link";
-export { buttonVariants } from "@/components/ui/button";
-
 // Tailles via l'échelle fluide Utopia (`--step-*` dans globals.css) — un seul
 // barème partagé pour tout le site. Le STYLE des titres reste sobre (Atomic
 // Tech's) : font-caption + graisse + tracking, pas d'uppercase/italic.
@@ -72,13 +63,15 @@ type TypographyProps<T extends ElementType = "p"> = {
  * - `as`      = la BALISE sémantique (override de la balise par défaut du variant).
  *
  * ```tsx
+ * import Link from "next/link";
  * <Typography variant="h1" as="h2">Titre de section</Typography>   // <h2> stylé h1
  * <Typography variant="h3" as="h1">Titre d'article sobre</Typography>
  * <Typography variant="link" as={Link} href="/contact">Lien interne</Typography>
  * <Typography variant="link" as="a" href="https://…" target="_blank" rel="noopener noreferrer">Lien externe</Typography>
  * ```
  *
- * Boutons / liens-boutons : `buttonVariants()` de Shadcn (pas Typography).
+ * Liens texte brandés : `<Link>` de `@/components/nowts/link`.
+ * Boutons / liens-boutons : `<Button>` de `@/components/nowts/button`.
  */
 export function Typography<T extends ElementType = "p">({
   variant = "default",

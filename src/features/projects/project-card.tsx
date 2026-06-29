@@ -1,4 +1,5 @@
 import { Typography } from "@/components/nowts/typography";
+import { Card, CardContent } from "@/components/ui/card";
 import { TechBadge } from "@/features/knowtecks/tech-badge";
 import type { ProjectWithStacks } from "@/query/portfolio/get-projects";
 import Image from "next/image";
@@ -12,7 +13,7 @@ export function ProjectCard({ project }: { project: ProjectWithStacks }) {
       className="group focus-visible:ring-ring block rounded-lg focus-visible:ring-2 focus-visible:outline-none"
       aria-label={project.title}
     >
-      <article className="bg-muted/40 hover:border-primary/60 border-foreground/10 flex h-full flex-col overflow-hidden rounded-lg border shadow-sm transition-all hover:shadow-md">
+      <Card className="bg-muted/40 hover:bg-pale-sky-300/40 dark:hover:bg-muted/60 border-foreground/10 hover:border-accent/70 flex h-full flex-col gap-0 overflow-hidden rounded-lg py-0 shadow-[0_16px_40px_-12px_rgba(0,0,0,0.55)] backdrop-blur-lg transition-all">
         <div className="bg-muted relative aspect-video w-full overflow-hidden">
           <Image
             src={project.imageUrl ?? projectPlaceholder(project.id)}
@@ -22,11 +23,11 @@ export function ProjectCard({ project }: { project: ProjectWithStacks }) {
             className="object-cover transition-transform duration-500 group-hover:scale-110"
           />
         </div>
-        <div className="flex flex-1 flex-col gap-3 p-6">
+        <CardContent className="flex flex-1 flex-col gap-3 p-6">
           <Typography
             variant="large"
             as="h3"
-            className="group-hover:text-primary font-medium transition-colors"
+            className="group-hover:text-accent font-medium transition-colors"
           >
             {project.title}
           </Typography>
@@ -42,8 +43,8 @@ export function ProjectCard({ project }: { project: ProjectWithStacks }) {
               ))}
             </div>
           ) : null}
-        </div>
-      </article>
+        </CardContent>
+      </Card>
     </Link>
   );
 }

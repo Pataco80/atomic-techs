@@ -1,6 +1,6 @@
+import { Button } from "@/components/nowts/button";
 import { RichTextRenderer } from "@/components/nowts/rich-text-renderer";
 import { Typography } from "@/components/nowts/typography";
-import { buttonVariants } from "@/components/ui/button";
 import { SocialLinks } from "@/features/layout/social-links";
 import { TechBadge } from "@/features/knowtecks/tech-badge";
 import type {
@@ -12,7 +12,6 @@ import { SiteConfig } from "@/site-config";
 import type { JSONContent } from "@tiptap/react";
 import { ArrowRight, User } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 
 export function HomeHero({
   person,
@@ -70,10 +69,10 @@ export function HomeHero({
             </ul>
           ) : null}
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Link href="/#contact" className={buttonVariants({ size: "lg" })}>
+            <Button href="/#contact" size="lg">
               Contactez-moi
               <ArrowRight className="size-4" />
-            </Link>
+            </Button>
             <SocialLinks socials={org?.socials ?? null} />
           </div>
         </div>
