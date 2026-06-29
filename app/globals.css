@@ -650,3 +650,7 @@ html.dark .shiki span {
     margin: 0 !important;
   }
 }
+
+@utility bg-hero-portfolio {
+  background-image: url("/images/background/bg-portfolio-hero.webp");
+}

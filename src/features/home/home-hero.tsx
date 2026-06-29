@@ -1,13 +1,27 @@
+import { Button } from "@/components/nowts/button";
 import { RichTextRenderer } from "@/components/nowts/rich-text-renderer";
-import { buttonVariants } from "@/components/ui/button";
-import type { PersonProfileRecord } from "@/query/portfolio/get-about";
+import { Typography } from "@/components/nowts/typography";
+import { SocialLinks } from "@/features/layout/social-links";
+import { TechBadge } from "@/features/knowtecks/tech-badge";
+import type {
+  OrgProfileRecord,
+  PersonProfileRecord,
+} from "@/query/portfolio/get-about";
+import type { StackItemRecord } from "@/query/portfolio/get-stacks";
 import { SiteConfig } from "@/site-config";
 import type { JSONContent } from "@tiptap/react";
 import { ArrowRight, User } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 
-export function HomeHero({ person }: { person: PersonProfileRecord | null }) {
+export function HomeHero({
+  person,
+  stacks,
+  org,
+}: {
+  person: PersonProfileRecord | null;
+  stacks: StackItemRecord[];
+  org: OrgProfileRecord | null;
+}) {
   const name = person?.fullName ?? SiteConfig.title;
 
   return (
@@ -22,33 +36,44 @@ export function HomeHero({ person }: { person: PersonProfileRecord | null }) {
       />
       <div className="relative z-10 mx-auto flex max-w-6xl flex-col-reverse items-center gap-12 px-4 pt-28 pb-20 lg:min-h-[88vh] lg:flex-row lg:justify-between lg:gap-16 lg:pb-28">
         <div className="w-full lg:max-w-[560px]">
-          <p className="text-blue-ribbon-300 mb-3 text-sm sm:text-base">
+          <Typography variant="small" className="text-blue-ribbon-300 mb-3">
             Bonjour, je m'appelle
-          </p>
-          <h1 className="text-pale-sky-50 font-mono text-3xl font-medium sm:text-4xl">
+          </Typography>
+          <Typography
+            as="h1"
+            variant="h4"
+            className="text-pale-sky-50 font-mono font-medium"
+          >
             {name}
-          </h1>
+          </Typography>
           {person?.headline ? (
-            <p className="text-blue-ribbon-200 mt-2 font-mono text-base sm:text-lg">
+            <Typography
+              variant="default"
+              className="text-blue-ribbon-200 mt-2 font-mono"
+            >
               {person.headline}
-            </p>
+            </Typography>
           ) : null}
           {person?.bioHome ? (
             <div className="text-pale-sky-300 my-8">
               <RichTextRenderer content={person.bioHome as JSONContent} />
             </div>
           ) : null}
+          {stacks.length > 0 ? (
+            <ul className="mt-6 flex max-w-[440px] list-none flex-wrap gap-2">
+              {stacks.slice(0, 8).map((stack) => (
+                <li key={stack.id}>
+                  <TechBadge name={stack.name} />
+                </li>
+              ))}
+            </ul>
+          ) : null}
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Link href="/#contact" className={buttonVariants({ size: "lg" })}>
+            <Button href="/#contact" size="lg">
               Contactez-moi
               <ArrowRight className="size-4" />
-            </Link>
-            <Link
-              href="/portfolio"
-              className="text-pale-sky-200 hover:text-blue-ribbon-300 rounded-sm font-medium transition-colors"
-            >
-              Voir le portfolio
-            </Link>
+            </Button>
+            <SocialLinks socials={org?.socials ?? null} />
           </div>
         </div>
 

@@ -12,7 +12,7 @@ export async function Footer() {
 
   return (
     <footer id="contact" className="border-t">
-      <SectionLayout variant="default" size="base" glow>
+      <SectionLayout variant="default" size="base">
         <SectionTitle
           subtitle="contact"
           title="Prenez contact avec moi"
@@ -31,11 +31,8 @@ export async function Footer() {
         <Link href="/legal" className="hover:text-primary transition-colors">
           Légal
         </Link>
-        <Link
-          href="/changelog"
-          className="hover:text-primary transition-colors"
-        >
-          Changelog
+        <Link href="/privacy" className="hover:text-primary transition-colors">
+          Privacy
         </Link>
       </div>
     </footer>

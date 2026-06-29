@@ -114,10 +114,12 @@ export function CareerSection({ events }: CareerSectionProps) {
               className="bg-card flex items-center gap-3 rounded-lg border p-3"
             >
               <div className="flex flex-1 flex-col">
-                <span className="font-medium">{event.jobTitle}</span>
-                <span className="text-muted-foreground text-sm">
+                <Typography as="span" variant="default" className="font-medium">
+                  {event.jobTitle}
+                </Typography>
+                <Typography as="span" variant="muted">
                   {event.companyName} · {formatPeriod(event)}
-                </span>
+                </Typography>
               </div>
               <Button
                 variant="ghost"

@@ -1,5 +1,6 @@
 "use client";
 
+import { Typography } from "@/components/nowts/typography";
 import { animate } from "motion/react";
 import { useEffect, useRef } from "react";
 import { SectionLayout } from "./section-layout";
@@ -39,12 +40,16 @@ export function StatsSection() {
       <div className="grid w-full items-center gap-12 sm:grid-cols-2 md:-mx-5 md:max-w-none md:grid-cols-4 md:gap-0">
         {stats.map((stat, index) => (
           <div key={index} className="relative text-center md:px-5">
-            <h4 className="mb-2 text-2xl font-bold tabular-nums md:text-3xl">
+            <Typography
+              variant="large"
+              as="h4"
+              className="mb-2 font-bold tabular-nums"
+            >
               <Counter from={0} to={stat.number} />
 
               {stat.suffix}
-            </h4>
-            <p className="text-muted-foreground text-sm">{stat.text}</p>
+            </Typography>
+            <Typography variant="muted">{stat.text}</Typography>
           </div>
         ))}
       </div>

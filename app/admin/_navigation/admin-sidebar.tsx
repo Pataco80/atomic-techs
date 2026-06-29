@@ -1,5 +1,6 @@
 "use client";
 
+import { Typography } from "@/components/nowts/typography";
 import {
   Collapsible,
   CollapsibleContent,
@@ -32,9 +33,13 @@ export function AdminSidebar() {
       <SidebarHeader className="flex flex-col gap-2">
         <div className="flex items-center gap-2 px-2 py-1.5">
           <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-lg">
-            <span className="text-sm font-semibold">A</span>
+            <Typography as="span" variant="small" className="font-semibold">
+              A
+            </Typography>
           </div>
-          <span className="font-semibold">Admin Panel</span>
+          <Typography as="span" variant="default" className="font-semibold">
+            Admin Panel
+          </Typography>
         </div>
       </SidebarHeader>
       <SidebarContent>

@@ -35,6 +35,7 @@ export function SubmitButton(props: React.ComponentProps<typeof Button>) {
 
 function FormInput(props: React.ComponentProps<typeof Input>) {
   const field = useFieldContext<string>();
+  const isInvalid = useFieldInvalid();
 
   return (
     <Input
@@ -42,6 +43,7 @@ function FormInput(props: React.ComponentProps<typeof Input>) {
       name={field.name}
       value={field.state.value}
       placeholder={props.placeholder}
+      aria-invalid={isInvalid || undefined}
       onBlur={field.handleBlur}
       onChange={(e) => field.handleChange(e.target.value)}
       {...props}
@@ -63,12 +65,14 @@ function FormSelect(props: React.ComponentProps<typeof Select>) {
 
 function FormTextarea(props: React.ComponentProps<typeof Textarea>) {
   const field = useFieldContext<string>();
+  const isInvalid = useFieldInvalid();
   return (
     <Textarea
       id={field.name}
       name={field.name}
       value={field.state.value}
       placeholder={props.placeholder}
+      aria-invalid={isInvalid || undefined}
       onBlur={field.handleBlur}
       onChange={(e) => field.handleChange(e.target.value)}
       {...props}

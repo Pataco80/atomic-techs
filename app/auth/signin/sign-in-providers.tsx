@@ -34,7 +34,7 @@ export const SignInProviders = ({
         )}
       </div>
 
-      <Typography variant="muted" className="text-xs">
+      <Typography variant="muted">
         You don't have an account?{" "}
         <Typography
           variant="link"

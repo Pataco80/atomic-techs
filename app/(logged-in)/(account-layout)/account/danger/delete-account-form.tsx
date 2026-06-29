@@ -1,5 +1,6 @@
 "use client";
 
+import { Typography } from "@/components/nowts/typography";
 import {
   Card,
   CardContent,
@@ -46,11 +47,13 @@ export function DeleteAccountForm() {
           <div className="flex items-start gap-4">
             <UserX2 className="text-muted-foreground mt-0.5 size-5" />
             <div className="space-y-1">
-              <p className="leading-none font-medium">Personal Data</p>
-              <p className="text-muted-foreground text-sm">
+              <Typography variant="default" className="leading-none font-medium">
+                Personal Data
+              </Typography>
+              <Typography variant="muted">
                 All your personal information and settings will be permanently
                 erased
-              </p>
+              </Typography>
             </div>
           </div>
         </div>
@@ -58,11 +61,13 @@ export function DeleteAccountForm() {
           <div className="flex items-start gap-4">
             <Building2 className="text-muted-foreground mt-0.5 size-5" />
             <div className="space-y-1">
-              <p className="leading-none font-medium">Organization Data</p>
-              <p className="text-muted-foreground text-sm">
+              <Typography variant="default" className="leading-none font-medium">
+                Organization Data
+              </Typography>
+              <Typography variant="muted">
                 If you&apos;re an organization owner, all organization data will
                 be deleted and subscriptions cancelled
-              </p>
+              </Typography>
             </div>
           </div>
         </div>

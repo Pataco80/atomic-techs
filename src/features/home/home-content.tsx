@@ -40,7 +40,11 @@ export async function HomeContent() {
   // Only the sections with content; CircuitDividers are inserted between them
   // with the variant matching the two real adjacent backgrounds.
   const blocks: { key: string; tone: Tone; node: ReactNode }[] = [
-    { key: "hero", tone: "hero", node: <HomeHero person={person} /> },
+    {
+      key: "hero",
+      tone: "hero",
+      node: <HomeHero person={person} stacks={stacks} org={org} />,
+    },
   ];
   if (stacks.length > 0) {
     blocks.push({

@@ -1,3 +1,4 @@
+import { Typography } from "@/components/nowts/typography";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DialogContent } from "@/components/ui/dialog";
 import { InterceptDialog } from "@/components/utils/intercept-dialog";
@@ -17,11 +18,13 @@ export default function SignInDialogPage() {
                 {SiteConfig.title.substring(0, 1).toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <span className="text-lg font-semibold">{SiteConfig.title}</span>
+            <Typography as="span" variant="large" className="font-semibold">
+              {SiteConfig.title}
+            </Typography>
           </div>
-          <p className="text-muted-foreground mt-2 text-center">
+          <Typography variant="muted" className="mt-2 text-center">
             Please sign in to your account to continue.
-          </p>
+          </Typography>
         </div>
         <SignInModal providers={Object.keys(SocialProviders ?? {})} />
       </DialogContent>

@@ -1,5 +1,6 @@
 "use client";
 
+import { Typography } from "@/components/nowts/typography";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { AUTH_PLANS } from "@/lib/auth/stripe/auth-plans";
@@ -16,26 +17,32 @@ export function Pricing() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+            <Typography
+              variant="h2"
+              as="h2"
+              className="font-bold tracking-tighter"
+            >
               Choose Your Plan
-            </h2>
-            <p className="text-muted-foreground max-w-[700px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+            </Typography>
+            <Typography variant="lead" className="text-muted-foreground max-w-[700px]">
               Select the perfect plan for your needs. Upgrade or downgrade at
               any time.
-            </p>
+            </Typography>
           </div>
 
           <div className="bg-muted/50 mt-8 flex items-center space-x-4 rounded-full p-2">
-            <span
+            <Typography
+              as="span"
+              variant="small"
               className={cn(
-                "rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
+                "rounded-full px-4 py-2 transition-all duration-200",
                 !isYearly
                   ? "bg-background text-foreground shadow-sm"
                   : "text-muted-foreground",
               )}
             >
               Monthly
-            </span>
+            </Typography>
             <Switch
               checked={isYearly}
               onCheckedChange={setIsYearly}
@@ -49,7 +56,9 @@ export function Pricing() {
                   : "text-muted-foreground",
               )}
             >
-              <span className="text-sm font-medium">Yearly</span>
+              <Typography as="span" variant="small">
+                Yearly
+              </Typography>
               <Badge
                 variant="outline"
                 className="border-primary/20 bg-primary/10 text-primary ml-2"
@@ -72,11 +81,11 @@ export function Pricing() {
         </div>
 
         <div className="mt-16 text-center">
-          <p className="text-muted-foreground">
+          <Typography variant="muted">
             All plans include basic features like unlimited access and community
             support.
-          </p>
-          <p className="text-muted-foreground mt-2">
+          </Typography>
+          <Typography variant="muted" className="mt-2">
             Need a custom plan?{" "}
             <Link
               href="/contact"
@@ -84,7 +93,7 @@ export function Pricing() {
             >
               Contact us
             </Link>
-          </p>
+          </Typography>
         </div>
       </div>
     </section>

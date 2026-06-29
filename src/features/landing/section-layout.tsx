@@ -63,10 +63,19 @@ export const SectionLayout = ({
       )}
       {...props}
     >
+      {/* Halo masqué en haut/bas (12%) pour qu'il s'éteigne avant les bords et
+          ne coupe pas net là où un CircuitDivider se raccorde → couture
+          section↔divider invisible (comme le haloMask du SectionBackdrop Hygraph). */}
       {glow ? (
         <div
           aria-hidden
           className="bg-section-glow pointer-events-none absolute inset-0 opacity-60"
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)",
+            maskImage:
+              "linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)",
+          }}
         />
       ) : null}
       <div
