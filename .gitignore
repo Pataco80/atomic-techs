@@ -47,3 +47,5 @@ src/generated
 
 # APEX / Cowork workflow output (logs & reports) — keep untracked
 .claude/output/
+
+next-env.d.ts

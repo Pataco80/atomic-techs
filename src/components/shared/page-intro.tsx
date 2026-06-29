@@ -3,6 +3,7 @@ import { SectionTitle } from "@/components/shared/section-title";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 type PageIntroProps = {
   subtitle: string;
@@ -10,6 +11,7 @@ type PageIntroProps = {
   description?: string;
   backHref?: string;
   backLabel?: string;
+  className?: string;
   /** Optional content (badges, CTA buttons…) rendered under the intro. */
   children?: ReactNode;
 };
@@ -21,6 +23,7 @@ type PageIntroProps = {
  */
 export function PageIntro({
   subtitle,
+  className,
   title,
   description,
   backHref,
@@ -28,7 +31,12 @@ export function PageIntro({
   children,
 }: PageIntroProps) {
   return (
-    <section className="dark bg-pale-sky-950 bg-hero-portfolio text-foreground relative flex h-[600px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-right-bottom px-4 py-20 [text-shadow:0_1px_10px_rgba(0,0,0,0.45)] lg:bg-center lg:pt-16 lg:pb-28">
+    <section
+      className={cn(
+        "dark bg-pale-sky-950 bg-hero-portfolio text-foreground relative flex h-[600px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-right-bottom px-4 py-20 [text-shadow:0_1px_10px_rgba(0,0,0,0.45)] lg:bg-center lg:pt-16 lg:pb-28",
+        className,
+      )}
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-0"
@@ -53,7 +61,7 @@ export function PageIntro({
         {backHref ? (
           <Link
             href={backHref}
-            className="text-pale-sky-200 hover:text-blue-ribbon-300 inline-flex items-center gap-2 rounded-sm font-medium transition-colors focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none"
+            className="text-pale-sky-200 hover:text-blue-ribbon-300 focus-visible:ring-ring inline-flex items-center gap-2 rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
           >
             <ArrowLeft className="size-5" />
             {backLabel}

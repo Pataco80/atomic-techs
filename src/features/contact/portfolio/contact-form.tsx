@@ -30,13 +30,18 @@ const FIELD_CLASS =
 const TEXTAREA_CLASS =
   "min-h-40 resize-none rounded-lg border-transparent bg-pale-sky-800! px-4 py-3 text-pale-sky-50 placeholder:text-pale-sky-300 shadow-none focus-visible:ring-2 focus-visible:ring-blue-ribbon-400 aria-invalid:ring-2 aria-invalid:ring-destructive";
 
-export function ContactForm() {
+export function ContactForm({
+  onSuccess,
+}: {
+  onSuccess?: () => void;
+} = {}) {
   const mutation = useMutation({
     mutationFn: async (values: ContactFormValues) =>
       resolveActionResult(submitContactAction(values)),
     onSuccess: () => {
       toast.success("Votre message a bien été envoyé. Merci !");
       form.reset();
+      onSuccess?.();
     },
     onError: (error) => toast.error(error.message),
   });

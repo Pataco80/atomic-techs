@@ -17,12 +17,6 @@ export function Header() {
       >
         Portfolio
       </Link>
-      <Link
-        href="/#contact"
-        className={buttonVariants({ variant: "ghost", size: "sm" })}
-      >
-        Contact
-      </Link>
     </HeaderBase>
   );
 }

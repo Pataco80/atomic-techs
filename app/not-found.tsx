@@ -1,13 +1,17 @@
-import { Header } from "@/features/layout/header";
-import { Page404 } from "@/features/page/page-404";
+import { Button } from "@/components/nowts/button";
+import { ErrorHero } from "@/features/page/error-hero";
 
 export default function NotFoundPage() {
   return (
-    <div className="relative flex min-h-screen flex-col">
-      <Header />
-      <div className="flex flex-1 items-center justify-center">
-        <Page404 />
-      </div>
-    </div>
+    <ErrorHero
+      code="404"
+      title="Page introuvable"
+      description="Désolé, la page que vous cherchez n'existe pas ou a été déplacée."
+      actions={
+        <Button href="/" size="lg">
+          Retour à l'accueil
+        </Button>
+      }
+    />
   );
 }

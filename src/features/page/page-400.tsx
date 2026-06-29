@@ -1,8 +1,6 @@
-import { ContactSupportDialog } from "@/features/contact/support/contact-support-dialog";
-import Link from "next/link";
+import { Button } from "@/components/nowts/button";
+import { Typography } from "@/components/nowts/typography";
 import type { PropsWithChildren } from "react";
-import { Typography } from "../../components/nowts/typography";
-import { buttonVariants } from "../../components/ui/button";
 
 type Page400Props = PropsWithChildren<{
   title?: string;
@@ -10,24 +8,22 @@ type Page400Props = PropsWithChildren<{
 
 export function Page400(props: Page400Props) {
   return (
-    <main className="flex flex-col items-center gap-8">
-      <div className="max-w-lg space-y-3 text-center">
-        <Typography variant="code">400</Typography>
-        <Typography variant="h1">{props.title ?? "Bad Request"}</Typography>
+    <div className="flex flex-col items-center gap-8 text-center">
+      <div className="max-w-lg space-y-3">
+        <Typography variant="code">Erreur</Typography>
+        <Typography variant="h2">
+          {props.title ?? "Une erreur est survenue"}
+        </Typography>
         {props.children ?? (
-          <Typography>
-            It seems we're experiencing some technical difficulties. Not to
-            worry, our team is working on it. In the meantime, try refreshing
-            the page or visiting us a bit later.
+          <Typography variant="muted">
+            Un problème technique est survenu de notre côté. Réessayez dans un
+            instant ou revenez un peu plus tard.
           </Typography>
         )}
       </div>
-      <div className="flex items-center gap-4">
-        <Link href="/" className={buttonVariants({ variant: "invert" })}>
-          Go back home
-        </Link>
-        <ContactSupportDialog />
-      </div>
-    </main>
+      <Button href="/" size="lg">
+        Retour à l'accueil
+      </Button>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 import { RichTextRenderer } from "@/components/nowts/rich-text-renderer";
 import { Typography } from "@/components/nowts/typography";
-import { SectionTitle } from "@/components/shared/section-title";
+import { CircuitDivider } from "@/components/shared/circuit-divider";
+import { PageIntro } from "@/components/shared/page-intro";
 import { SectionLayout } from "@/features/landing/section-layout";
 import { getContentPageBySlug } from "@/query/portfolio/get-about";
 import type { JSONContent } from "@tiptap/react";
@@ -17,13 +18,15 @@ export async function ContentPageView({
   const page = await getContentPageBySlug(slug);
 
   return (
-    <SectionLayout variant="default" size="sm">
-      <div className="flex flex-col gap-6">
-        <SectionTitle
-          as="h1"
-          subtitle={subtitle}
-          title={page?.title ?? fallbackTitle}
-        />
+    <>
+      <PageIntro
+        subtitle={subtitle}
+        title={page?.title ?? fallbackTitle}
+        backHref="/"
+        className="h-100"
+      />
+      <CircuitDivider variant="hero" className="bg-hero-portfolio" />
+      <SectionLayout variant="default" size="sm">
         {page ? (
           <RichTextRenderer content={page.body as JSONContent | null} />
         ) : (
@@ -31,7 +34,7 @@ export async function ContentPageView({
             Cette page n'a pas encore de contenu.
           </Typography>
         )}
-      </div>
-    </SectionLayout>
+      </SectionLayout>
+    </>
   );
 }
