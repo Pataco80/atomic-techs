@@ -33,7 +33,9 @@ export function ContactsList({ contacts }: { contacts: ContactRecord[] }) {
           <CardContent className="flex flex-col gap-2">
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div className="flex flex-col">
-                <span className="font-medium">{contact.name}</span>
+                <Typography as="span" variant="default" className="font-medium">
+                  {contact.name}
+                </Typography>
                 <a
                   href={`mailto:${contact.email}`}
                   className="text-muted-foreground text-sm hover:underline"
@@ -45,12 +47,18 @@ export function ContactsList({ contacts }: { contacts: ContactRecord[] }) {
                 <Badge variant="secondary">
                   {SUBJECT_LABELS[contact.subject]}
                 </Badge>
-                <span className="text-muted-foreground text-xs">
+                <Typography
+                  as="span"
+                  variant="tiny"
+                  className="text-muted-foreground"
+                >
                   {dateFormatter.format(contact.createdAt)}
-                </span>
+                </Typography>
               </div>
             </div>
-            <p className="text-sm whitespace-pre-wrap">{contact.message}</p>
+            <Typography variant="default" className="whitespace-pre-wrap">
+              {contact.message}
+            </Typography>
           </CardContent>
         </Card>
       ))}

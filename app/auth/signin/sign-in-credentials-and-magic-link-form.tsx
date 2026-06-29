@@ -126,7 +126,7 @@ export const SignInCredentialsAndMagicLinkForm = (props: {
       </LoadingButton>
 
       {isUsingCredentials ? (
-        <Typography variant="muted" className="text-xs">
+        <Typography variant="muted">
           Want faster sign in?{" "}
           <Typography
             variant="link"
@@ -140,7 +140,7 @@ export const SignInCredentialsAndMagicLinkForm = (props: {
           </Typography>
         </Typography>
       ) : (
-        <Typography variant="muted" className="text-xs">
+        <Typography variant="muted">
           Prefer password sign in?{" "}
           <Typography
             variant="link"

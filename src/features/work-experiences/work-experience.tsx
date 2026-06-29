@@ -1,4 +1,5 @@
 import { RichTextRenderer } from "@/components/nowts/rich-text-renderer";
+import { Typography } from "@/components/nowts/typography";
 import { SectionTitle } from "@/components/shared/section-title";
 import { SectionLayout } from "@/features/landing/section-layout";
 import { Badge } from "@/components/ui/badge";
@@ -54,9 +55,9 @@ function ExperienceItem({ event }: { event: CareerEventRecord }) {
               className="size-full object-cover"
             />
           ) : (
-            <span className="text-primary text-sm font-semibold">
+            <Typography variant="small" className="text-primary font-semibold">
               {event.companyName.slice(0, 1).toUpperCase()}
-            </span>
+            </Typography>
           )}
         </div>
         <div className="from-primary/50 to-border h-full w-0.5 bg-gradient-to-b" />
@@ -64,15 +65,17 @@ function ExperienceItem({ event }: { event: CareerEventRecord }) {
 
       <div className="flex flex-col gap-2 pb-10">
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="text-lg font-semibold">{event.jobTitle}</h3>
+          <Typography variant="large" as="h3">
+            {event.jobTitle}
+          </Typography>
           {event.endYear == null ? <Badge>Poste actuel</Badge> : null}
         </div>
-        <p className="text-sm">
+        <Typography variant="small">
           <span className="text-primary">@</span> {event.companyName}
-        </p>
-        <p className="text-muted-foreground font-mono text-xs">
+        </Typography>
+        <Typography variant="tiny" className="text-muted-foreground font-mono">
           {period(event)}
-        </p>
+        </Typography>
         {event.description ? (
           <div className="text-muted-foreground mt-1">
             <RichTextRenderer content={event.description as JSONContent} />
@@ -103,7 +106,11 @@ export function WorkExperience({
       className="flex flex-col gap-10 md:flex-row md:gap-12"
     >
       <article className="flex flex-col gap-6 md:max-w-[280px] md:shrink-0 lg:max-w-[420px]">
-        <SectionTitle subtitle="expériences" title="Parcours professionnel" />
+        <SectionTitle
+          subtitle="expériences"
+          title="Parcours professionnel"
+          titleVariant="h3"
+        />
         {person?.bioWork ? (
           <div className="text-muted-foreground">
             <RichTextRenderer content={person.bioWork as JSONContent} />

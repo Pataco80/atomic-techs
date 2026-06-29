@@ -22,6 +22,14 @@ const SUBJECT_LABELS: Record<ContactFormValues["subject"], string> = {
   AUTRE: "Autre",
 };
 
+// Champs au look Hygraph : fond FIXE pale-sky-800 (#383c43 = rgb(56,60,67),
+// identique light/dark), texte clair, ring bleu (blue-ribbon-400) au focus,
+// ring rouge (destructive) en erreur (déclenché par aria-invalid du wrapper).
+const FIELD_CLASS =
+  "h-11 rounded-lg border-transparent bg-pale-sky-800! px-4 text-pale-sky-50 placeholder:text-pale-sky-300 shadow-none focus-visible:ring-2 focus-visible:ring-blue-ribbon-400 aria-invalid:ring-2 aria-invalid:ring-destructive";
+const TEXTAREA_CLASS =
+  "min-h-40 resize-none rounded-lg border-transparent bg-pale-sky-800! px-4 py-3 text-pale-sky-50 placeholder:text-pale-sky-300 shadow-none focus-visible:ring-2 focus-visible:ring-blue-ribbon-400 aria-invalid:ring-2 aria-invalid:ring-destructive";
+
 export function ContactForm() {
   const mutation = useMutation({
     mutationFn: async (values: ContactFormValues) =>
@@ -48,7 +56,7 @@ export function ContactForm() {
   });
 
   return (
-    <Form form={form} className="flex flex-col gap-4">
+    <Form form={form} className="flex flex-col items-center gap-6">
       {/* Honeypot: hidden from humans (display:none + off tab order). */}
       <form.AppField name="website">
         {(field) => (
@@ -72,7 +80,7 @@ export function ContactForm() {
           <field.Field>
             <field.Label>Nom</field.Label>
             <field.Content>
-              <field.Input placeholder="Votre nom" />
+              <field.Input placeholder="Nom" className={FIELD_CLASS} />
               <field.Message />
             </field.Content>
           </field.Field>
@@ -84,7 +92,11 @@ export function ContactForm() {
           <field.Field>
             <field.Label>Email</field.Label>
             <field.Content>
-              <field.Input type="email" placeholder="vous@exemple.com" />
+              <field.Input
+                type="email"
+                placeholder="Email"
+                className={FIELD_CLASS}
+              />
               <field.Message />
             </field.Content>
           </field.Field>
@@ -97,7 +109,7 @@ export function ContactForm() {
             <field.Label>Sujet</field.Label>
             <field.Content>
               <field.Select>
-                <SelectTrigger>
+                <SelectTrigger className={`${FIELD_CLASS} w-full`}>
                   <SelectValue placeholder="Choisissez un sujet" />
                 </SelectTrigger>
                 <SelectContent>
@@ -119,16 +131,20 @@ export function ContactForm() {
           <field.Field>
             <field.Label>Message</field.Label>
             <field.Content>
-              <field.Textarea rows={5} placeholder="Votre message…" />
+              <field.Textarea
+                rows={5}
+                placeholder="Message"
+                className={TEXTAREA_CLASS}
+              />
               <field.Message />
             </field.Content>
           </field.Field>
         )}
       </form.AppField>
 
-      <div className="flex justify-end">
-        <form.SubmitButton>Envoyer</form.SubmitButton>
-      </div>
+      <form.SubmitButton size="lg" className="w-56">
+        Envoyer
+      </form.SubmitButton>
     </Form>
   );
 }

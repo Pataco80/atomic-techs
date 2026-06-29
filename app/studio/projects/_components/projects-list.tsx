@@ -115,7 +115,13 @@ export function ProjectsList({ projects, stackItems }: ProjectsListProps) {
                 <div className="bg-card flex items-center gap-3 rounded-lg border p-3">
                   <div className="flex flex-1 flex-col">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">{project.title}</span>
+                      <Typography
+                        as="span"
+                        variant="default"
+                        className="font-medium"
+                      >
+                        {project.title}
+                      </Typography>
                       {project.featured && (
                         <Badge variant="secondary">
                           <Star className="size-3" />
@@ -123,10 +129,10 @@ export function ProjectsList({ projects, stackItems }: ProjectsListProps) {
                         </Badge>
                       )}
                     </div>
-                    <span className="text-muted-foreground text-sm">
+                    <Typography as="span" variant="muted">
                       /{project.slug} · {project.stacks.length} techno
                       {project.stacks.length > 1 ? "s" : ""}
-                    </span>
+                    </Typography>
                   </div>
                   <Button
                     variant="ghost"

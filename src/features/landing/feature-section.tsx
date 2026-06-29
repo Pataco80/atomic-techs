@@ -22,7 +22,7 @@ export const FeaturesSection = ({
           </Typography>
           <Typography
             variant="muted"
-            className="m-auto max-w-lg text-center text-base"
+            className="m-auto max-w-lg text-center"
           >
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates,
             consequuntur! Similique, nulla placeat in expedita omnis ab error

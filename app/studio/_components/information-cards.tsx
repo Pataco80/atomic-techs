@@ -1,5 +1,6 @@
 import { Activity, Heart, MessageCircle, User2 } from "lucide-react";
 
+import { Typography } from "@/components/nowts/typography";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function InformationCards() {
@@ -12,9 +13,9 @@ export default function InformationCards() {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">12'032</div>
-          <p className="text-muted-foreground text-xs">
+          <Typography variant="tiny" className="text-muted-foreground">
             +12.5% from last month
-          </p>
+          </Typography>
         </CardContent>
       </Card>
       <Card className="w-full flex-1">
@@ -24,7 +25,9 @@ export default function InformationCards() {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">124</div>
-          <p className="text-muted-foreground text-xs">-2.5% from last month</p>
+          <Typography variant="tiny" className="text-muted-foreground">
+            -2.5% from last month
+          </Typography>
         </CardContent>
       </Card>
       <Card className="w-full flex-1">
@@ -34,7 +37,9 @@ export default function InformationCards() {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">+1288</div>
-          <p className="text-muted-foreground text-xs">+5.2% from last month</p>
+          <Typography variant="tiny" className="text-muted-foreground">
+            +5.2% from last month
+          </Typography>
         </CardContent>
       </Card>
       <Card className="w-full flex-1">
@@ -44,7 +49,9 @@ export default function InformationCards() {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">120'011</div>
-          <p className="text-muted-foreground text-xs">-2.5% from last month</p>
+          <Typography variant="tiny" className="text-muted-foreground">
+            -2.5% from last month
+          </Typography>
         </CardContent>
       </Card>
     </div>

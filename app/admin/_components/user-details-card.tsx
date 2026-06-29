@@ -38,7 +38,7 @@ export function UserDetailsCard({ user }: UserDetailsCardProps) {
         <Badge variant="outline">{user.role ?? "user"}</Badge>
         {!user.emailVerified && (
           <>
-            <Typography variant="muted" className="text-sm">
+            <Typography variant="muted">
               {" • "}
             </Typography>
             <Badge variant="outline">Unverified</Badge>
@@ -46,16 +46,14 @@ export function UserDetailsCard({ user }: UserDetailsCardProps) {
         )}
         {user.banned && (
           <>
-            <Typography variant="muted" className="text-sm">
+            <Typography variant="muted">
               {" • "}
             </Typography>
             <Badge variant="destructive">Banned</Badge>
           </>
         )}
-        <Typography variant="muted" className="text-sm">
-          {" • "}
-        </Typography>
-        <Typography variant="muted" className="text-sm">
+        <Typography variant="muted">{" • "}</Typography>
+        <Typography variant="muted">
           Created: {new Date(user.createdAt).toLocaleDateString()}
         </Typography>
       </CardContent>

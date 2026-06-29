@@ -1,3 +1,4 @@
+import { Typography } from "@/components/nowts/typography";
 import { SectionTitle } from "@/components/shared/section-title";
 import { SectionLayout } from "@/features/landing/section-layout";
 import { TechBadge } from "@/features/knowtecks/tech-badge";
@@ -20,11 +21,13 @@ function HighlightCard({ project }: { project: ProjectWithStacks }) {
         />
       </div>
       <div className="flex flex-1 flex-col gap-4 lg:py-2">
-        <h3 className="text-xl font-medium">{project.title}</h3>
+        <Typography variant="large" as="h3" className="font-medium">
+          {project.title}
+        </Typography>
         {project.longDescription ? (
-          <p className="text-muted-foreground line-clamp-4">
+          <Typography variant="muted" className="line-clamp-4">
             {project.longDescription}
-          </p>
+          </Typography>
         ) : null}
         {project.stacks.length > 0 ? (
           <ul className="flex list-none flex-wrap gap-x-2 gap-y-3">
@@ -55,13 +58,17 @@ export function FeaturedProjects({
 
   return (
     <SectionLayout variant="default" glow aria-label="Projets en vedette">
-      <SectionTitle subtitle="projets" title="Projets en vedette" />
+      <SectionTitle
+        subtitle="projets"
+        title="Projets en vedette"
+        titleVariant="h3"
+      />
       <div className="mt-12 flex flex-col gap-14">
         {projects.map((project) => (
           <HighlightCard key={project.id} project={project} />
         ))}
       </div>
-      <p className="text-muted-foreground mt-12 flex items-center gap-2">
+      <Typography variant="muted" className="mt-12 flex items-center gap-2">
         Envie d'en voir plus ?
         <Link
           href="/portfolio"
@@ -69,7 +76,7 @@ export function FeaturedProjects({
         >
           Voir tous les projets <ArrowRight className="size-4" />
         </Link>
-      </p>
+      </Typography>
     </SectionLayout>
   );
 }

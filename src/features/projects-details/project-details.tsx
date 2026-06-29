@@ -32,11 +32,7 @@ export async function ProjectDetails({ slug }: { slug: string }) {
         backHref="/portfolio"
         backLabel="Voir tous les projets"
       >
-        <Typography
-          as="p"
-          variant="muted"
-          className="max-w-[600px] text-center"
-        >
+        <Typography variant="muted" className="max-w-[600px] text-center">
           {project.longDescription}
         </Typography>
         {project.stacks.length > 0 ? (

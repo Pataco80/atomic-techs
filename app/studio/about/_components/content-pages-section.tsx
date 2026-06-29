@@ -81,10 +81,12 @@ export function ContentPagesSection({ pages }: ContentPagesSectionProps) {
               className="bg-card flex items-center gap-3 rounded-lg border p-3"
             >
               <div className="flex flex-1 flex-col">
-                <span className="font-medium">{page.title}</span>
-                <span className="text-muted-foreground text-sm">
+                <Typography as="span" variant="default" className="font-medium">
+                  {page.title}
+                </Typography>
+                <Typography as="span" variant="muted">
                   /{page.slug}
-                </span>
+                </Typography>
               </div>
               <Button
                 variant="ghost"

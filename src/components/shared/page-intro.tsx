@@ -1,3 +1,4 @@
+import { Typography } from "@/components/nowts/typography";
 import { SectionTitle } from "@/components/shared/section-title";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -44,9 +45,12 @@ export function PageIntro({
       />
       <div className="relative z-10 mt-4 flex max-w-[650px] flex-col items-center">
         {description ? (
-          <p className="text-pale-sky-400 my-6 text-center text-sm sm:my-10 sm:text-base">
+          <Typography
+            variant="muted"
+            className="text-pale-sky-400 my-6 text-center sm:my-10"
+          >
             {description}
-          </p>
+          </Typography>
         ) : null}
         {children}
         {backHref ? (

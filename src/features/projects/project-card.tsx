@@ -1,3 +1,4 @@
+import { Typography } from "@/components/nowts/typography";
 import { TechBadge } from "@/features/knowtecks/tech-badge";
 import type { ProjectWithStacks } from "@/query/portfolio/get-projects";
 import Image from "next/image";
@@ -22,13 +23,17 @@ export function ProjectCard({ project }: { project: ProjectWithStacks }) {
           />
         </div>
         <div className="flex flex-1 flex-col gap-3 p-6">
-          <h3 className="group-hover:text-primary text-lg font-medium transition-colors">
+          <Typography
+            variant="large"
+            as="h3"
+            className="group-hover:text-primary font-medium transition-colors"
+          >
             {project.title}
-          </h3>
+          </Typography>
           {project.longDescription ? (
-            <p className="text-muted-foreground line-clamp-3 text-sm">
+            <Typography variant="muted" className="line-clamp-3">
               {project.longDescription}
-            </p>
+            </Typography>
           ) : null}
           {project.stacks.length > 0 ? (
             <div className="mt-auto flex flex-wrap gap-1.5 pt-2">

@@ -1,5 +1,6 @@
 "use client";
 
+import { Typography } from "@/components/nowts/typography";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -83,12 +84,16 @@ export function PricingCard({
       <CardContent className="flex-1 pt-6">
         <div className="mb-8">
           <div className="flex items-baseline">
-            <span className="text-3xl font-bold">
+            <Typography as="span" variant="h3" className="font-bold">
               {plan.currency === "USD" ? "$" : plan.currency}
-            </span>
-            <span className="text-5xl font-bold tracking-tight">
+            </Typography>
+            <Typography
+              as="span"
+              variant="h2"
+              className="font-bold tracking-tight"
+            >
               {displayPrice}
-            </span>
+            </Typography>
             <span className="text-muted-foreground ml-1.5">/mo</span>
           </div>
 
@@ -107,9 +112,9 @@ export function PricingCard({
           )}
 
           {isYearly && yearlyPrice > 0 && (
-            <p className="text-muted-foreground mt-2 text-sm">
+            <Typography variant="muted" className="mt-2">
               Billed as ${yearlyPrice} per year
-            </p>
+            </Typography>
           )}
 
           {plan.freeTrial && (
@@ -121,9 +126,13 @@ export function PricingCard({
         </div>
 
         <div className="space-y-6">
-          <h4 className="text-muted-foreground text-sm font-semibold tracking-wider uppercase">
+          <Typography
+            variant="muted"
+            as="h4"
+            className="text-muted-foreground font-semibold tracking-wider uppercase"
+          >
             Plan Includes
-          </h4>
+          </Typography>
 
           <ul className="space-y-5">
             {/* Generate features from limits object */}
@@ -139,12 +148,12 @@ export function PricingCard({
                     <Icon className="size-5" />
                   </div>
                   <div>
-                    <p className="font-medium">
+                    <Typography variant="default" className="font-medium">
                       {limitConfig.getLabel(value as number)}
-                    </p>
-                    <p className="text-muted-foreground text-sm">
+                    </Typography>
+                    <Typography variant="muted">
                       {limitConfig.description}
-                    </p>
+                    </Typography>
                   </div>
                 </li>
               );
@@ -162,10 +171,12 @@ export function PricingCard({
                     <Icon className="size-5" />
                   </div>
                   <div>
-                    <p className="font-medium">{feature.label}</p>
-                    <p className="text-muted-foreground text-sm">
+                    <Typography variant="default" className="font-medium">
+                      {feature.label}
+                    </Typography>
+                    <Typography variant="muted">
                       {feature.description}
-                    </p>
+                    </Typography>
                   </div>
                 </li>
               );

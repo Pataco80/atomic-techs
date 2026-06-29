@@ -56,7 +56,7 @@ async function AuthSignInPage() {
           <SignUpCredentialsForm />
         </Suspense>
 
-        <Typography variant="muted" className="mt-4 text-xs">
+        <Typography variant="muted" className="mt-4">
           You already have an account?{" "}
           <Typography variant="link" as={Link} href="/auth/signin">
             Sign in

@@ -125,10 +125,12 @@ export function StacksList({ stacks }: StacksListProps) {
                     dangerouslySetInnerHTML={{ __html: stack.iconSvg }}
                   />
                   <div className="flex flex-1 flex-col">
-                    <span className="font-medium">{stack.name}</span>
-                    <span className="text-muted-foreground text-sm">
+                    <Typography as="span" variant="default" className="font-medium">
+                      {stack.name}
+                    </Typography>
+                    <Typography as="span" variant="muted">
                       Depuis {dateFormatter.format(stack.validatedAt)}
-                    </span>
+                    </Typography>
                   </div>
                   <Badge variant="secondary">
                     {computeSeniority(stack.validatedAt)}

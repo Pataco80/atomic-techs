@@ -1,4 +1,5 @@
 import { RichTextRenderer } from "@/components/nowts/rich-text-renderer";
+import { Typography } from "@/components/nowts/typography";
 import { buttonVariants } from "@/components/ui/button";
 import { SocialLinks } from "@/features/layout/social-links";
 import { TechBadge } from "@/features/knowtecks/tech-badge";
@@ -36,16 +37,23 @@ export function HomeHero({
       />
       <div className="relative z-10 mx-auto flex max-w-6xl flex-col-reverse items-center gap-12 px-4 pt-28 pb-20 lg:min-h-[88vh] lg:flex-row lg:justify-between lg:gap-16 lg:pb-28">
         <div className="w-full lg:max-w-[560px]">
-          <p className="text-blue-ribbon-300 mb-3 text-sm sm:text-base">
+          <Typography variant="small" className="text-blue-ribbon-300 mb-3">
             Bonjour, je m'appelle
-          </p>
-          <h1 className="text-pale-sky-50 font-mono text-3xl font-medium sm:text-4xl">
+          </Typography>
+          <Typography
+            as="h1"
+            variant="h4"
+            className="text-pale-sky-50 font-mono font-medium"
+          >
             {name}
-          </h1>
+          </Typography>
           {person?.headline ? (
-            <p className="text-blue-ribbon-200 mt-2 font-mono text-base sm:text-lg">
+            <Typography
+              variant="default"
+              className="text-blue-ribbon-200 mt-2 font-mono"
+            >
               {person.headline}
-            </p>
+            </Typography>
           ) : null}
           {person?.bioHome ? (
             <div className="text-pale-sky-300 my-8">

@@ -8,12 +8,16 @@ export const EmailFormSection = () => {
     <SectionLayout>
       <Card className="relative isolate overflow-hidden py-24 text-center shadow-2xl lg:rounded-3xl">
         <Typography
+          variant="h2"
           as="h2"
-          className="mx-auto max-w-3xl text-center text-4xl font-semibold tracking-tight text-white sm:text-5xl"
+          className="mx-auto max-w-3xl text-center font-semibold tracking-tight text-white"
         >
           Get notified when we're launching
         </Typography>
-        <Typography className="mx-auto mt-6 max-w-lg text-center text-lg text-gray-300">
+        <Typography
+          variant="lead"
+          className="mx-auto mt-6 max-w-lg text-center text-gray-300"
+        >
           Be the first to use Threader. Get early access, exclusive content and
           more.
         </Typography>

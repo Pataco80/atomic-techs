@@ -12,7 +12,7 @@ export async function Footer() {
 
   return (
     <footer id="contact" className="border-t">
-      <SectionLayout variant="default" size="base" glow>
+      <SectionLayout variant="default" size="base">
         <SectionTitle
           subtitle="contact"
           title="Prenez contact avec moi"

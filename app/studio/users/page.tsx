@@ -1,3 +1,4 @@
+import { Typography } from "@/components/nowts/typography";
 import {
   Layout,
   LayoutContent,
@@ -13,10 +14,12 @@ export default async function AppUsersPage() {
       </LayoutHeader>
       <LayoutContent className="flex flex-col gap-4 lg:gap-8">
         <div className="rounded-lg border p-6">
-          <h3 className="text-lg font-semibold">User Analytics</h3>
-          <p className="text-muted-foreground mt-2">
+          <Typography variant="large" as="h3" className="font-semibold">
+            User Analytics
+          </Typography>
+          <Typography variant="muted" className="mt-2">
             Your personal analytics and usage statistics will be displayed here.
-          </p>
+          </Typography>
         </div>
       </LayoutContent>
     </Layout>

@@ -1,3 +1,4 @@
+import { Typography } from "@/components/nowts/typography";
 import {
   Layout,
   LayoutActions,
@@ -24,9 +25,13 @@ export default async function RoutePage() {
         <InformationCards />
         <SubscribersChart />
         <section className="flex flex-col gap-4">
-          <h2 className="text-xl font-semibold tracking-tight">
+          <Typography
+            variant="large"
+            as="h2"
+            className="font-semibold tracking-tight"
+          >
             Messages de contact
-          </h2>
+          </Typography>
           <Suspense
             fallback={
               <div className="bg-muted h-24 w-full animate-pulse rounded" />
