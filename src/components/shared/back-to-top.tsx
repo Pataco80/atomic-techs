@@ -28,7 +28,15 @@ export function BackToTop() {
       type="button"
       size="icon"
       aria-label="Remonter en haut de la page"
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      onClick={() =>
+        window.scrollTo({
+          top: 0,
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+            .matches
+            ? "auto"
+            : "smooth",
+        })
+      }
       className="animate-in fade-in slide-in-from-bottom-2 fixed right-6 bottom-6 z-[200] rounded-lg"
     >
       <Icon name="arrow-up" size="size-5" />

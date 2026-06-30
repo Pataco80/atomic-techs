@@ -563,6 +563,19 @@
   }
 }
 
+/* Respecte prefers-reduced-motion : neutralise transitions/animations CSS
+   (hover scale, fondu, etc.) et passe le scroll en auto. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Other styles */
 
 .citation {
