@@ -55,7 +55,7 @@ export function RichTextEditor({
   return (
     <div
       className={cn(
-        "border-input bg-background flex flex-col rounded-md border",
+        "border-ios-separator bg-ios-grouped flex flex-col gap-2 rounded-xl border p-2",
         className,
       )}
     >
@@ -67,7 +67,7 @@ export function RichTextEditor({
 
 function Toolbar({ editor }: { editor: Editor }) {
   return (
-    <div className="border-border flex flex-wrap items-center gap-1 border-b p-1">
+    <div className="bg-ios-card flex flex-wrap items-center gap-1 rounded-xl p-1 shadow-sm">
       <ToolbarButton
         label="Gras"
         isActive={editor.isActive("bold")}
