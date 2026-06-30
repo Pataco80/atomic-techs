@@ -18,7 +18,7 @@ export function SectionTitle({
 }) {
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      <span className="text-primary font-mono text-sm">{`.../${subtitle}`}</span>
+      <span className="text-accent font-mono text-sm">{`.../${subtitle}`}</span>
       <Typography
         as={Tag}
         variant={titleVariant}

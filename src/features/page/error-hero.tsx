@@ -1,5 +1,6 @@
 import { Typography } from "@/components/nowts/typography";
 import { Header } from "@/features/layout/header";
+import { SkipLink } from "@/features/layout/skip-link";
 import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 type ErrorHeroProps = {
@@ -32,8 +33,13 @@ export function ErrorHero({
             "radial-gradient(800px circle at 50% 35%, rgba(0,85,255,0.28) 0%, transparent 58%), linear-gradient(to bottom, rgba(0,5,16,0.55) 0%, rgba(0,13,42,0.25) 45%, rgba(0,19,64,0.85) 100%)",
         }}
       />
+      <SkipLink />
       <Header />
-      <div className="relative z-10 flex flex-1 items-center justify-center px-4 py-20">
+      <main
+        id="contenu"
+        tabIndex={-1}
+        className="relative z-10 flex flex-1 items-center justify-center px-4 py-20 focus:outline-none"
+      >
         <div className="flex max-w-lg flex-col items-center gap-8 text-center">
           <div className="space-y-10">
             {code ? (
@@ -54,7 +60,7 @@ export function ErrorHero({
             </div>
           ) : null}
         </div>
-      </div>
+      </main>
     </div>
   );
 }

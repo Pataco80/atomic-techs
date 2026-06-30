@@ -1,22 +1,11 @@
-import { buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
+import { NavLink } from "@/features/layout/nav-link";
 import { HeaderBase } from "./header-base";
 
 export function Header() {
   return (
     <HeaderBase>
-      <Link
-        href="/"
-        className={buttonVariants({ variant: "ghost", size: "sm" })}
-      >
-        Accueil
-      </Link>
-      <Link
-        href="/portfolio"
-        className={buttonVariants({ variant: "ghost", size: "sm" })}
-      >
-        Portfolio
-      </Link>
+      <NavLink href="/">Accueil</NavLink>
+      <NavLink href="/portfolio">Portfolio</NavLink>
     </HeaderBase>
   );
 }
