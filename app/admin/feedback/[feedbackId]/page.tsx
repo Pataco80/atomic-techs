@@ -1,4 +1,5 @@
 import { Typography } from "@/components/nowts/typography";
+import { Icon, type IconKey } from "@/components/shared/icons";
 import {
   Card,
   CardContent,
@@ -16,30 +17,29 @@ import {
 } from "@/features/page/layout";
 import { getRequiredAdmin } from "@/lib/auth/auth-user";
 import { getFeedbackById } from "@/query/feedback/get-feedback";
-import { Angry, Frown, Meh, SmilePlus } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { UserDetailsCard } from "../../_components/user-details-card";
 
-const ReviewIcons = [
+const ReviewIcons: { value: number; icon: IconKey; tooltip: string }[] = [
   {
     value: 1,
-    icon: Angry,
+    icon: "angry",
     tooltip: "Extremely Dissatisfied",
   },
   {
     value: 2,
-    icon: Frown,
+    icon: "frown",
     tooltip: "Somewhat Dissatisfied",
   },
   {
     value: 3,
-    icon: Meh,
+    icon: "meh",
     tooltip: "Neutral",
   },
   {
     value: 4,
-    icon: SmilePlus,
+    icon: "smile-plus",
     tooltip: "Satisfied",
   },
 ];
@@ -71,7 +71,9 @@ async function FeedbackDetailPage(props: {
   return (
     <Layout size="lg">
       <LayoutHeader>
-        <LayoutTitle>Feedback</LayoutTitle>
+        <LayoutTitle className="text-3xl font-bold tracking-tight">
+          Feedback
+        </LayoutTitle>
         <LayoutDescription>
           Submitted {new Date(feedback.createdAt).toLocaleDateString()}
         </LayoutDescription>
@@ -81,7 +83,7 @@ async function FeedbackDetailPage(props: {
         {feedback.user ? (
           <UserDetailsCard user={feedback.user} />
         ) : (
-          <Card>
+          <Card className="bg-ios-card border-0 shadow-sm">
             <CardHeader>
               <CardTitle>Anonymous</CardTitle>
               <CardDescription>Email {feedback.email}</CardDescription>
@@ -89,14 +91,18 @@ async function FeedbackDetailPage(props: {
           </Card>
         )}
 
-        <Card>
+        <Card className="bg-ios-card border-0 shadow-sm">
           <CardHeader>
             <CardTitle>Review</CardTitle>
             <CardDescription>
               {reviewIcon && (
                 <div className="flex items-center gap-3">
                   <InlineTooltip title={reviewIcon.tooltip}>
-                    <reviewIcon.icon size={28} className="text-primary" />
+                    <Icon
+                      name={reviewIcon.icon}
+                      size={28}
+                      className="text-primary"
+                    />
                   </InlineTooltip>
                   <Typography variant="muted">{reviewIcon.tooltip}</Typography>
                 </div>

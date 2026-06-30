@@ -45,6 +45,16 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
 
+  /* iOS back-office (app/studio/*) surfaces — theme-aware, additive.
+     Generates bg-ios-grouped, bg-ios-card, border-ios-separator,
+     text-ios-label/-secondary-label/-tertiary-label. */
+  --color-ios-grouped: var(--ios-grouped-bg);
+  --color-ios-card: var(--ios-card);
+  --color-ios-separator: var(--ios-separator);
+  --color-ios-label: var(--ios-label);
+  --color-ios-secondary-label: var(--ios-secondary-label);
+  --color-ios-tertiary-label: var(--ios-tertiary-label);
+
   /* Portfolio (public) palette — additive; used by app/(public)/* only,
      so the back-office keeps the neutral shadcn tokens. */
   --color-blue-ribbon: #0055ff;
@@ -169,6 +179,14 @@
   --warning-foreground: hsl(24 97% 93%);
   --info: hsl(221.2 83.2% 53.3%);
   --info-foreground: hsl(210 40% 98%);
+
+  /* iOS back-office surfaces (light) */
+  --ios-grouped-bg: oklch(0.965 0.003 260);
+  --ios-card: oklch(1 0 0);
+  --ios-separator: oklch(0.85 0 0 / 0.5);
+  --ios-label: var(--foreground);
+  --ios-secondary-label: oklch(0.45 0.02 261);
+  --ios-tertiary-label: oklch(0.62 0.015 261);
 }
 
 .dark {
@@ -236,6 +254,14 @@
   --warning-foreground: hsl(24deg 97% 93.2%);
   --info: hsl(217.2 91.2% 59.8%);
   --info-foreground: hsl(222.2 47.4% 11.2%);
+
+  /* iOS back-office surfaces (dark) */
+  --ios-grouped-bg: oklch(0.12 0 0);
+  --ios-card: oklch(0.19 0.004 260);
+  --ios-separator: oklch(1 0 0 / 0.12);
+  --ios-label: var(--foreground);
+  --ios-secondary-label: oklch(0.69 0.02 267);
+  --ios-tertiary-label: oklch(0.55 0.015 267);
 }
 
 /* ── Utopia fluid type scale ──────────────────────────────────────────────

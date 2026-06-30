@@ -63,7 +63,7 @@ export function ImageUploadField({
     <div className={cn("relative inline-flex w-full max-w-sm", className)}>
       <button
         type="button"
-        className="border-input hover:bg-accent/50 data-[dragging=true]:bg-accent/50 focus-visible:border-ring focus-visible:ring-ring/50 relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-md border border-dashed transition-colors outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-60 has-[img]:border-solid"
+        className="border-ios-separator hover:bg-ios-separator/30 data-[dragging=true]:bg-ios-separator/30 focus-visible:ring-primary relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-xl border border-dashed transition-colors outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-60 has-[img]:border-solid"
         onClick={openFileDialog}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}

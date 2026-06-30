@@ -14,17 +14,10 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { iosMenuContent, iosMenuItem } from "@/components/ios";
+import { Icon } from "@/components/shared/icons";
 import { useSession } from "@/lib/auth-client";
-import {
-  LayoutDashboard,
-  Monitor,
-  Moon,
-  Settings,
-  Shield,
-  SunMedium,
-  SunMoon,
-} from "lucide-react";
-
+import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import type { PropsWithChildren } from "react";
@@ -42,7 +35,7 @@ export const UserDropdown = ({ children }: PropsWithChildren) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className={cn("w-56", iosMenuContent)}>
         <DropdownMenuLabel>
           {session.data.user.name ? (
             <>
@@ -56,45 +49,57 @@ export const UserDropdown = ({ children }: PropsWithChildren) => {
           )}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
+        <DropdownMenuItem className={iosMenuItem} asChild>
           <Link href="/studio">
-            <LayoutDashboard className="mr-2 size-4" />
+            <Icon name="dashboard" className="mr-2 size-4" />
             Dashboard
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
+        <DropdownMenuItem className={iosMenuItem} asChild>
           <Link href="/account">
-            <Settings className="mr-2 size-4" />
+            <Icon name="settings" className="mr-2 size-4" />
             Account Settings
           </Link>
         </DropdownMenuItem>
         {session.data.user.role === "admin" && (
-          <DropdownMenuItem asChild>
+          <DropdownMenuItem className={iosMenuItem} asChild>
             <Link href="/admin">
-              <Shield className="mr-2 size-4" />
+              <Icon name="shield" className="mr-2 size-4" />
               Admin
             </Link>
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger>
-            <SunMoon className="text-muted-foreground mr-4 size-4" />
+          <DropdownMenuSubTrigger className={iosMenuItem}>
+            <Icon
+              name="sun-moon"
+              className="text-muted-foreground mr-4 size-4"
+            />
             <span>Theme</span>
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
-            <DropdownMenuSubContent>
-              <DropdownMenuItem onClick={() => theme.setTheme("dark")}>
-                <SunMedium className="mr-2 size-4" />
+            <DropdownMenuSubContent className={iosMenuContent}>
+              <DropdownMenuItem
+                className={iosMenuItem}
+                onClick={() => theme.setTheme("dark")}
+              >
+                <Icon name="moon" className="mr-2 size-4" />
                 <span>Dark</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => theme.setTheme("light")}>
-                <Moon className="mr-2 size-4" />
+              <DropdownMenuItem
+                className={iosMenuItem}
+                onClick={() => theme.setTheme("light")}
+              >
+                <Icon name="sun-medium" className="mr-2 size-4" />
                 <span>Light</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => theme.setTheme("system")}>
-                <Monitor className="mr-2 size-4" />
+              <DropdownMenuItem
+                className={iosMenuItem}
+                onClick={() => theme.setTheme("system")}
+              >
+                <Icon name="monitor" className="mr-2 size-4" />
                 <span>System</span>
               </DropdownMenuItem>
             </DropdownMenuSubContent>

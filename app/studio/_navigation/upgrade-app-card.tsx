@@ -16,7 +16,7 @@ export const UpgradeCard = () => {
   if (!user) return null;
 
   return (
-    <Card className="">
+    <Card className="bg-ios-card gap-4 rounded-xl border-0 py-4 shadow-sm">
       <CardHeader className="">
         <CardTitle>Upgrade to PRO</CardTitle>
         <CardDescription>
@@ -26,7 +26,10 @@ export const UpgradeCard = () => {
       <CardContent className="">
         <Link
           href={BILLING_URL}
-          className={buttonVariants({ className: "w-full" })}
+          className={buttonVariants({
+            variant: "default",
+            className: "w-full",
+          })}
         >
           Upgrade
         </Link>

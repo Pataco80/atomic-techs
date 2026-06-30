@@ -1,5 +1,6 @@
 "use client";
 
+import { GroupedList } from "@/components/ios";
 import { Form, useForm } from "@/features/form/tanstack-form";
 import { resolveActionResult } from "@/lib/actions/actions-utils";
 import type { OrgProfileRecord } from "@/query/portfolio/get-about";
@@ -12,6 +13,10 @@ import {
   OrgProfileSchema,
   type OrgProfileValues,
 } from "../_actions/org.schema";
+
+const iosInput =
+  "border-0 bg-transparent px-0 shadow-none focus-visible:ring-0 dark:bg-transparent";
+const iosRow = "relative gap-1.5 px-4 py-3";
 
 type OrgFormProps = {
   org: OrgProfileRecord | null;
@@ -64,41 +69,50 @@ export function OrgForm({ org }: OrgFormProps) {
   });
 
   return (
-    <Form form={form} className="flex flex-col gap-4">
-      <form.AppField name="name">
-        {(field) => (
-          <field.Field>
-            <field.Label>Nom de l'organisation</field.Label>
-            <field.Content>
-              <field.Input placeholder="Atomic Techs" />
-              <field.Message />
-            </field.Content>
-          </field.Field>
-        )}
-      </form.AppField>
+    <Form form={form} className="mx-auto flex w-full max-w-2xl flex-col gap-8">
+      <GroupedList header="Organisation">
+        <form.AppField name="name">
+          {(field) => (
+            <field.Field className={iosRow}>
+              <field.Label className="text-ios-label">
+                Nom de l'organisation
+              </field.Label>
+              <field.Content>
+                <field.Input className={iosInput} placeholder="Atomic Techs" />
+                <field.Message />
+              </field.Content>
+            </field.Field>
+          )}
+        </form.AppField>
+      </GroupedList>
 
-      <form.AppField name="logo">
-        {(field) => (
-          <field.Field>
-            <field.Label>Logo</field.Label>
-            <field.Content>
-              <ImageUploadField
-                value={field.state.value}
-                onChange={(url) => field.handleChange(url)}
-              />
-              <field.Message />
-            </field.Content>
-          </field.Field>
-        )}
-      </form.AppField>
+      <GroupedList header="Logo">
+        <form.AppField name="logo">
+          {(field) => (
+            <field.Field className="relative gap-2 px-4 py-3">
+              <field.Content>
+                <ImageUploadField
+                  value={field.state.value}
+                  onChange={(url) => field.handleChange(url)}
+                />
+                <field.Message />
+              </field.Content>
+            </field.Field>
+          )}
+        </form.AppField>
+      </GroupedList>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <GroupedList header="Contact">
         <form.AppField name="email">
           {(field) => (
-            <field.Field>
-              <field.Label>Email</field.Label>
+            <field.Field className={iosRow}>
+              <field.Label className="text-ios-label">Email</field.Label>
               <field.Content>
-                <field.Input type="email" placeholder="contact@exemple.com" />
+                <field.Input
+                  className={iosInput}
+                  type="email"
+                  placeholder="contact@exemple.com"
+                />
                 <field.Message />
               </field.Content>
             </field.Field>
@@ -107,48 +121,61 @@ export function OrgForm({ org }: OrgFormProps) {
 
         <form.AppField name="phone">
           {(field) => (
-            <field.Field>
-              <field.Label>Téléphone</field.Label>
+            <field.Field className={iosRow}>
+              <field.Label className="text-ios-label">Téléphone</field.Label>
               <field.Content>
-                <field.Input placeholder="+33 1 23 45 67 89" />
+                <field.Input
+                  className={iosInput}
+                  placeholder="+33 1 23 45 67 89"
+                />
                 <field.Message />
               </field.Content>
             </field.Field>
           )}
         </form.AppField>
-      </div>
 
-      <form.AppField name="website">
-        {(field) => (
-          <field.Field>
-            <field.Label>Site web</field.Label>
-            <field.Content>
-              <field.Input placeholder="https://exemple.com" />
-              <field.Message />
-            </field.Content>
-          </field.Field>
-        )}
-      </form.AppField>
+        <form.AppField name="website">
+          {(field) => (
+            <field.Field className={iosRow}>
+              <field.Label className="text-ios-label">Site web</field.Label>
+              <field.Content>
+                <field.Input
+                  className={iosInput}
+                  placeholder="https://exemple.com"
+                />
+                <field.Message />
+              </field.Content>
+            </field.Field>
+          )}
+        </form.AppField>
 
-      <form.AppField name="address">
-        {(field) => (
-          <field.Field>
-            <field.Label>Adresse</field.Label>
-            <field.Content>
-              <field.Textarea rows={2} placeholder="10 rue de la Paix, Paris" />
-              <field.Message />
-            </field.Content>
-          </field.Field>
-        )}
-      </form.AppField>
+        <form.AppField name="address">
+          {(field) => (
+            <field.Field className={iosRow}>
+              <field.Label className="text-ios-label">Adresse</field.Label>
+              <field.Content>
+                <field.Textarea
+                  rows={2}
+                  className={iosInput}
+                  placeholder="10 rue de la Paix, Paris"
+                />
+                <field.Message />
+              </field.Content>
+            </field.Field>
+          )}
+        </form.AppField>
+      </GroupedList>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <GroupedList header="Réseaux sociaux">
         <form.AppField name="socials.github">
           {(field) => (
-            <field.Field>
-              <field.Label>GitHub</field.Label>
+            <field.Field className={iosRow}>
+              <field.Label className="text-ios-label">GitHub</field.Label>
               <field.Content>
-                <field.Input placeholder="https://github.com/..." />
+                <field.Input
+                  className={iosInput}
+                  placeholder="https://github.com/..."
+                />
                 <field.Message />
               </field.Content>
             </field.Field>
@@ -157,10 +184,13 @@ export function OrgForm({ org }: OrgFormProps) {
 
         <form.AppField name="socials.linkedin">
           {(field) => (
-            <field.Field>
-              <field.Label>LinkedIn</field.Label>
+            <field.Field className={iosRow}>
+              <field.Label className="text-ios-label">LinkedIn</field.Label>
               <field.Content>
-                <field.Input placeholder="https://linkedin.com/in/..." />
+                <field.Input
+                  className={iosInput}
+                  placeholder="https://linkedin.com/in/..."
+                />
                 <field.Message />
               </field.Content>
             </field.Field>
@@ -169,10 +199,13 @@ export function OrgForm({ org }: OrgFormProps) {
 
         <form.AppField name="socials.twitter">
           {(field) => (
-            <field.Field>
-              <field.Label>Twitter / X</field.Label>
+            <field.Field className={iosRow}>
+              <field.Label className="text-ios-label">Twitter / X</field.Label>
               <field.Content>
-                <field.Input placeholder="https://x.com/..." />
+                <field.Input
+                  className={iosInput}
+                  placeholder="https://x.com/..."
+                />
                 <field.Message />
               </field.Content>
             </field.Field>
@@ -181,19 +214,22 @@ export function OrgForm({ org }: OrgFormProps) {
 
         <form.AppField name="socials.instagram">
           {(field) => (
-            <field.Field>
-              <field.Label>Instagram</field.Label>
+            <field.Field className={iosRow}>
+              <field.Label className="text-ios-label">Instagram</field.Label>
               <field.Content>
-                <field.Input placeholder="https://instagram.com/..." />
+                <field.Input
+                  className={iosInput}
+                  placeholder="https://instagram.com/..."
+                />
                 <field.Message />
               </field.Content>
             </field.Field>
           )}
         </form.AppField>
-      </div>
+      </GroupedList>
 
       <div className="flex justify-end">
-        <form.SubmitButton>Enregistrer</form.SubmitButton>
+        <form.SubmitButton variant="default">Enregistrer</form.SubmitButton>
       </div>
     </Form>
   );

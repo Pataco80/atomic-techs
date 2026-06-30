@@ -13,7 +13,7 @@ export const SidebarUserButton = () => {
 
   return (
     <UserDropdown>
-      <SidebarMenuButton variant="outline" className="h-12">
+      <SidebarMenuButton variant="outline" className="h-12 rounded-xl">
         <Avatar className="size-8 rounded-lg">
           <AvatarImage src={data?.image ?? ""} alt={data?.name[0]} />
           <AvatarFallback className="rounded-lg">
@@ -21,7 +21,11 @@ export const SidebarUserButton = () => {
           </AvatarFallback>
         </Avatar>
         <div className="grid flex-1 text-left leading-tight">
-          <Typography as="span" variant="default" className="truncate font-semibold">
+          <Typography
+            as="span"
+            variant="default"
+            className="truncate font-semibold"
+          >
             {data?.name}
           </Typography>
           <Typography as="span" variant="tiny" className="truncate">

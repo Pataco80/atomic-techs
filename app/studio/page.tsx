@@ -18,7 +18,9 @@ export default async function RoutePage() {
   return (
     <Layout size="lg">
       <LayoutHeader>
-        <LayoutTitle>Dashboard</LayoutTitle>
+        <LayoutTitle className="text-3xl font-bold tracking-tight">
+          Dashboard
+        </LayoutTitle>
       </LayoutHeader>
       <LayoutActions></LayoutActions>
       <LayoutContent className="flex flex-col gap-4 lg:gap-8">

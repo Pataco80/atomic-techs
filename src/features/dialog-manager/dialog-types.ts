@@ -48,6 +48,15 @@ export type InputDialogConfig = DialogBaseConfig & {
 export type CustomDialogConfig = DialogBaseConfig & {
   type: "custom";
   children: ReactNode;
+  /** Extra classes merged onto the dialog content (e.g. iOS form sheets). */
+  className?: string;
+  /** Fired when the dialog closes itself (e.g. Escape / outside) — lets the
+   * caller keep its own open-state in sync. */
+  onClose?: () => void;
+  /** When true, render as a regular Dialog: closes on outside-click / Escape
+   * and shows a close button. Use for dismissable surfaces like the command
+   * palette. Defaults to false (AlertDialog — safe for form sheets). */
+  dismissible?: boolean;
 };
 
 export type DialogConfig =
