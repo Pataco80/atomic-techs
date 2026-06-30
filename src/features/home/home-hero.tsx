@@ -25,7 +25,7 @@ export function HomeHero({
   const name = person?.fullName ?? SiteConfig.title;
 
   return (
-    <section className="dark bg-pale-sky-950 bg-hero-portfolio text-foreground relative overflow-hidden bg-cover bg-right-bottom [text-shadow:0_1px_12px_rgba(0,0,0,0.45)] lg:min-h-[88vh] lg:bg-center">
+    <section className="dark bg-pale-sky-950 bg-hero-portfolio text-foreground relative overflow-hidden bg-cover bg-right-bottom [--color-foreground:var(--foreground)] [text-shadow:0_1px_12px_rgba(0,0,0,0.45)] lg:min-h-[88vh] lg:bg-center">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"

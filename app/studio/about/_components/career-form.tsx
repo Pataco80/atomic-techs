@@ -8,13 +8,16 @@ import {
   iosSheetCancelButton,
   iosSheetSubmitButton,
 } from "@/components/ios";
+import { Typography } from "@/components/nowts/typography";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, useForm } from "@/features/form/tanstack-form";
 import { resolveActionResult } from "@/lib/actions/actions-utils";
 import type { CareerEventRecord } from "@/query/portfolio/get-about";
+import type { StackItemRecord } from "@/query/portfolio/get-stacks";
 import { ImageUploadField } from "@app/studio/_components/image-upload-field";
+import { StackCombobox } from "@app/studio/_components/stack-combobox";
 import type { JSONContent } from "@tiptap/react";
 import { useMutation } from "@tanstack/react-query";
 import { Check, X } from "lucide-react";
@@ -35,6 +38,7 @@ const iosRow = "relative gap-1.5 px-4 py-3";
 
 type CareerFormProps = {
   event?: CareerEventRecord;
+  stackItems: StackItemRecord[];
   title: string;
   onCancel: () => void;
   onSuccess: () => void;
@@ -42,6 +46,7 @@ type CareerFormProps = {
 
 export function CareerForm({
   event,
+  stackItems,
   title,
   onCancel,
   onSuccess,
@@ -77,6 +82,7 @@ export function CareerForm({
       endMonth: event?.endMonth ?? null,
       endYear: event?.endYear ?? null,
       description: (event?.description ?? null) as JSONContent | null,
+      stackItemIds: event?.stacks.map((s) => s.stackItemId) ?? [],
     },
     onSubmit: async (values) => {
       await mutation.mutateAsync(values);
@@ -311,6 +317,34 @@ export function CareerForm({
                   />
                   <field.Message />
                 </field.Content>
+              </field.Field>
+            )}
+          </form.AppField>
+        </GroupedList>
+
+        <GroupedList
+          header="Stacks et logiciels"
+          footer="Les technologies et logiciels utilisés pendant ce poste."
+        >
+          <form.AppField name="stackItemIds">
+            {(field) => (
+              <field.Field className="relative gap-2 px-4 py-3">
+                {stackItems.length === 0 ? (
+                  <Typography
+                    variant="muted"
+                    className="text-ios-secondary-label"
+                  >
+                    Aucune stack disponible. Créez-en dans l'onglet Stacks.
+                  </Typography>
+                ) : (
+                  <StackCombobox
+                    stackItems={stackItems}
+                    selectedIds={field.state.value}
+                    onChange={(ids) => field.handleChange(ids)}
+                    onBlur={field.handleBlur}
+                  />
+                )}
+                <field.Message />
               </field.Field>
             )}
           </form.AppField>

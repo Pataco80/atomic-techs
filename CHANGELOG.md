@@ -1,3 +1,27 @@
+## 2026-06-30 - Home Hero, TipTap Links & Career Stack Badges (fixes)
+
+### 🐛 **Fixes**
+
+- **FIX: home hero text is light in both themes** — the hero forces a local `dark` context, but `--color-foreground` (a Tailwind v4 `@theme` token) is resolved once at `:root` and inherited frozen, so the nested `dark` class re-pointed `--foreground` without re-pointing `--color-foreground`. The bio paragraph (which uses `.typography { color: var(--color-foreground) }`) therefore showed the **light-mode foreground (dark, low-contrast) in light mode**. Fixed by rebinding `[--color-foreground:var(--foreground)]` on the hero section so all foreground-derived text uses the section's dark-mode value.
+- **FIX: TipTap links in the read-only renderer are clickable** — `.typography a` now gets `cursor: pointer`, and the renderer uses its own extension set with `Link.configure({ openOnClick: true })` (the editor keeps `openOnClick: false`). Links typed in the editor now open on the public site.
+- **FIX: link `href` was dropped on save (root cause)** — TipTap's `getJSON()` returns nodes whose `attrs` are non-plain objects that the React Server Action boundary silently serialised to `null`, so a link's `href` reached the server (and DB) as `null` even though it was present in the editor. `RichTextEditor` now round-trips the JSON through `JSON.parse(JSON.stringify(...))` in `onUpdate` before handing it to the form, producing a plain object that survives RSC. (Confirmed by tracing: client editor had the href, the server action received `attrs: null`.)
+- **FIX: career stack badges match the portfolio** — the "Stacks et logiciels" list on each `WorkExperience` item now renders with the shared `TechBadge` (blue-ribbon pill) used by the portfolio project cards and the hero, instead of a plain secondary `Badge`.
+
+## 2026-06-30 - Featured Stacks & Projects + Filterable Stack Input (Spec 06)
+
+### 🚀 **Features**
+
+- **FEAT: `featured` flag on stacks** — `StackItem` gains a `featured Boolean @default(false)` column (Prisma migration `stack_item_featured`, `@@index([order])` → `@@index([featured, order])`). The stack form gets a "Mis en avant" iOS `Toggle` in an "Options" group, and `toggleStackFeaturedAction` (authAction) lets the back-office flip it without re-opening the form.
+- **FEAT: stacks back-office is now a 2-card layout** (`stacks-list.tsx`) — **« Featured Stacks »** (featured only, drag-and-drop reordering, the order that drives the public site) and **« Stacks »** (the rest, static). Each row is an iOS `ListRow` with a star toggle (optimistic + `router.refresh`), edit and delete. The public home **"compétences"** section now renders **featured stacks only** (`getFeaturedStacks`), in DnD order — non-featured stacks are a back-office reserve, never shown publicly (hero + KnowTechs both fed from featured).
+- **FEAT: filterable stack input on the project form** (`stack-combobox.tsx`) — the "Technos" checkbox grid is replaced by a cmdk-based combobox: type to filter existing stacks (case/accent-insensitive), add with click **or** Enter, arrow-key navigation, no duplicates, "Aucune techno" empty state, and the "créez-en dans l'onglet Stacks" hint when there are none. The matches list renders **in-flow** (never clipped by the grouped-list card), and selected stacks appear as **light inline badges below the input**, removable (×) and **reorderable by drag-and-drop** (their order = the `stackItemIds` order). WCAG combobox semantics (input `role=combobox`/`aria-expanded`/`aria-controls`, options `role=option`, `aria-activedescendant`). **The `stackItemIds` array field, its Zod schema and the `ProjectStack` transaction are unchanged.**
+- **FEAT: project `featured` wiring** — `projects-list.tsx` mirrors the stacks 2-card layout (**« Featured Projects »** DnD + **« Projets »**), with a `toggleProjectFeaturedAction` star toggle on each row. The home **FeaturedProjects** section is fed by `getFeaturedProjects`, and **`/portfolio` now lists all projects featured-first** (`getProjects` orders by `[featured desc, order asc, createdAt desc]`).
+- DnD reorders **only** the Featured card for both stacks and projects (it drives the public `order`); non-featured items are never reordered. The drag handle sits **inside** the `ListRow` (in its `leading` slot, via a new `SortableRow` render-prop wrapper in `_components/sortable.tsx`) rather than bolted onto the row's left edge.
+- **FEAT: stacks on career events** — career events (`/studio/about` → Parcours) can now be tagged with the stacks used on the job, via the **same `StackCombobox`** as projects (moved to the shared `app/studio/_components/stack-combobox.tsx`). New `CareerEventStack` join table (mirrors `ProjectStack`, migration `career_event_stacks`); `stackItemIds` added to the career Zod schema and the create/update action (same `deleteMany`+`create` transaction as projects); `getCareerEvents` now includes the linked stacks. On the public site they render at the bottom of each `WorkExperience` item under a **"Stacks et logiciels"** heading as light secondary badges (Photoshop, Illustrator, Dreamweaver, etc.).
+
+### 🧪 **Testing**
+
+- Unit tests for `StackCombobox` (`__tests__/components/stack-combobox.test.tsx`): accent-insensitive filtering, add via click and Enter, removable chips, no-duplicate options, empty state, combobox a11y role.
+
 ## 2026-06-30 - iOS Reskin Polish: Form Sheets, Admin & Layout (Spec 05 follow-up)
 
 ### 🎨 **Style & Components**

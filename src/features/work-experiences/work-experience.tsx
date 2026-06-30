@@ -3,6 +3,7 @@ import { Typography } from "@/components/nowts/typography";
 import { SectionTitle } from "@/components/shared/section-title";
 import { SectionLayout } from "@/features/landing/section-layout";
 import { Badge } from "@/components/ui/badge";
+import { TechBadge } from "@/features/knowtecks/tech-badge";
 import { SocialLinks } from "@/features/layout/social-links";
 import { sortCareerEventsChrono } from "@/lib/format/career-order";
 import type {
@@ -79,6 +80,24 @@ function ExperienceItem({ event }: { event: CareerEventRecord }) {
         {event.description ? (
           <div className="text-muted-foreground mt-1">
             <RichTextRenderer content={event.description as JSONContent} />
+          </div>
+        ) : null}
+        {event.stacks.length > 0 ? (
+          <div className="mt-2 flex flex-col gap-2">
+            <Typography
+              variant="tiny"
+              className="text-muted-foreground font-mono tracking-wide uppercase"
+            >
+              Stacks et logiciels
+            </Typography>
+            <div className="flex flex-wrap gap-2">
+              {event.stacks.map((eventStack) => (
+                <TechBadge
+                  key={eventStack.stackItem.id}
+                  name={eventStack.stackItem.name}
+                />
+              ))}
+            </div>
           </div>
         ) : null}
       </div>

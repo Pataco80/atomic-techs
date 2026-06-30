@@ -9,7 +9,6 @@ import {
   iosSheetSubmitButton,
 } from "@/components/ios";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Typography } from "@/components/nowts/typography";
 import { useForm } from "@/features/form/tanstack-form";
@@ -29,6 +28,7 @@ import {
   ProjectFormSchema,
   type ProjectFormValues,
 } from "../_actions/project.schema";
+import { StackCombobox } from "@app/studio/_components/stack-combobox";
 
 type ProjectFormProps = {
   stackItems: StackItemRecord[];
@@ -241,46 +241,26 @@ export function ProjectForm({
             footer="Sélectionnez les technologies utilisées dans ce projet."
           >
             <form.AppField name="stackItemIds">
-              {(field) => {
-                const selected = field.state.value;
-                return (
-                  <field.Field className="relative gap-2 px-4 py-3">
-                    {stackItems.length === 0 ? (
-                      <Typography
-                        variant="muted"
-                        className="text-ios-secondary-label"
-                      >
-                        Aucune stack disponible. Créez-en dans l'onglet Stacks.
-                      </Typography>
-                    ) : (
-                      <div className="flex flex-wrap gap-3">
-                        {stackItems.map((item) => {
-                          const checked = selected.includes(item.id);
-                          return (
-                            <label
-                              key={item.id}
-                              className="border-ios-separator hover:bg-ios-separator/30 flex cursor-pointer items-center gap-2 rounded-full border px-3 py-2 text-sm"
-                            >
-                              <Checkbox
-                                checked={checked}
-                                onCheckedChange={(value) =>
-                                  field.handleChange(
-                                    value
-                                      ? [...selected, item.id]
-                                      : selected.filter((id) => id !== item.id),
-                                  )
-                                }
-                              />
-                              <span>{item.name}</span>
-                            </label>
-                          );
-                        })}
-                      </div>
-                    )}
-                    <field.Message />
-                  </field.Field>
-                );
-              }}
+              {(field) => (
+                <field.Field className="relative gap-2 px-4 py-3">
+                  {stackItems.length === 0 ? (
+                    <Typography
+                      variant="muted"
+                      className="text-ios-secondary-label"
+                    >
+                      Aucune stack disponible. Créez-en dans l'onglet Stacks.
+                    </Typography>
+                  ) : (
+                    <StackCombobox
+                      stackItems={stackItems}
+                      selectedIds={field.state.value}
+                      onChange={(ids) => field.handleChange(ids)}
+                      onBlur={field.handleBlur}
+                    />
+                  )}
+                  <field.Message />
+                </field.Field>
+              )}
             </form.AppField>
           </GroupedList>
 

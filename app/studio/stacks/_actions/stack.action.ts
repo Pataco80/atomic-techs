@@ -6,6 +6,7 @@ import {
   CreateStackSchema,
   DeleteStackSchema,
   ReorderStacksSchema,
+  ToggleStackFeaturedSchema,
   UpdateStackSchema,
 } from "./stack.schema";
 
@@ -41,6 +42,17 @@ export const deleteStackAction = authAction
     });
 
     return { id };
+  });
+
+export const toggleStackFeaturedAction = authAction
+  .inputSchema(ToggleStackFeaturedSchema)
+  .action(async ({ parsedInput: { id, featured } }) => {
+    await prisma.stackItem.update({
+      where: { id },
+      data: { featured },
+    });
+
+    return { id, featured };
   });
 
 export const reorderStacksAction = authAction

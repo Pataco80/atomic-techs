@@ -3,6 +3,7 @@
 import {
   GroupedList,
   IosSheetHeader,
+  Toggle,
   iosSheetCancelButton,
   iosSheetSubmitButton,
 } from "@/components/ios";
@@ -63,6 +64,7 @@ export function StackForm({
       name: stack?.name ?? "",
       iconSvg: stack?.iconSvg ?? "",
       validatedAt: stack ? toDateInputValue(stack.validatedAt) : "",
+      featured: stack?.featured ?? false,
       order: stack?.order ?? 0,
     },
     onSubmit: async (values) => {
@@ -172,6 +174,28 @@ export function StackForm({
                   />
                   <field.Message />
                 </field.Content>
+              </field.Field>
+            )}
+          </form.AppField>
+        </GroupedList>
+
+        <GroupedList
+          header="Options"
+          footer="Les stacks « mises en avant » sont les seules affichées sur la page d'accueil, dans l'ordre défini ici."
+        >
+          <form.AppField name="featured">
+            {(field) => (
+              <field.Field
+                orientation="horizontal"
+                className="relative min-h-11 items-center justify-between px-4 py-2.5"
+              >
+                <field.Label className="text-ios-label">
+                  Mis en avant
+                </field.Label>
+                <Toggle
+                  checked={Boolean(field.state.value)}
+                  onCheckedChange={(value) => field.handleChange(value)}
+                />
               </field.Field>
             )}
           </form.AppField>
