@@ -44,6 +44,7 @@ export function HomeHero({
             variant="h4"
             className="text-pale-sky-50 font-mono font-medium"
           >
+            <span className="sr-only">{SiteConfig.title} — </span>
             {name}
           </Typography>
           {person?.headline ? (
