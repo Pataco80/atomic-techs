@@ -15,7 +15,9 @@ export default function ProjectsPage() {
   return (
     <Layout size="lg">
       <LayoutHeader>
-        <LayoutTitle>Projets</LayoutTitle>
+        <LayoutTitle className="text-3xl font-bold tracking-tight">
+          Projets
+        </LayoutTitle>
         <LayoutDescription>
           Gérez les projets affichés dans le portfolio.
         </LayoutDescription>

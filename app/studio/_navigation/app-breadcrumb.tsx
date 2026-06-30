@@ -27,7 +27,7 @@ export function AppBreadcrumb() {
 
   return (
     <Breadcrumb>
-      <BreadcrumbList className="border-border bg-background rounded-lg border px-3 py-2 shadow-sm shadow-black/5">
+      <BreadcrumbList className="bg-ios-card rounded-full px-4 py-2 shadow-sm">
         <BreadcrumbItem>
           <BreadcrumbLink href={basePath}>
             <Home size={16} strokeWidth={2} aria-hidden="true" />

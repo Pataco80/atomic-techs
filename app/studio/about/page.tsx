@@ -1,9 +1,3 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Layout,
@@ -19,6 +13,7 @@ import {
   getPersonProfile,
 } from "@/query/portfolio/get-about";
 import { Suspense } from "react";
+import { AboutTabs } from "./_components/about-tabs";
 import { CareerSection } from "./_components/career-section";
 import { ContentPagesSection } from "./_components/content-pages-section";
 import { OrgForm } from "./_components/org-form";
@@ -28,7 +23,9 @@ export default function AboutPage() {
   return (
     <Layout size="lg">
       <LayoutHeader>
-        <LayoutTitle>À Propos</LayoutTitle>
+        <LayoutTitle className="text-3xl font-bold tracking-tight">
+          À Propos
+        </LayoutTitle>
         <LayoutDescription>
           Profil, organisation, parcours et pages de contenu.
         </LayoutDescription>
@@ -51,35 +48,12 @@ async function AboutSection() {
   ]);
 
   return (
-    <Accordion type="multiple" defaultValue={["person"]} className="w-full">
-      <AccordionItem value="person">
-        <AccordionTrigger>Profil personnel</AccordionTrigger>
-        <AccordionContent>
-          <PersonForm person={person} />
-        </AccordionContent>
-      </AccordionItem>
-
-      <AccordionItem value="org">
-        <AccordionTrigger>Organisation</AccordionTrigger>
-        <AccordionContent>
-          <OrgForm org={org} />
-        </AccordionContent>
-      </AccordionItem>
-
-      <AccordionItem value="career">
-        <AccordionTrigger>Parcours</AccordionTrigger>
-        <AccordionContent>
-          <CareerSection events={events} />
-        </AccordionContent>
-      </AccordionItem>
-
-      <AccordionItem value="pages">
-        <AccordionTrigger>Pages de contenu</AccordionTrigger>
-        <AccordionContent>
-          <ContentPagesSection pages={pages} />
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <AboutTabs
+      person={<PersonForm person={person} />}
+      org={<OrgForm org={org} />}
+      career={<CareerSection events={events} />}
+      pages={<ContentPagesSection pages={pages} />}
+    />
   );
 }
 

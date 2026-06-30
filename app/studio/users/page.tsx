@@ -10,14 +10,16 @@ export default async function AppUsersPage() {
   return (
     <Layout size="lg">
       <LayoutHeader>
-        <LayoutTitle>Analytics</LayoutTitle>
+        <LayoutTitle className="text-3xl font-bold tracking-tight">
+          Analytics
+        </LayoutTitle>
       </LayoutHeader>
       <LayoutContent className="flex flex-col gap-4 lg:gap-8">
-        <div className="rounded-lg border p-6">
+        <div className="bg-ios-card rounded-xl p-6 shadow-sm">
           <Typography variant="large" as="h3" className="font-semibold">
             User Analytics
           </Typography>
-          <Typography variant="muted" className="mt-2">
+          <Typography variant="muted" className="text-ios-secondary-label mt-2">
             Your personal analytics and usage statistics will be displayed here.
           </Typography>
         </div>

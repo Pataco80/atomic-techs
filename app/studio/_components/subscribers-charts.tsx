@@ -36,7 +36,7 @@ const chartConfig = {
 
 export function SubscribersChart() {
   return (
-    <Card>
+    <Card className="bg-ios-card rounded-xl border-0 shadow-sm">
       <CardHeader>
         <CardTitle>New users</CardTitle>
         <CardDescription>

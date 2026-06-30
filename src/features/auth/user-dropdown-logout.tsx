@@ -16,6 +16,7 @@ export const UserDropdownLogout = () => {
 
   return (
     <DropdownMenuItem
+      className="rounded-xl"
       onClick={(e) => {
         e.stopPropagation();
         e.preventDefault();

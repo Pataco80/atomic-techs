@@ -12,18 +12,20 @@ export async function AppNavigation({ children }: PropsWithChildren) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="border-accent border">
-        <header className="flex h-16 shrink-0 items-center gap-2">
+      <SidebarInset className="bg-ios-grouped">
+        <header className="bg-ios-grouped flex h-16 shrink-0 items-center gap-2">
           <Layout size="lg" className="flex items-center gap-2">
             <SidebarTrigger
               size="lg"
               variant="outline"
-              className="size-9 cursor-pointer"
+              className="size-9 cursor-pointer rounded-full"
             />
             <AppBreadcrumb />
           </Layout>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
+        <div className="bg-ios-grouped flex flex-1 flex-col gap-8 p-4 pt-0">
+          {children}
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

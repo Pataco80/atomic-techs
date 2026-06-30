@@ -1,10 +1,19 @@
 "use client";
 
 import { ImageUploadField } from "@app/studio/_components/image-upload-field";
+import {
+  GroupedList,
+  IosSheetHeader,
+  Toggle,
+  iosSheetCancelButton,
+  iosSheetSubmitButton,
+} from "@/components/ios";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Typography } from "@/components/nowts/typography";
 import { useForm } from "@/features/form/tanstack-form";
+import { Check, X } from "lucide-react";
 import { resolveActionResult } from "@/lib/actions/actions-utils";
 import { slugify } from "@/lib/format/slugify";
 import type { ProjectWithStacks } from "@/query/portfolio/get-projects";
@@ -24,12 +33,21 @@ import {
 type ProjectFormProps = {
   stackItems: StackItemRecord[];
   project?: ProjectWithStacks;
+  title: string;
+  onCancel: () => void;
   onSuccess: () => void;
 };
+
+// Borderless input that sits flush inside an iOS grouped-list row.
+const iosInput =
+  "border-0 bg-transparent px-0 shadow-none focus-visible:ring-0 dark:bg-transparent";
+const iosRow = "relative gap-1.5 px-4 py-3";
 
 export function ProjectForm({
   stackItems,
   project,
+  title,
+  onCancel,
   onSuccess,
 }: ProjectFormProps) {
   const isEdit = Boolean(project);
@@ -70,184 +88,241 @@ export function ProjectForm({
   return (
     <form.AppForm>
       <form
-        className="flex flex-col gap-4"
+        className="flex w-full flex-col"
         onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
           void form.handleSubmit();
         }}
       >
-        <form.AppField name="title">
-          {(field) => (
-            <field.Field>
-              <field.Label>Titre</field.Label>
-              <field.Content>
-                <Input
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    field.handleChange(value);
-                    if (!slugEdited) {
-                      form.setFieldValue("slug", slugify(value));
-                    }
-                  }}
-                />
-                <field.Message />
-              </field.Content>
-            </field.Field>
-          )}
-        </form.AppField>
+        <IosSheetHeader
+          title={title}
+          leading={
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label="Annuler"
+              onClick={onCancel}
+              className={iosSheetCancelButton}
+            >
+              <X />
+            </Button>
+          }
+          trailing={
+            <form.SubmitButton
+              variant="ghost"
+              size="icon"
+              aria-label={isEdit ? "Enregistrer" : "Créer"}
+              className={iosSheetSubmitButton}
+            >
+              <Check />
+            </form.SubmitButton>
+          }
+        />
 
-        <form.AppField name="slug">
-          {(field) => (
-            <field.Field>
-              <field.Label>Slug</field.Label>
-              <field.Content>
-                <Input
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => {
-                    setSlugEdited(true);
-                    field.handleChange(e.target.value);
-                  }}
-                />
-                <field.Message />
-              </field.Content>
-            </field.Field>
-          )}
-        </form.AppField>
+        <div className="flex flex-col gap-8 p-4">
+          <GroupedList header="Projet">
+            <form.AppField name="title">
+              {(field) => (
+                <field.Field className={iosRow}>
+                  <field.Label className="text-ios-label">Titre</field.Label>
+                  <field.Content>
+                    <Input
+                      className={iosInput}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        field.handleChange(value);
+                        if (!slugEdited) {
+                          form.setFieldValue("slug", slugify(value));
+                        }
+                      }}
+                    />
+                    <field.Message />
+                  </field.Content>
+                </field.Field>
+              )}
+            </form.AppField>
 
-        <form.AppField name="longDescription">
-          {(field) => (
-            <field.Field>
-              <field.Label>Description</field.Label>
-              <field.Content>
-                <field.Textarea rows={4} />
-                <field.Message />
-              </field.Content>
-            </field.Field>
-          )}
-        </form.AppField>
+            <form.AppField name="slug">
+              {(field) => (
+                <field.Field className={iosRow}>
+                  <field.Label className="text-ios-label">Slug</field.Label>
+                  <field.Content>
+                    <Input
+                      className={iosInput}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => {
+                        setSlugEdited(true);
+                        field.handleChange(e.target.value);
+                      }}
+                    />
+                    <field.Message />
+                  </field.Content>
+                </field.Field>
+              )}
+            </form.AppField>
 
-        <form.AppField name="imageUrl">
-          {(field) => (
-            <field.Field>
-              <field.Label>Image</field.Label>
-              <field.Content>
-                <ImageUploadField
-                  value={field.state.value}
-                  onChange={(url) => field.handleChange(url)}
-                />
-                <field.Message />
-              </field.Content>
-            </field.Field>
-          )}
-        </form.AppField>
+            <form.AppField name="longDescription">
+              {(field) => (
+                <field.Field className={iosRow}>
+                  <field.Label className="text-ios-label">
+                    Description
+                  </field.Label>
+                  <field.Content>
+                    <field.Textarea
+                      rows={4}
+                      className="border-0 bg-transparent px-0 shadow-none focus-visible:ring-0 dark:bg-transparent"
+                    />
+                    <field.Message />
+                  </field.Content>
+                </field.Field>
+              )}
+            </form.AppField>
+          </GroupedList>
 
-        <form.AppField name="liveUrl">
-          {(field) => (
-            <field.Field>
-              <field.Label>URL en ligne</field.Label>
-              <field.Content>
-                <field.Input placeholder="https://exemple.com" />
-                <field.Message />
-              </field.Content>
-            </field.Field>
-          )}
-        </form.AppField>
+          <GroupedList header="Image">
+            <form.AppField name="imageUrl">
+              {(field) => (
+                <field.Field className="relative gap-2 px-4 py-3">
+                  <field.Content>
+                    <ImageUploadField
+                      value={field.state.value}
+                      onChange={(url) => field.handleChange(url)}
+                    />
+                    <field.Message />
+                  </field.Content>
+                </field.Field>
+              )}
+            </form.AppField>
+          </GroupedList>
 
-        <form.AppField name="githubUrl">
-          {(field) => (
-            <field.Field>
-              <field.Label>URL GitHub</field.Label>
-              <field.Content>
-                <field.Input placeholder="https://github.com/..." />
-                <field.Message />
-              </field.Content>
-            </field.Field>
-          )}
-        </form.AppField>
+          <GroupedList header="Liens">
+            <form.AppField name="liveUrl">
+              {(field) => (
+                <field.Field className={iosRow}>
+                  <field.Label className="text-ios-label">
+                    URL en ligne
+                  </field.Label>
+                  <field.Content>
+                    <field.Input
+                      className={iosInput}
+                      placeholder="https://exemple.com"
+                    />
+                    <field.Message />
+                  </field.Content>
+                </field.Field>
+              )}
+            </form.AppField>
 
-        <form.AppField name="stackItemIds">
-          {(field) => {
-            const selected = field.state.value;
-            return (
-              <field.Field>
-                <field.Label>Technos</field.Label>
-                {stackItems.length === 0 ? (
-                  <Typography variant="muted">
-                    Aucune stack disponible. Créez-en dans l'onglet Stacks.
-                  </Typography>
-                ) : (
-                  <div className="flex flex-wrap gap-3">
-                    {stackItems.map((item) => {
-                      const checked = selected.includes(item.id);
-                      return (
-                        <label
-                          key={item.id}
-                          className="hover:bg-accent flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm"
-                        >
-                          <Checkbox
-                            checked={checked}
-                            onCheckedChange={(value) =>
-                              field.handleChange(
-                                value
-                                  ? [...selected, item.id]
-                                  : selected.filter((id) => id !== item.id),
-                              )
-                            }
-                          />
-                          <span>{item.name}</span>
-                        </label>
-                      );
-                    })}
-                  </div>
-                )}
-                <field.Message />
-              </field.Field>
-            );
-          }}
-        </form.AppField>
+            <form.AppField name="githubUrl">
+              {(field) => (
+                <field.Field className={iosRow}>
+                  <field.Label className="text-ios-label">
+                    URL GitHub
+                  </field.Label>
+                  <field.Content>
+                    <field.Input
+                      className={iosInput}
+                      placeholder="https://github.com/..."
+                    />
+                    <field.Message />
+                  </field.Content>
+                </field.Field>
+              )}
+            </form.AppField>
+          </GroupedList>
 
-        <div className="flex gap-4">
-          <form.AppField name="order">
-            {(field) => (
-              <field.Field className="flex-1">
-                <field.Label>Ordre</field.Label>
-                <field.Content>
-                  <Input
-                    type="number"
-                    min={0}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) =>
-                      field.handleChange(e.target.valueAsNumber || 0)
-                    }
+          <GroupedList
+            header="Technos"
+            footer="Sélectionnez les technologies utilisées dans ce projet."
+          >
+            <form.AppField name="stackItemIds">
+              {(field) => {
+                const selected = field.state.value;
+                return (
+                  <field.Field className="relative gap-2 px-4 py-3">
+                    {stackItems.length === 0 ? (
+                      <Typography
+                        variant="muted"
+                        className="text-ios-secondary-label"
+                      >
+                        Aucune stack disponible. Créez-en dans l'onglet Stacks.
+                      </Typography>
+                    ) : (
+                      <div className="flex flex-wrap gap-3">
+                        {stackItems.map((item) => {
+                          const checked = selected.includes(item.id);
+                          return (
+                            <label
+                              key={item.id}
+                              className="border-ios-separator hover:bg-ios-separator/30 flex cursor-pointer items-center gap-2 rounded-full border px-3 py-2 text-sm"
+                            >
+                              <Checkbox
+                                checked={checked}
+                                onCheckedChange={(value) =>
+                                  field.handleChange(
+                                    value
+                                      ? [...selected, item.id]
+                                      : selected.filter((id) => id !== item.id),
+                                  )
+                                }
+                              />
+                              <span>{item.name}</span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    )}
+                    <field.Message />
+                  </field.Field>
+                );
+              }}
+            </form.AppField>
+          </GroupedList>
+
+          <GroupedList header="Options">
+            <form.AppField name="order">
+              {(field) => (
+                <field.Field className={iosRow}>
+                  <field.Label className="text-ios-label">Ordre</field.Label>
+                  <field.Content>
+                    <Input
+                      type="number"
+                      min={0}
+                      className={iosInput}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) =>
+                        field.handleChange(e.target.valueAsNumber || 0)
+                      }
+                    />
+                    <field.Message />
+                  </field.Content>
+                </field.Field>
+              )}
+            </form.AppField>
+
+            <form.AppField name="featured">
+              {(field) => (
+                <field.Field
+                  orientation="horizontal"
+                  className="relative min-h-11 items-center justify-between px-4 py-2.5"
+                >
+                  <field.Label className="text-ios-label">
+                    Mis en avant
+                  </field.Label>
+                  <Toggle
+                    checked={Boolean(field.state.value)}
+                    onCheckedChange={(value) => field.handleChange(value)}
                   />
-                  <field.Message />
-                </field.Content>
-              </field.Field>
-            )}
-          </form.AppField>
-
-          <form.AppField name="featured">
-            {(field) => (
-              <field.Field className="flex-1">
-                <field.Label>Mis en avant</field.Label>
-                <field.Content>
-                  <field.Switch />
-                  <field.Message />
-                </field.Content>
-              </field.Field>
-            )}
-          </form.AppField>
-        </div>
-
-        <div className="flex justify-end">
-          <form.SubmitButton>
-            {isEdit ? "Enregistrer" : "Créer"}
-          </form.SubmitButton>
+                </field.Field>
+              )}
+            </form.AppField>
+          </GroupedList>
         </div>
       </form>
     </form.AppForm>

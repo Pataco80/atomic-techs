@@ -2,20 +2,12 @@
 
 import { Typography } from "@/components/nowts/typography";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { dialogManager } from "@/features/dialog-manager/dialog-manager";
 import { resolveActionResult } from "@/lib/actions/actions-utils";
 import { sortCareerEventsChrono } from "@/lib/format/career-order";
 import type { CareerEventRecord } from "@/query/portfolio/get-about";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { toast } from "sonner";
 import { deleteCareerEventAction } from "../_actions/career.action";
 import { CareerForm } from "./career-form";
@@ -56,25 +48,26 @@ type CareerSectionProps = {
 
 export function CareerSection({ events }: CareerSectionProps) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const [editing, setEditing] = useState<CareerEventRecord | null>(null);
 
   const sorted = sortCareerEventsChrono(events);
 
-  function openCreate() {
-    setEditing(null);
-    setOpen(true);
-  }
-
-  function openEdit(event: CareerEventRecord) {
-    setEditing(event);
-    setOpen(true);
-  }
-
-  function handleSuccess() {
-    setOpen(false);
-    setEditing(null);
-    router.refresh();
+  function openForm(event?: CareerEventRecord) {
+    const title = event ? "Modifier le poste" : "Nouveau poste";
+    const id = dialogManager.custom({
+      title,
+      className: "max-h-[90vh] gap-0 overflow-y-auto p-0 sm:max-w-lg",
+      children: (
+        <CareerForm
+          event={event}
+          title={title}
+          onCancel={() => dialogManager.close(id)}
+          onSuccess={() => {
+            dialogManager.close(id);
+            router.refresh();
+          }}
+        />
+      ),
+    });
   }
 
   function confirmDelete(event: CareerEventRecord) {
@@ -96,7 +89,11 @@ export function CareerSection({ events }: CareerSectionProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
-        <Button onClick={openCreate}>
+        <Button
+          variant="default"
+          className="rounded-xl"
+          onClick={() => openForm()}
+        >
           <Plus className="size-4" />
           Nouveau poste
         </Button>
@@ -111,7 +108,7 @@ export function CareerSection({ events }: CareerSectionProps) {
           {sorted.map((event) => (
             <div
               key={event.id}
-              className="bg-card flex items-center gap-3 rounded-lg border p-3"
+              className="bg-ios-card flex items-center gap-3 rounded-xl p-3 shadow-sm"
             >
               <div className="flex flex-1 flex-col">
                 <Typography as="span" variant="default" className="font-medium">
@@ -124,7 +121,7 @@ export function CareerSection({ events }: CareerSectionProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => openEdit(event)}
+                onClick={() => openForm(event)}
                 aria-label="Modifier"
               >
                 <Pencil className="size-4" />
@@ -141,24 +138,6 @@ export function CareerSection({ events }: CareerSectionProps) {
           ))}
         </div>
       )}
-
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle>
-              {editing ? "Modifier le poste" : "Nouveau poste"}
-            </DialogTitle>
-            <DialogDescription>
-              Renseignez les informations du poste.
-            </DialogDescription>
-          </DialogHeader>
-          <CareerForm
-            key={editing?.id ?? "new"}
-            event={editing ?? undefined}
-            onSuccess={handleSuccess}
-          />
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

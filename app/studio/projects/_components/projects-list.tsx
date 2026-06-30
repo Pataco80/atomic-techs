@@ -3,13 +3,6 @@
 import { Typography } from "@/components/nowts/typography";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { dialogManager } from "@/features/dialog-manager/dialog-manager";
 import { resolveActionResult } from "@/lib/actions/actions-utils";
 import type { ProjectWithStacks } from "@/query/portfolio/get-projects";
@@ -34,8 +27,6 @@ type ProjectsListProps = {
 export function ProjectsList({ projects, stackItems }: ProjectsListProps) {
   const router = useRouter();
   const [items, setItems] = useState(projects);
-  const [open, setOpen] = useState(false);
-  const [editing, setEditing] = useState<ProjectWithStacks | null>(null);
 
   // Re-sync from the server whenever the source data changes (after refresh).
   useEffect(() => {
@@ -62,20 +53,24 @@ export function ProjectsList({ projects, stackItems }: ProjectsListProps) {
     reorderMutation.mutate(orderedIds);
   }
 
-  function openCreate() {
-    setEditing(null);
-    setOpen(true);
-  }
-
-  function openEdit(project: ProjectWithStacks) {
-    setEditing(project);
-    setOpen(true);
-  }
-
-  function handleSuccess() {
-    setOpen(false);
-    setEditing(null);
-    router.refresh();
+  function openForm(project?: ProjectWithStacks) {
+    const title = project ? "Modifier le projet" : "Nouveau projet";
+    const id = dialogManager.custom({
+      title,
+      className: "max-h-[90vh] gap-0 overflow-y-auto p-0 sm:max-w-2xl",
+      children: (
+        <ProjectForm
+          project={project}
+          stackItems={stackItems}
+          title={title}
+          onCancel={() => dialogManager.close(id)}
+          onSuccess={() => {
+            dialogManager.close(id);
+            router.refresh();
+          }}
+        />
+      ),
+    });
   }
 
   function confirmDelete(project: ProjectWithStacks) {
@@ -97,7 +92,11 @@ export function ProjectsList({ projects, stackItems }: ProjectsListProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
-        <Button onClick={openCreate}>
+        <Button
+          variant="default"
+          className="rounded-xl"
+          onClick={() => openForm()}
+        >
           <Plus className="size-4" />
           Nouveau projet
         </Button>
@@ -112,7 +111,7 @@ export function ProjectsList({ projects, stackItems }: ProjectsListProps) {
           <div className="flex flex-col gap-2">
             {items.map((project) => (
               <SortableItem key={project.id} id={project.id}>
-                <div className="bg-card flex items-center gap-3 rounded-lg border p-3">
+                <div className="bg-ios-card flex items-center gap-3 rounded-xl p-3 shadow-sm">
                   <div className="flex flex-1 flex-col">
                     <div className="flex items-center gap-2">
                       <Typography
@@ -137,7 +136,7 @@ export function ProjectsList({ projects, stackItems }: ProjectsListProps) {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => openEdit(project)}
+                    onClick={() => openForm(project)}
                     aria-label="Modifier"
                   >
                     <Pencil className="size-4" />
@@ -156,25 +155,6 @@ export function ProjectsList({ projects, stackItems }: ProjectsListProps) {
           </div>
         </SortableList>
       )}
-
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>
-              {editing ? "Modifier le projet" : "Nouveau projet"}
-            </DialogTitle>
-            <DialogDescription>
-              Renseignez les informations du projet.
-            </DialogDescription>
-          </DialogHeader>
-          <ProjectForm
-            key={editing?.id ?? "new"}
-            project={editing ?? undefined}
-            stackItems={stackItems}
-            onSuccess={handleSuccess}
-          />
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

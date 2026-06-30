@@ -1,7 +1,7 @@
 "use client";
 
+import { Icon } from "@/components/shared/icons";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 import { useQueryStates } from "nuqs";
 import { adminSearchParams } from "../_actions/search-params";
 
@@ -15,7 +15,10 @@ export const AdminFilters = () => {
     <div className="flex flex-col gap-4 sm:flex-row">
       {/* Search */}
       <div className="relative flex-1">
-        <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2 transform" />
+        <Icon
+          name="search"
+          className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2 transform"
+        />
         <Input
           placeholder="Search users by email..."
           value={filters.search}
@@ -25,7 +28,7 @@ export const AdminFilters = () => {
               page: 1, // Reset page when searching
             });
           }}
-          className="pl-10"
+          className="bg-background appearance-none rounded-full pl-10 shadow-none"
         />
       </div>
     </div>

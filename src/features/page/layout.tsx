@@ -49,6 +49,25 @@ export const LayoutActions = (props: ComponentPropsWithoutRef<"div">) => {
   );
 };
 
-export const LayoutContent = (props: ComponentPropsWithoutRef<"div">) => {
-  return <div {...props} className={cn("w-full", props.className)} />;
+export const LayoutContent = ({
+  size,
+  ...props
+}: ComponentPropsWithoutRef<"div"> & {
+  size?: "sm" | "default" | "lg" | "xl";
+}) => {
+  return (
+    <div
+      {...props}
+      className={cn(
+        "mx-auto w-full",
+        {
+          "max-w-[1400px]": size === "xl",
+          "max-w-7xl": size === "lg",
+          "max-w-3xl": size === "sm",
+          "max-w-4xl": size === "default",
+        },
+        props.className,
+      )}
+    />
+  );
 };

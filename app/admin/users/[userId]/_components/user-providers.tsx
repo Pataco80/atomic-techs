@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Github, Mail, Shield } from "lucide-react";
+import { Icon } from "@/components/shared/icons";
 
 type Account = {
   id: string;
@@ -42,14 +42,14 @@ export function UserProviders({ accounts }: UserProvidersProps) {
   const getProviderIcon = (providerId: string) => {
     switch (providerId.toLowerCase()) {
       case "github":
-        return <Github className="size-4" />;
+        return <Icon name="github" className="size-4" />;
       case "google":
-        return <Mail className="size-4" />;
+        return <Icon name="mail" className="size-4" />;
       case "credential":
       case "credentials":
-        return <Shield className="size-4" />;
+        return <Icon name="shield" className="size-4" />;
       default:
-        return <Shield className="size-4" />;
+        return <Icon name="shield" className="size-4" />;
     }
   };
 
@@ -68,7 +68,7 @@ export function UserProviders({ accounts }: UserProvidersProps) {
   };
 
   return (
-    <Card>
+    <Card className="bg-ios-card border-0 shadow-sm">
       <CardHeader>
         <CardTitle>Authentication Providers</CardTitle>
         <CardDescription>
@@ -81,7 +81,7 @@ export function UserProviders({ accounts }: UserProvidersProps) {
             No authentication providers found
           </div>
         ) : (
-          <div className="rounded-md border">
+          <div className="border-ios-separator overflow-hidden rounded-xl border">
             <Table>
               <TableHeader>
                 <TableRow>

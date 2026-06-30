@@ -14,7 +14,9 @@ export default function StacksPage() {
   return (
     <Layout size="lg">
       <LayoutHeader>
-        <LayoutTitle>Stacks</LayoutTitle>
+        <LayoutTitle className="text-3xl font-bold tracking-tight">
+          Stacks
+        </LayoutTitle>
         <LayoutDescription>
           Gérez les technologies maîtrisées et leur séniorité.
         </LayoutDescription>
