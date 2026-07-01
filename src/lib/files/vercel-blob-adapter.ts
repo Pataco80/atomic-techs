@@ -8,6 +8,7 @@ export const fileAdapter: UploadFileAdapter = {
 
       const blob = await put(file.name, file, {
         access: "public",
+        addRandomSuffix: true,
       });
 
       return { error: null, data: { url: blob.url } };
@@ -24,6 +25,7 @@ export const fileAdapter: UploadFileAdapter = {
       try {
         const blob = await put(param.file.name, param.file, {
           access: "public",
+          addRandomSuffix: true,
         });
 
         return { error: null, data: { url: blob.url } };
