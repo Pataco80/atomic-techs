@@ -83,11 +83,13 @@ export async function ProjectDetails({ slug }: { slug: string }) {
           </div>
         </article>
       </SectionLayout>
+      <CircuitDivider variant="base" />
       {project.gallery.length > 0 ? (
         <SectionLayout
-          variant="default"
+          variant="alt-section"
           size="sm"
           aria-label="Galerie du projet"
+          glow
         >
           <SectionTitle
             subtitle="galerie"

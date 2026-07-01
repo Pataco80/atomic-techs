@@ -3,8 +3,10 @@
 import { Typography } from "@/components/nowts/typography";
 import { cn } from "@/lib/utils";
 import type { ProjectWithStacks } from "@/query/portfolio/get-projects";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { useMedia } from "react-use";
 import Lightbox from "yet-another-react-lightbox";
 import Captions from "yet-another-react-lightbox/plugins/captions";
 import "yet-another-react-lightbox/styles.css";
@@ -15,17 +17,26 @@ type GalleryItem = ProjectWithStacks["gallery"][number];
 /**
  * Project gallery rendered as alternating rows (image/text swap sides on every
  * other index, like the home `HighlightCard`). Clicking a visual opens a
- * lightbox at that slide, using the item title as the caption.
+ * lightbox at that slide showing the item title centered at the bottom, over a
+ * themed glow backdrop (see `.gallery-lightbox` in globals.css).
+ *
+ * On mobile (< 768px) the prev/next arrows are hidden and navigation is
+ * swipe-only (yarl's native gesture); the arrows stay on desktop for the mouse.
  */
 export function ProjectGallery({ items }: { items: GalleryItem[] }) {
   const [index, setIndex] = useState(-1);
+  // `false` = SSR/first-paint default (desktop) → no hydration mismatch: the
+  // rows use Tailwind classes (not `isMobile`), and the lightbox only mounts on
+  // open (post-hydration, user click).
+  const isMobile = useMedia("(max-width: 767px)", false);
 
   if (items.length === 0) return null;
 
+  // The title is mapped to the caption `description` slot so it renders at the
+  // bottom (centered); the short description is intentionally omitted here.
   const slides = items.map((item) => ({
     src: item.imageUrl,
-    title: item.title,
-    description: item.shortDescription,
+    description: item.title,
   }));
 
   return (
@@ -43,7 +54,7 @@ export function ProjectGallery({ items }: { items: GalleryItem[] }) {
               type="button"
               onClick={() => setIndex(i)}
               aria-label={`Agrandir : ${item.title}`}
-              className="focus-visible:ring-primary bg-muted relative aspect-video w-full cursor-zoom-in overflow-hidden rounded-lg outline-none focus-visible:ring-2 lg:w-[420px] lg:shrink-0"
+              className="focus-visible:ring-primary bg-muted relative aspect-video w-full cursor-zoom-in overflow-hidden rounded-lg outline-none focus-visible:ring-2 lg:w-[320px] lg:shrink-0"
             >
               <Image
                 src={item.imageUrl}
@@ -71,7 +82,22 @@ export function ProjectGallery({ items }: { items: GalleryItem[] }) {
         index={index}
         slides={slides}
         plugins={[Captions]}
+        className="gallery-lightbox"
+        carousel={{ padding: isMobile ? "16px" : "84px", finite: true }}
+        controller={{ closeOnPullDown: true, closeOnBackdropClick: true }}
         captions={{ descriptionTextAlign: "center" }}
+        render={{
+          iconPrev: () => <ChevronLeft className="size-6" />,
+          iconNext: () => <ChevronRight className="size-6" />,
+          iconClose: () => <X className="size-5" />,
+          // Mobile: suppress the whole prev/next buttons (swipe-only). Desktop:
+          // keep default buttons with the icons above. `null` return removes the
+          // button; omitting the key falls back to yarl's default button.
+          ...(isMobile && {
+            buttonPrev: () => null,
+            buttonNext: () => null,
+          }),
+        }}
       />
     </>
   );

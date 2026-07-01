@@ -11,6 +11,10 @@ export default defineConfig({
   test: {
       globals: true,
       environment: "jsdom",
+      // Skip CSS processing: unit tests don't need styles, and running the
+      // Tailwind v4 PostCSS config over 3rd-party CSS imports (e.g. yarl's
+      // `styles.css`) fails in the Vitest/Vite context.
+      css: false,
       setupFiles: [path.resolve(__dirname, "test/vitest.setup.ts")],
       env: {
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_123",
@@ -30,6 +34,12 @@ export default defineConfig({
         "**/e2e/**", // Exclude e2e tests
         "**/playwright-tests/**",
       ],
+    },
+    css: {
+      // Inline (empty) PostCSS config so Vite doesn't discover the project's
+      // Tailwind v4 `postcss.config.mjs`, whose plugin isn't a valid PostCSS
+      // plugin in the Vitest context (breaks 3rd-party CSS imports like yarl).
+      postcss: { plugins: [] },
     },
     resolve: {
       alias: {
