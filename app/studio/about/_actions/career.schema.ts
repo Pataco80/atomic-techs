@@ -11,6 +11,7 @@ export const CareerEventSchema = z
     endMonth: z.number().int().min(1).max(12).nullish(),
     endYear: z.number().int().min(1900).max(2100).nullish(),
     description: z.custom<JSONContent>().nullish(),
+    stackItemIds: z.array(z.string()).default([]),
   })
   .refine((data) => data.endYear == null || data.endMonth != null, {
     message: "Le mois de fin est requis",

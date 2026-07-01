@@ -8,6 +8,7 @@ export const StackFormSchema = z.object({
     .string()
     .min(1, "La date est requise")
     .refine((value) => !Number.isNaN(Date.parse(value)), "Date invalide"),
+  featured: z.boolean().default(false),
   order: z.number().int().min(0).default(0),
 });
 
@@ -19,6 +20,11 @@ export const UpdateStackSchema = StackFormSchema.extend({
 
 export const DeleteStackSchema = z.object({
   id: z.string().min(1),
+});
+
+export const ToggleStackFeaturedSchema = z.object({
+  id: z.string().min(1),
+  featured: z.boolean(),
 });
 
 export const ReorderStacksSchema = z.object({

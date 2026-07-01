@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import type { JSONContent } from "@tiptap/react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { useEffect } from "react";
-import { richTextExtensions } from "./rich-text-shared";
+import { richTextRendererExtensions } from "./rich-text-shared";
 
 type RichTextRendererProps = {
   content?: JSONContent | null;
@@ -22,7 +22,7 @@ export function RichTextRenderer({
 }: RichTextRendererProps) {
   const editor = useEditor({
     editable: false,
-    extensions: richTextExtensions,
+    extensions: richTextRendererExtensions,
     content: content ?? null,
     immediatelyRender: false,
     editorProps: {

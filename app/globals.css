@@ -378,6 +378,7 @@
     color: var(--color-primary);
     text-decoration: underline;
     text-underline-offset: var(--spacing);
+    cursor: pointer;
   }
   .typography blockquote:not(.not-typography blockquote) {
     margin-top: calc(var(--spacing) * 6);

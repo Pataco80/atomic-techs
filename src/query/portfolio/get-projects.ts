@@ -7,10 +7,25 @@ const projectInclude = {
   },
 } satisfies Prisma.ProjectInclude;
 
-/** All non-deleted projects, in display order, with their linked stack items. */
+/**
+ * All non-deleted projects for the public catalogue (/portfolio), featured
+ * first, then by manual order, then newest — with their linked stack items.
+ */
 export const getProjects = async () => {
   return prisma.project.findMany({
     where: { deletedAt: null },
+    orderBy: [{ featured: "desc" }, { order: "asc" }, { createdAt: "desc" }],
+    include: projectInclude,
+  });
+};
+
+/**
+ * Featured projects only, in display order — the home "FeaturedProjects"
+ * section renders these.
+ */
+export const getFeaturedProjects = async () => {
+  return prisma.project.findMany({
+    where: { featured: true, deletedAt: null },
     orderBy: { order: "asc" },
     include: projectInclude,
   });

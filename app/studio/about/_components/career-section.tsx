@@ -6,6 +6,7 @@ import { dialogManager } from "@/features/dialog-manager/dialog-manager";
 import { resolveActionResult } from "@/lib/actions/actions-utils";
 import { sortCareerEventsChrono } from "@/lib/format/career-order";
 import type { CareerEventRecord } from "@/query/portfolio/get-about";
+import type { StackItemRecord } from "@/query/portfolio/get-stacks";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -44,9 +45,10 @@ function formatPeriod(event: CareerEventRecord): string {
 
 type CareerSectionProps = {
   events: CareerEventRecord[];
+  stackItems: StackItemRecord[];
 };
 
-export function CareerSection({ events }: CareerSectionProps) {
+export function CareerSection({ events, stackItems }: CareerSectionProps) {
   const router = useRouter();
 
   const sorted = sortCareerEventsChrono(events);
@@ -59,6 +61,7 @@ export function CareerSection({ events }: CareerSectionProps) {
       children: (
         <CareerForm
           event={event}
+          stackItems={stackItems}
           title={title}
           onCancel={() => dialogManager.close(id)}
           onSuccess={() => {

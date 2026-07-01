@@ -7,6 +7,7 @@ import {
   CreateProjectSchema,
   DeleteProjectSchema,
   ReorderProjectsSchema,
+  ToggleProjectFeaturedSchema,
   UpdateProjectSchema,
 } from "./project.schema";
 
@@ -75,6 +76,17 @@ export const deleteProjectAction = authAction
     });
 
     return { id };
+  });
+
+export const toggleProjectFeaturedAction = authAction
+  .inputSchema(ToggleProjectFeaturedSchema)
+  .action(async ({ parsedInput: { id, featured } }) => {
+    await prisma.project.update({
+      where: { id },
+      data: { featured },
+    });
+
+    return { id, featured };
   });
 
 export const reorderProjectsAction = authAction

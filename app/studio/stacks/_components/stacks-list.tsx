@@ -1,21 +1,24 @@
 "use client";
 
+import { GroupedList, ListRow } from "@/components/ios";
 import { Typography } from "@/components/nowts/typography";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { dialogManager } from "@/features/dialog-manager/dialog-manager";
 import { resolveActionResult } from "@/lib/actions/actions-utils";
 import { computeSeniority } from "@/lib/format/seniority";
+import { cn } from "@/lib/utils";
 import type { StackItemRecord } from "@/query/portfolio/get-stacks";
-import { SortableItem, SortableList } from "@app/studio/_components/sortable";
+import { SortableList, SortableRow } from "@app/studio/_components/sortable";
 import { useMutation } from "@tanstack/react-query";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus, Star, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
   deleteStackAction,
   reorderStacksAction,
+  toggleStackFeaturedAction,
 } from "../_actions/stack.action";
 import { StackForm } from "./stack-form";
 
@@ -39,6 +42,9 @@ export function StacksList({ stacks }: StacksListProps) {
     setItems(stacks);
   }, [stacks]);
 
+  const featured = items.filter((stack) => stack.featured);
+  const rest = items.filter((stack) => !stack.featured);
+
   const reorderMutation = useMutation({
     mutationFn: async (ids: string[]) =>
       resolveActionResult(reorderStacksAction({ ids })),
@@ -49,14 +55,34 @@ export function StacksList({ stacks }: StacksListProps) {
     },
   });
 
+  const featuredMutation = useMutation({
+    mutationFn: async (input: { id: string; featured: boolean }) =>
+      resolveActionResult(toggleStackFeaturedAction(input)),
+    onSuccess: () => router.refresh(),
+    onError: (error) => {
+      toast.error(error.message);
+      setItems(stacks);
+    },
+  });
+
+  // DnD only reorders the Featured card (this drives the public order).
   function handleReorder(orderedIds: string[]) {
     const byId = new Map(items.map((stack) => [stack.id, stack]));
-    setItems(
-      orderedIds
-        .map((id) => byId.get(id))
-        .filter((stack): stack is StackItemRecord => Boolean(stack)),
-    );
+    const orderedFeatured = orderedIds
+      .map((id) => byId.get(id))
+      .filter((stack): stack is StackItemRecord => Boolean(stack));
+    setItems([...orderedFeatured, ...rest]);
     reorderMutation.mutate(orderedIds);
+  }
+
+  function toggleFeatured(stack: StackItemRecord) {
+    const next = !stack.featured;
+    setItems(
+      items.map((item) =>
+        item.id === stack.id ? { ...item, featured: next } : item,
+      ),
+    );
+    featuredMutation.mutate({ id: stack.id, featured: next });
   }
 
   function openForm(stack?: StackItemRecord) {
@@ -94,8 +120,69 @@ export function StacksList({ stacks }: StacksListProps) {
     });
   }
 
+  function renderRow(stack: StackItemRecord, dragHandle?: ReactNode) {
+    return (
+      <ListRow
+        key={stack.id}
+        leading={
+          <div className="flex items-center gap-2">
+            {dragHandle}
+            <div
+              className="flex size-8 shrink-0 items-center justify-center [&>svg]:size-6"
+              // Admin-authored SVG icon (single-owner back-office).
+              dangerouslySetInnerHTML={{ __html: stack.iconSvg }}
+            />
+          </div>
+        }
+        title={stack.name}
+        subtitle={`Depuis ${dateFormatter.format(stack.validatedAt)}`}
+        trailing={
+          <div className="flex items-center gap-1">
+            <Badge variant="secondary">
+              {computeSeniority(stack.validatedAt)}
+            </Badge>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => toggleFeatured(stack)}
+              aria-label={
+                stack.featured
+                  ? "Retirer des mises en avant"
+                  : "Mettre en avant"
+              }
+              aria-pressed={stack.featured}
+            >
+              <Star
+                className={cn(
+                  "size-4",
+                  stack.featured && "fill-current text-amber-500",
+                )}
+              />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => openForm(stack)}
+              aria-label="Modifier"
+            >
+              <Pencil className="size-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => confirmDelete(stack)}
+              aria-label="Supprimer"
+            >
+              <Trash2 className="size-4" />
+            </Button>
+          </div>
+        }
+      />
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
       <div className="flex justify-end">
         <Button
           variant="default"
@@ -112,52 +199,38 @@ export function StacksList({ stacks }: StacksListProps) {
           Aucune stack pour le moment. Cliquez sur « Nouvelle stack ».
         </Typography>
       ) : (
-        <SortableList items={items.map((s) => s.id)} onReorder={handleReorder}>
-          <div className="flex flex-col gap-2">
-            {items.map((stack) => (
-              <SortableItem key={stack.id} id={stack.id}>
-                <div className="bg-ios-card flex items-center gap-3 rounded-xl p-3 shadow-sm">
-                  <div
-                    className="flex size-8 shrink-0 items-center justify-center [&>svg]:size-6"
-                    // Admin-authored SVG icon (single-owner back-office).
-                    dangerouslySetInnerHTML={{ __html: stack.iconSvg }}
-                  />
-                  <div className="flex flex-1 flex-col">
-                    <Typography
-                      as="span"
-                      variant="default"
-                      className="font-medium"
-                    >
-                      {stack.name}
-                    </Typography>
-                    <Typography as="span" variant="muted">
-                      Depuis {dateFormatter.format(stack.validatedAt)}
-                    </Typography>
-                  </div>
-                  <Badge variant="secondary">
-                    {computeSeniority(stack.validatedAt)}
-                  </Badge>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => openForm(stack)}
-                    aria-label="Modifier"
-                  >
-                    <Pencil className="size-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => confirmDelete(stack)}
-                    aria-label="Supprimer"
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
+        <>
+          <SortableList
+            items={featured.map((s) => s.id)}
+            onReorder={handleReorder}
+          >
+            <GroupedList
+              header="Featured Stacks"
+              footer="Glissez pour ordonner — cet ordre est celui de la page d'accueil."
+            >
+              {featured.length === 0 ? (
+                <div className="px-4 py-3">
+                  <Typography variant="muted">
+                    Aucune stack mise en avant. Activez l'étoile sur une stack
+                    ci-dessous.
+                  </Typography>
                 </div>
-              </SortableItem>
-            ))}
-          </div>
-        </SortableList>
+              ) : (
+                featured.map((stack) => (
+                  <SortableRow key={stack.id} id={stack.id}>
+                    {(handle) => renderRow(stack, handle)}
+                  </SortableRow>
+                ))
+              )}
+            </GroupedList>
+          </SortableList>
+
+          {rest.length > 0 && (
+            <GroupedList header="Stacks">
+              {rest.map((stack) => renderRow(stack))}
+            </GroupedList>
+          )}
+        </>
       )}
     </div>
   );

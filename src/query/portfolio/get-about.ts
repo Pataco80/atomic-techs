@@ -22,10 +22,17 @@ export const getOrgProfile = async () => {
  * the precise "current job first" ordering is applied in the app layer via
  * `sortCareerEventsChrono`.
  */
+const careerEventInclude = {
+  stacks: {
+    include: { stackItem: true },
+  },
+} satisfies Prisma.CareerEventInclude;
+
 export const getCareerEvents = async () => {
   return prisma.careerEvent.findMany({
     where: { deletedAt: null },
     orderBy: [{ startYear: "desc" }, { startMonth: "desc" }],
+    include: careerEventInclude,
   });
 };
 

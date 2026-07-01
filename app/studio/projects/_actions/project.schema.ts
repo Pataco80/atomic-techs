@@ -31,6 +31,11 @@ export const DeleteProjectSchema = z.object({
   id: z.string().min(1),
 });
 
+export const ToggleProjectFeaturedSchema = z.object({
+  id: z.string().min(1),
+  featured: z.boolean(),
+});
+
 export const ReorderProjectsSchema = z.object({
   ids: z.array(z.string().min(1)),
 });

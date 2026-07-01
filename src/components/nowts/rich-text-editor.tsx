@@ -33,6 +33,16 @@ type RichTextEditorProps = {
   className?: string;
 };
 
+/**
+ * TipTap's `getJSON()` returns nodes whose `attrs` (e.g. a link's `href`) are
+ * non-plain objects that React Server Actions silently serialise to `null`,
+ * dropping link hrefs on save. Round-tripping through JSON gives a plain object
+ * that survives the RSC boundary.
+ */
+function toPlainJson(value: JSONContent): JSONContent {
+  return JSON.parse(JSON.stringify(value)) as JSONContent;
+}
+
 export function RichTextEditor({
   value,
   onChange,
@@ -47,7 +57,7 @@ export function RichTextEditor({
         class: "typography min-h-40 max-w-none focus:outline-none",
       },
     },
-    onUpdate: ({ editor }) => onChange?.(editor.getJSON()),
+    onUpdate: ({ editor }) => onChange?.(toPlainJson(editor.getJSON())),
   });
 
   if (!editor) return null;

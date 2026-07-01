@@ -70,6 +70,60 @@ export function SortableList({
   );
 }
 
+type SortableRowProps = {
+  id: string;
+  /**
+   * Receives the drag handle so it can be placed *inside* the row (e.g. a
+   * `ListRow` `leading` slot) instead of outside it. Render the handle wherever
+   * it reads best.
+   */
+  children: (handle: ReactNode) => ReactNode;
+  className?: string;
+};
+
+/**
+ * Sortable wrapper that hands the drag handle to its render-prop child, so the
+ * grip can live *inside* the row chrome (more elegant than a handle bolted onto
+ * the left). Must be rendered inside a {@link SortableList}.
+ */
+export function SortableRow({ id, children, className }: SortableRowProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  const style: CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  const handle = (
+    <button
+      type="button"
+      className="text-muted-foreground hover:text-foreground cursor-grab touch-none active:cursor-grabbing"
+      aria-label="Réordonner"
+      {...attributes}
+      {...listeners}
+    >
+      <GripVertical className="size-4" />
+    </button>
+  );
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(isDragging && "relative z-10 opacity-70", className)}
+    >
+      {children(handle)}
+    </div>
+  );
+}
+
 type SortableItemProps = {
   id: string;
   children: ReactNode;

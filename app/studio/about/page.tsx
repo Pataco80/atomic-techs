@@ -12,6 +12,7 @@ import {
   getOrgProfile,
   getPersonProfile,
 } from "@/query/portfolio/get-about";
+import { getStacks } from "@/query/portfolio/get-stacks";
 import { Suspense } from "react";
 import { AboutTabs } from "./_components/about-tabs";
 import { CareerSection } from "./_components/career-section";
@@ -40,18 +41,19 @@ export default function AboutPage() {
 }
 
 async function AboutSection() {
-  const [person, org, events, pages] = await Promise.all([
+  const [person, org, events, pages, stacks] = await Promise.all([
     getPersonProfile(),
     getOrgProfile(),
     getCareerEvents(),
     getContentPages(),
+    getStacks(),
   ]);
 
   return (
     <AboutTabs
       person={<PersonForm person={person} />}
       org={<OrgForm org={org} />}
-      career={<CareerSection events={events} />}
+      career={<CareerSection events={events} stackItems={stacks} />}
       pages={<ContentPagesSection pages={pages} />}
     />
   );

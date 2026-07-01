@@ -8,8 +8,8 @@ import {
   getOrgProfile,
   getPersonProfile,
 } from "@/query/portfolio/get-about";
-import { getProjects } from "@/query/portfolio/get-projects";
-import { getStacks } from "@/query/portfolio/get-stacks";
+import { getFeaturedProjects } from "@/query/portfolio/get-projects";
+import { getFeaturedStacks } from "@/query/portfolio/get-stacks";
 import { SiteConfig } from "@/site-config";
 import { Fragment, type ReactNode } from "react";
 import { FeaturedProjects } from "./featured-projects";
@@ -28,14 +28,15 @@ function dividerBetween(from: Tone, to: Tone): DividerVariant | null {
 }
 
 export async function HomeContent() {
-  const [person, org, stacks, projects, events] = await Promise.all([
-    getPersonProfile(),
-    getOrgProfile(),
-    getStacks(),
-    getProjects(),
-    getCareerEvents(),
-  ]);
-  const featured = projects.filter((project) => project.featured).slice(0, 4);
+  const [person, org, featuredStacks, featuredProjects, events] =
+    await Promise.all([
+      getPersonProfile(),
+      getOrgProfile(),
+      getFeaturedStacks(),
+      getFeaturedProjects(),
+      getCareerEvents(),
+    ]);
+  const featured = featuredProjects.slice(0, 4);
 
   // Only the sections with content; CircuitDividers are inserted between them
   // with the variant matching the two real adjacent backgrounds.
@@ -43,14 +44,14 @@ export async function HomeContent() {
     {
       key: "hero",
       tone: "hero",
-      node: <HomeHero person={person} stacks={stacks} org={org} />,
+      node: <HomeHero person={person} stacks={featuredStacks} org={org} />,
     },
   ];
-  if (stacks.length > 0) {
+  if (featuredStacks.length > 0) {
     blocks.push({
       key: "knowtechs",
       tone: "alt",
-      node: <KnowTechs stacks={stacks} />,
+      node: <KnowTechs stacks={featuredStacks} />,
     });
   }
   if (featured.length > 0) {

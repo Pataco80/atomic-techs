@@ -49,15 +49,17 @@ model StackItem {
   name        String
   iconSvg     String // inline SVG markup
   validatedAt DateTime // start of mastery → seniority computed in app layer
+  featured    Boolean  @default(false)
   order       Int      @default(0)
 
-  projects ProjectStack[]
+  projects     ProjectStack[]
+  careerEvents CareerEventStack[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  @@index([order])
+  @@index([featured, order])
   @@index([deletedAt])
 }
 
@@ -72,12 +74,28 @@ model CareerEvent {
   endYear     Int?
   description Json? // TipTap document
 
+  stacks CareerEventStack[]
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   @@index([startYear, startMonth])
   @@index([deletedAt])
+}
+
+model CareerEventStack {
+  id            String @id @default(nanoid(11))
+  careerEventId String
+  stackItemId   String
+
+  careerEvent CareerEvent @relation(fields: [careerEventId], references: [id], onDelete: Cascade)
+  stackItem   StackItem   @relation(fields: [stackItemId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([careerEventId, stackItemId])
+  @@index([stackItemId])
 }
 
 // Singleton — accessed via findFirst / upsert (single-row enforced in app layer).
