@@ -5,6 +5,10 @@ const projectInclude = {
   stacks: {
     include: { stackItem: true },
   },
+  gallery: {
+    where: { deletedAt: null },
+    orderBy: { order: "asc" },
+  },
 } satisfies Prisma.ProjectInclude;
 
 /**

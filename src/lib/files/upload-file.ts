@@ -24,4 +24,6 @@ export type UploadFileAdapter = {
       } | null;
     }[]
   >;
+  /** Best-effort deletion of previously-uploaded blobs by url. Never throws. */
+  deleteFiles: (urls: string[]) => Promise<void>;
 };

@@ -114,6 +114,7 @@
     "tailwindcss-animate": "^1.0.7",
     "tslog": "^4.9.3",
     "up-fetch": "^2.4.0",
+    "yet-another-react-lightbox": "^3.32.0",
     "zod": "^4.1.11",
     "zustand": "^5.0.8"
   },

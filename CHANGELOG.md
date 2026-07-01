@@ -1,3 +1,11 @@
+## 2026-07-01 - Project Gallery (alternating rows + lightbox) (Spec 07)
+
+### 🚀 **Features**
+
+- **FEAT: per-project image gallery** — each project can now carry an ordered set of visuals, each with a **title** and a **short description**, stored in a new relational `ProjectGalleryItem` model (`imageUrl`, `title`, `shortDescription`, `order`, soft-delete `deletedAt`, `@@index([projectId, order])`; Prisma migration `project_gallery_items`). `getProjects`/`getProjectBySlug` include the gallery (non-deleted, ordered).
+- **FEAT: gallery editor in the project form** (`gallery-editor.tsx`) — a new "Galerie" iOS grouped section with a drag-and-drop list of rows (image uploader + title + short description), an "Ajouter une image" button and an "Aucune image" empty state. Row order maps directly to the persisted `order` (`withOrder` helper). The create/update actions sync the gallery with the same `deleteMany`+recreate transaction used for `ProjectStack`, and **best-effort clean up the Vercel Blob** of any removed image (new `deleteFiles` on the file adapter, `removedImageUrls` helper) — a failed blob deletion never breaks the mutation.
+- **FEAT: public gallery on `/portfolio/[slug]`** (`project-gallery.tsx`) — visuals render as **alternating rows** (image/text swap sides on every other index, like the home `HighlightCard`), sorted by `order`. Clicking a visual opens a **lightbox** (`yet-another-react-lightbox` + Captions plugin) at that slide, using the item title as the caption. The section only renders when the project has at least one image.
+
 ## 2026-06-30 - Home Hero, TipTap Links & Career Stack Badges (fixes)
 
 ### 🐛 **Fixes**
