@@ -1,6 +1,8 @@
 import { Button } from "@/components/nowts/button";
 import { CircuitDivider } from "@/components/shared/circuit-divider";
 import { PageIntro } from "@/components/shared/page-intro";
+import { SectionTitle } from "@/components/shared/section-title";
+import { ProjectGallery } from "@/features/projects-details/project-gallery";
 import { TechBadge } from "@/features/knowtecks/tech-badge";
 import { SectionLayout } from "@/features/landing/section-layout";
 import { projectPlaceholder } from "@/features/projects/project-placeholder";
@@ -50,7 +52,12 @@ export async function ProjectDetails({ slug }: { slug: string }) {
               </Button>
             ) : null}
             {project.githubUrl ? (
-              <Button href={project.githubUrl} external variant="outline" size="lg">
+              <Button
+                href={project.githubUrl}
+                external
+                variant="outline"
+                size="lg"
+              >
                 <Icon name="github" className="size-4" />
                 Code source
               </Button>
@@ -76,6 +83,22 @@ export async function ProjectDetails({ slug }: { slug: string }) {
           </div>
         </article>
       </SectionLayout>
+      {project.gallery.length > 0 ? (
+        <SectionLayout
+          variant="default"
+          size="sm"
+          aria-label="Galerie du projet"
+        >
+          <SectionTitle
+            subtitle="galerie"
+            title="En images"
+            titleVariant="h3"
+          />
+          <div className="mt-12">
+            <ProjectGallery items={project.gallery} />
+          </div>
+        </SectionLayout>
+      ) : null}
     </>
   );
 }

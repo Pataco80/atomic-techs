@@ -1,4 +1,4 @@
-import { put } from "@vercel/blob";
+import { del, put } from "@vercel/blob";
 import type { UploadFileAdapter } from "./upload-file";
 
 export const fileAdapter: UploadFileAdapter = {
@@ -37,5 +37,15 @@ export const fileAdapter: UploadFileAdapter = {
     });
 
     return Promise.all(promises);
+  },
+  deleteFiles: async (urls) => {
+    if (urls.length === 0) return;
+
+    try {
+      await del(urls);
+    } catch {
+      // Best-effort cleanup: a failed blob deletion must never break the
+      // surrounding mutation (the DB row is already gone / updated).
+    }
   },
 };

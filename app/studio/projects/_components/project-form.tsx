@@ -29,6 +29,7 @@ import {
   type ProjectFormValues,
 } from "../_actions/project.schema";
 import { StackCombobox } from "@app/studio/_components/stack-combobox";
+import { GalleryEditor } from "./gallery-editor";
 
 type ProjectFormProps = {
   stackItems: StackItemRecord[];
@@ -79,6 +80,12 @@ export function ProjectForm({
       featured: project?.featured ?? false,
       order: project?.order ?? 0,
       stackItemIds: project?.stacks.map((s) => s.stackItemId) ?? [],
+      galleryItems:
+        project?.gallery.map((item) => ({
+          imageUrl: item.imageUrl,
+          title: item.title,
+          shortDescription: item.shortDescription,
+        })) ?? [],
     },
     onSubmit: async (values) => {
       await mutation.mutateAsync(values);
@@ -262,6 +269,13 @@ export function ProjectForm({
                 </field.Field>
               )}
             </form.AppField>
+          </GroupedList>
+
+          <GroupedList
+            header="Galerie"
+            footer="Ajoutez des visuels avec un titre et une courte description. Réordonnez-les par glisser-déposer."
+          >
+            <GalleryEditor form={form} />
           </GroupedList>
 
           <GroupedList header="Options">
