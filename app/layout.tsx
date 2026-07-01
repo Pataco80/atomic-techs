@@ -1,5 +1,4 @@
 import { TailwindIndicator } from "@/components/utils/tailwind-indicator";
-import { FloatingLegalFooter } from "@/features/legal/floating-legal-footer";
 import { NextTopLoader } from "@/features/page/next-top-loader";
 import { ServerToaster } from "@/features/server-sonner/server-toaster";
 import { getServerUrl } from "@/lib/server-url";
@@ -14,9 +13,24 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: SiteConfig.title,
+  title: {
+    default: SiteConfig.title,
+    template: `%s · ${SiteConfig.title}`,
+  },
   description: SiteConfig.description,
   metadataBase: new URL(getServerUrl()),
+  openGraph: {
+    type: "website",
+    siteName: SiteConfig.title,
+    title: SiteConfig.title,
+    description: SiteConfig.description,
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SiteConfig.title,
+    description: SiteConfig.description,
+  },
 };
 
 const CaptionFont = Space_Grotesk({
@@ -39,7 +53,7 @@ export default function RootLayout({
   modal,
 }: LayoutParams & { modal?: ReactNode }) {
   return (
-    <html lang="en" className="h-full" suppressHydrationWarning>
+    <html lang="fr" className="h-full" suppressHydrationWarning>
       <body
         suppressHydrationWarning
         className={cn(
@@ -61,7 +75,6 @@ export default function RootLayout({
               {modal}
             </Suspense>
             <TailwindIndicator />
-            <FloatingLegalFooter />
             <Suspense>
               <ServerToaster />
             </Suspense>

@@ -23,7 +23,7 @@ type UserDetailsCardProps = {
 
 export function UserDetailsCard({ user }: UserDetailsCardProps) {
   return (
-    <Card>
+    <Card className="bg-ios-card rounded-xl border-0 shadow-sm">
       <CardHeader className="flex items-center gap-2 space-y-0">
         <Avatar className="mr-2 size-10">
           <AvatarImage src={user.image ?? undefined} />
@@ -38,24 +38,18 @@ export function UserDetailsCard({ user }: UserDetailsCardProps) {
         <Badge variant="outline">{user.role ?? "user"}</Badge>
         {!user.emailVerified && (
           <>
-            <Typography variant="muted" className="text-sm">
-              {" • "}
-            </Typography>
+            <Typography variant="muted">{" • "}</Typography>
             <Badge variant="outline">Unverified</Badge>
           </>
         )}
         {user.banned && (
           <>
-            <Typography variant="muted" className="text-sm">
-              {" • "}
-            </Typography>
+            <Typography variant="muted">{" • "}</Typography>
             <Badge variant="destructive">Banned</Badge>
           </>
         )}
-        <Typography variant="muted" className="text-sm">
-          {" • "}
-        </Typography>
-        <Typography variant="muted" className="text-sm">
+        <Typography variant="muted">{" • "}</Typography>
+        <Typography variant="muted">
           Created: {new Date(user.createdAt).toLocaleDateString()}
         </Typography>
       </CardContent>

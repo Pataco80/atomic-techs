@@ -14,16 +14,16 @@ export const handleRootRedirect = (request: NextRequest) => {
   if (!session) return null;
 
   const url = request.nextUrl.clone();
-  url.pathname = "/app";
+  url.pathname = "/studio";
   return NextResponse.redirect(url);
 };
 
 export const isAppRoute = (pathname: string) => {
-  return pathname.startsWith("/app/app");
+  return pathname.startsWith("/studio");
 };
 
 export const isAdminRoute = (pathname: string) => {
-  return pathname.startsWith("/app/admin");
+  return pathname.startsWith("/admin");
 };
 
 export const validateSession = async (request: NextRequest) => {

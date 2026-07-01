@@ -55,19 +55,19 @@ const Skeleton1 = () => {
           className="size-6 shrink-0 rounded-full"
         />
         <div>
-          <p className="text-xs text-neutral-500">
+          <Typography variant="tiny" className="text-neutral-500">
             Create a Thread to announce Now.ts
-          </p>
+          </Typography>
         </div>
       </motion.div>
       <motion.div
         variants={variants}
         className="border-border bg-background flex flex-row items-start justify-end gap-2 rounded-2xl border p-3"
       >
-        <p className="text-xs text-neutral-500">
+        <Typography variant="tiny" className="text-neutral-500">
           Today I announced my new project, Now.TS, the perfect way to create
           professional Next.js application in days.
-        </p>
+        </Typography>
         <div className="size-6 shrink-0 rounded-full bg-gradient-to-r from-pink-500 to-violet-500" />
       </motion.div>
     </motion.div>
@@ -233,16 +233,18 @@ const Skeleton5 = () => {
           width="100"
           className="size-10 rounded-full"
         />
-        <p className="text-xs text-neutral-500">
+        <Typography variant="tiny" className="text-neutral-500">
           What I need to do to get more followers ?
-        </p>
+        </Typography>
       </motion.div>
       <motion.div
         variants={variantsSecond}
         className="border-border bg-background flex flex-row items-start justify-end gap-2 rounded-2xl border p-3"
       >
         <div>
-          <p className="text-xs text-neutral-500">Searching...</p>
+          <Typography variant="tiny" className="text-neutral-500">
+            Searching...
+          </Typography>
           <motion.p
             className="text-xs text-neutral-500"
             variants={{
@@ -268,9 +270,9 @@ const items = [
   {
     title: "AI Content Generation",
     description: (
-      <span className="text-sm">
+      <Typography variant="muted">
         Experience the power of AI in generating unique content.
-      </span>
+      </Typography>
     ),
     header: <Skeleton1 />,
     className: "md:col-span-1",
@@ -279,9 +281,9 @@ const items = [
   {
     title: "Schedule with ease",
     description: (
-      <span className="text-sm">
+      <Typography variant="muted">
         We help you schedule your threads with ease.
-      </span>
+      </Typography>
     ),
     header: <Skeleton2 />,
     className: "md:col-span-1",
@@ -290,9 +292,9 @@ const items = [
   {
     title: "Calendar View",
     description: (
-      <span className="text-sm">
+      <Typography variant="muted">
         See what you have planned for the day with our calendar view.
-      </span>
+      </Typography>
     ),
     header: <Skeleton3 />,
     className: "md:col-span-1",
@@ -301,9 +303,9 @@ const items = [
   {
     title: "Threads Analysis",
     description: (
-      <span className="text-sm">
+      <Typography variant="muted">
         Understand your threads with our powerful analytics.
-      </span>
+      </Typography>
     ),
     header: <Skeleton4 />,
     className: "md:col-span-2",
@@ -313,9 +315,9 @@ const items = [
   {
     title: "See what works",
     description: (
-      <span className="text-sm">
+      <Typography variant="muted">
         Understand the hype and trends with our powerful research tools.
-      </span>
+      </Typography>
     ),
     header: <Skeleton5 />,
     className: "md:col-span-1",

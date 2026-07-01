@@ -1,3 +1,4 @@
+import { Typography } from "@/components/nowts/typography";
 import {
   Card,
   CardContent,
@@ -30,23 +31,28 @@ export default function VerificationCard() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="bg-muted rounded-lg p-4 text-sm">
-          <p className="mb-2 font-medium">Please check your inbox</p>
-          <p className="text-muted-foreground">
+          <Typography variant="default" className="mb-2 font-medium">
+            Please check your inbox
+          </Typography>
+          <Typography variant="muted">
             To complete your account setup, please open the verification email
             we just sent and click on the link inside.
-          </p>
+          </Typography>
         </div>
         <div className="text-muted-foreground text-sm">
-          <p>
+          <Typography variant="muted">
             If you don't see the email in your inbox, please check your spam
             folder or request a new verification link.
-          </p>
+          </Typography>
         </div>
       </CardContent>
       <CardFooter className="flex justify-center border-t pt-6">
-        <p className="text-muted-foreground text-center text-xs">
+        <Typography
+          variant="tiny"
+          className="text-muted-foreground text-center"
+        >
           Having trouble? Contact our support team for assistance.
-        </p>
+        </Typography>
       </CardFooter>
     </Card>
   );

@@ -24,7 +24,9 @@ export default async function AdminUsersPage({ searchParams }: PageProps) {
   return (
     <Layout size="lg">
       <LayoutHeader>
-        <LayoutTitle>User Management</LayoutTitle>
+        <LayoutTitle className="text-3xl font-bold tracking-tight">
+          User Management
+        </LayoutTitle>
         <LayoutDescription>
           View and manage all users in the system
         </LayoutDescription>

@@ -30,22 +30,24 @@ export const FeedbackTable = async ({ searchParams }: FeedbackTableProps) => {
 
   return (
     <>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>User</TableHead>
-            <TableHead>Review</TableHead>
-            <TableHead>Message</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {feedback.map((item) => (
-            <FeedbackRow key={item.id} feedback={item} />
-          ))}
-        </TableBody>
-      </Table>
+      <div className="bg-ios-card overflow-hidden rounded-xl shadow-sm">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>User</TableHead>
+              <TableHead>Review</TableHead>
+              <TableHead>Message</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {feedback.map((item) => (
+              <FeedbackRow key={item.id} feedback={item} />
+            ))}
+          </TableBody>
+        </Table>
+      </div>
 
       <AutomaticPagination
         currentPage={currentPage}

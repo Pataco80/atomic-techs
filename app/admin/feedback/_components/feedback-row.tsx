@@ -1,4 +1,6 @@
+import { iosMenuContent, iosMenuItem } from "@/components/ios";
 import { Typography } from "@/components/nowts/typography";
+import { Icon, type IconKey } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,36 +11,28 @@ import {
 import { TableCell, TableRow } from "@/components/ui/table";
 import { InlineTooltip } from "@/components/ui/tooltip";
 import type { FeedbackWithUser } from "@/query/feedback/get-feedback";
-import {
-  Angry,
-  Eye,
-  Frown,
-  Meh,
-  MoreHorizontal,
-  SmilePlus,
-} from "lucide-react";
 import Link from "next/link";
 import { UserTableCell } from "../../_components/user-table-cell";
 
-const ReviewIcons = [
+const ReviewIcons: { value: number; icon: IconKey; tooltip: string }[] = [
   {
     value: 1,
-    icon: Angry,
+    icon: "angry",
     tooltip: "Extremely Dissatisfied",
   },
   {
     value: 2,
-    icon: Frown,
+    icon: "frown",
     tooltip: "Somewhat Dissatisfied",
   },
   {
     value: 3,
-    icon: Meh,
+    icon: "meh",
     tooltip: "Neutral",
   },
   {
     value: 4,
-    icon: SmilePlus,
+    icon: "smile-plus",
     tooltip: "Satisfied",
   },
 ];
@@ -69,7 +63,7 @@ export const FeedbackRow = ({ feedback }: FeedbackRowProps) => {
         {reviewIcon ? (
           <InlineTooltip title={reviewIcon.tooltip}>
             <div className="flex items-center">
-              <reviewIcon.icon size={24} className="text-primary" />
+              <Icon name={reviewIcon.icon} size={24} className="text-primary" />
             </div>
           </InlineTooltip>
         ) : (
@@ -96,13 +90,13 @@ export const FeedbackRow = ({ feedback }: FeedbackRowProps) => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm">
-              <MoreHorizontal className="size-4" />
+              <Icon name="more-horizontal" className="size-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild>
+          <DropdownMenuContent align="end" className={iosMenuContent}>
+            <DropdownMenuItem className={iosMenuItem} asChild>
               <Link href={`/admin/feedback/${feedback.id}`}>
-                <Eye className="mr-2 size-4" />
+                <Icon name="eye" className="mr-2 size-4" />
                 View Details
               </Link>
             </DropdownMenuItem>

@@ -1,95 +1,80 @@
 "use client";
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { GroupedList, IconTile, ListRow } from "@/components/ios";
+import type { IconKey } from "@/components/shared/icons";
+import { Typography } from "@/components/nowts/typography";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { SidebarNavigationMenu } from "@/components/ui/sidebar-utils";
 import type { NavigationGroup } from "@/features/navigation/navigation.type";
 import { SidebarUserButton } from "@/features/sidebar/sidebar-user-button";
-import { ChevronDown } from "lucide-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { PropsWithChildren } from "react";
-import { useEffect, useState } from "react";
 import { getAdminNavigation } from "./admin-navigation.links";
+
+const NAV_ICON: Record<string, IconKey> = {
+  "/admin": "home",
+  "/admin/users": "users",
+  "/admin/feedback": "message",
+};
+
+const NAV_TINT: Record<string, string> = {
+  "/admin": "bg-rose-500",
+  "/admin/users": "bg-cyan-600",
+  "/admin/feedback": "bg-amber-500",
+};
 
 export function AdminSidebar() {
   const links: NavigationGroup[] = getAdminNavigation();
+  const pathname = usePathname();
+
+  const isActive = (href: string) =>
+    href === "/admin" ? pathname === href : pathname.startsWith(href);
 
   return (
     <Sidebar variant="inset">
       <SidebarHeader className="flex flex-col gap-2">
-        <div className="flex items-center gap-2 px-2 py-1.5">
-          <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-lg">
-            <span className="text-sm font-semibold">A</span>
-          </div>
-          <span className="font-semibold">Admin Panel</span>
+        <div className="flex items-center gap-2 px-0 py-1.5">
+          <IconTile name="shield" className="bg-rose-500" />
+          <Typography as="span" variant="default" className="font-semibold">
+            Admin Panel
+          </Typography>
         </div>
       </SidebarHeader>
-      <SidebarContent>
-        {links.map((link) => (
-          <ItemCollapsing
-            defaultOpenStartPath={link.defaultOpenStartPath}
-            key={link.title}
-          >
-            <SidebarGroup key={link.title}>
-              <SidebarGroupLabel asChild>
-                <CollapsibleTrigger>
-                  {link.title}
-                  <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                </CollapsibleTrigger>
-              </SidebarGroupLabel>
-              <CollapsibleContent>
-                <SidebarGroupContent>
-                  <SidebarNavigationMenu link={link} />
-                </SidebarGroupContent>
-              </CollapsibleContent>
-            </SidebarGroup>
-          </ItemCollapsing>
+      <SidebarContent className="bg-ios-grouped gap-6 rounded-xl px-2 py-2">
+        {links.map((group) => (
+          <GroupedList key={group.title} header={group.title}>
+            {group.links.map((link) => (
+              <ListRow
+                key={link.href}
+                as={Link}
+                href={link.href}
+                leading={
+                  <IconTile
+                    name={NAV_ICON[link.href] ?? "home"}
+                    className={NAV_TINT[link.href]}
+                  />
+                }
+                title={link.label}
+                showChevron
+                className={
+                  isActive(link.href)
+                    ? "bg-ios-separator/40 font-medium"
+                    : undefined
+                }
+              />
+            ))}
+          </GroupedList>
         ))}
       </SidebarContent>
-      <SidebarFooter className="flex flex-col gap-2">
+      <SidebarFooter className="flex flex-col gap-2 px-0">
         <SidebarUserButton />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
 }
-
-const ItemCollapsing = (
-  props: PropsWithChildren<{ defaultOpenStartPath?: string }>,
-) => {
-  const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-
-  const isOpen = props.defaultOpenStartPath
-    ? pathname.startsWith(props.defaultOpenStartPath)
-    : true;
-
-  useEffect(() => {
-    if (isOpen) {
-      setOpen(isOpen);
-    }
-  }, [isOpen]);
-  return (
-    <Collapsible
-      defaultOpen={isOpen}
-      onOpenChange={setOpen}
-      open={open}
-      className="group/collapsible"
-    >
-      {props.children}
-    </Collapsible>
-  );
-};

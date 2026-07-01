@@ -1,30 +1,11 @@
-import { buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
-import { AuthButton } from "../auth/auth-button";
+import { NavLink } from "@/features/layout/nav-link";
 import { HeaderBase } from "./header-base";
 
 export function Header() {
   return (
     <HeaderBase>
-      <Link
-        href="/docs"
-        className={buttonVariants({ variant: "ghost", size: "sm" })}
-      >
-        Docs
-      </Link>
-      <Link
-        href="/about"
-        className={buttonVariants({ variant: "ghost", size: "sm" })}
-      >
-        About
-      </Link>
-      <Link
-        href="/contact"
-        className={buttonVariants({ variant: "ghost", size: "sm" })}
-      >
-        Contact
-      </Link>
-      <AuthButton />
+      <NavLink href="/">Accueil</NavLink>
+      <NavLink href="/portfolio">Portfolio</NavLink>
     </HeaderBase>
   );
 }

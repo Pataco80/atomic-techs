@@ -1,3 +1,4 @@
+import { Typography } from "@/components/nowts/typography";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,12 +26,14 @@ export default function NotFoundPage() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="bg-muted rounded-lg p-4 text-sm">
-          <p className="mb-2 font-medium">What might have happened?</p>
-          <p className="text-muted-foreground">
+          <Typography variant="default" className="mb-2 font-medium">
+            What might have happened?
+          </Typography>
+          <Typography variant="muted">
             The page may have been moved, deleted, or you might have mistyped
             the URL. If you believe you should have access to this resource,
             please contact your administrator.
-          </p>
+          </Typography>
         </div>
       </CardContent>
       <CardFooter className="flex justify-center border-t pt-6">

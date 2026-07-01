@@ -44,6 +44,47 @@
   --color-info: var(--info);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+
+  /* iOS back-office (app/studio/*) surfaces — theme-aware, additive.
+     Generates bg-ios-grouped, bg-ios-card, border-ios-separator,
+     text-ios-label/-secondary-label/-tertiary-label. */
+  --color-ios-grouped: var(--ios-grouped-bg);
+  --color-ios-card: var(--ios-card);
+  --color-ios-separator: var(--ios-separator);
+  --color-ios-label: var(--ios-label);
+  --color-ios-secondary-label: var(--ios-secondary-label);
+  --color-ios-tertiary-label: var(--ios-tertiary-label);
+
+  /* Portfolio (public) palette — additive; used by app/(public)/* only,
+     so the back-office keeps the neutral shadcn tokens. */
+  --color-blue-ribbon: #0055ff;
+  --color-blue-ribbon-50: #e0ebff;
+  --color-blue-ribbon-100: #ccddff;
+  --color-blue-ribbon-200: #a3c2ff;
+  --color-blue-ribbon-300: #7aa7ff;
+  --color-blue-ribbon-400: #528bff;
+  --color-blue-ribbon-500: #2970ff;
+  --color-blue-ribbon-600: #0055ff;
+  --color-blue-ribbon-700: #0042c7;
+  --color-blue-ribbon-800: #00308f;
+  --color-blue-ribbon-900: #001d57;
+  --color-blue-ribbon-950: #00143b;
+  --color-pale-sky: #6b7280;
+  --color-pale-sky-50: #e3e5e8;
+  --color-pale-sky-100: #d8dadf;
+  --color-pale-sky-200: #c2c5cc;
+  --color-pale-sky-300: #acb0ba;
+  --color-pale-sky-400: #969ba7;
+  --color-pale-sky-500: #7f8694;
+  --color-pale-sky-600: #6b7280;
+  --color-pale-sky-700: #515761;
+  --color-pale-sky-800: #383c43;
+  --color-pale-sky-900: #1e2024;
+  --color-pale-sky-950: #121315;
+  --color-alt-section: var(--alt-section);
+  --color-hero: var(--hero);
+  --shadow-glow: 0 0 68px 7px rgb(0 85 255 / 0.4);
+  --shadow-glow-sm: 0 0 15px 0 rgb(0 85 255 / 0.4);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -72,25 +113,27 @@
 
 :root,
 .force-light-theme {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.3211 0 0);
+  --background: oklch(0.9212 0.0047 258.3256);
+  --foreground: oklch(0.2427 0.0081 264.4139);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.3211 0 0);
+  --card-foreground: oklch(0.2427 0.0081 264.4139);
+  --alt-section: oklch(0.8883 0.0073 268.7329);
+  --hero: oklch(0.21 0.0932 266.2419);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.3211 0 0);
-  --primary: oklch(0.6231 0.188 259.8145);
+  --popover-foreground: oklch(0.2427 0.0081 264.4139);
+  --primary: oklch(0.5332 0.2596 262.6358);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.967 0.0029 264.5419);
-  --secondary-foreground: oklch(0.4461 0.0263 256.8018);
-  --muted: oklch(0.9846 0.0017 247.8389);
-  --muted-foreground: oklch(0.551 0.0234 264.3637);
-  --accent: oklch(0.9514 0.025 236.8242);
-  --accent-foreground: oklch(0.3791 0.1378 265.5222);
+  --secondary: oklch(0.9051 0.0048 264.5346);
+  --secondary-foreground: oklch(0.2427 0.0081 264.4139);
+  --muted: oklch(0.8567 0.0073 264.5237);
+  --muted-foreground: oklch(0.4547 0.0182 261.4538);
+  --accent: oklch(0.5097 0.2472 262.5891);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.6368 0.2078 25.3313);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.9276 0.0058 264.5313);
-  --input: oklch(0.9276 0.0058 264.5313);
-  --ring: oklch(0.6231 0.188 259.8145);
+  --border: oklch(0.8405 0.0081 264.5194);
+  --input: oklch(0.9051 0.0048 264.5346);
+  --ring: oklch(0.5332 0.2596 262.6358);
   --chart-1: hsl(12 76% 61%);
   --chart-2: hsl(173 58% 39%);
   --chart-3: hsl(197 37% 24%);
@@ -136,28 +179,38 @@
   --warning-foreground: hsl(24 97% 93%);
   --info: hsl(221.2 83.2% 53.3%);
   --info-foreground: hsl(210 40% 98%);
+
+  /* iOS back-office surfaces (light) */
+  --ios-grouped-bg: oklch(0.965 0.003 260);
+  --ios-card: oklch(1 0 0);
+  --ios-separator: oklch(0.85 0 0 / 0.5);
+  --ios-label: var(--foreground);
+  --ios-secondary-label: oklch(0.45 0.02 261);
+  --ios-tertiary-label: oklch(0.62 0.015 261);
 }
 
 .dark {
-  --background: oklch(0.2046 0 0);
-  --foreground: oklch(0.9219 0 0);
-  --card: oklch(0.2686 0 0);
-  --card-foreground: oklch(0.9219 0 0);
-  --popover: oklch(0.2686 0 0);
-  --popover-foreground: oklch(0.9219 0 0);
-  --primary: oklch(0.6231 0.188 259.8145);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.2686 0 0);
-  --secondary-foreground: oklch(0.9219 0 0);
-  --muted: oklch(0.2393 0 0);
-  --muted-foreground: oklch(0.7155 0 0);
-  --accent: oklch(0.3791 0.1378 265.5222);
-  --accent-foreground: oklch(0.8823 0.0571 254.1284);
+  --background: oklch(0.2427 0.0081 264.4139);
+  --foreground: oklch(0.8883 0.0073 268.7329);
+  --card: oklch(0.1859 0.0045 264.4585);
+  --card-foreground: oklch(0.8883 0.0073 268.7329);
+  --alt-section: oklch(0.1859 0.0045 264.4585);
+  --hero: oklch(0.21 0.0932 266.2419);
+  --popover: oklch(0.2427 0.0081 264.4139);
+  --popover-foreground: oklch(0.8883 0.0073 268.7329);
+  --primary: oklch(0.5332 0.2596 262.6358);
+  --primary-foreground: oklch(0.9373 0.0298 262.9681);
+  --secondary: oklch(0.355 0.0133 261.4602);
+  --secondary-foreground: oklch(0.8883 0.0073 268.7329);
+  --muted: oklch(0.355 0.0133 261.4602);
+  --muted-foreground: oklch(0.6896 0.0187 267.2421);
+  --accent: oklch(0.6389 0.1931 262.3606);
+  --accent-foreground: oklch(0.9373 0.0298 262.9681);
   --destructive: oklch(0.6368 0.2078 25.3313);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.3715 0 0);
-  --input: oklch(0.3715 0 0);
-  --ring: oklch(0.6231 0.188 259.8145);
+  --border: oklch(0.355 0.0133 261.4602);
+  --input: oklch(0.355 0.0133 261.4602);
+  --ring: oklch(0.5332 0.2596 262.6358);
   --chart-1: hsl(220 70% 50%);
   --chart-2: hsl(160 60% 45%);
   --chart-3: hsl(30 80% 55%);
@@ -201,6 +254,30 @@
   --warning-foreground: hsl(24deg 97% 93.2%);
   --info: hsl(217.2 91.2% 59.8%);
   --info-foreground: hsl(222.2 47.4% 11.2%);
+
+  /* iOS back-office surfaces (dark) */
+  --ios-grouped-bg: oklch(0.12 0 0);
+  --ios-card: oklch(0.19 0.004 260);
+  --ios-separator: oklch(1 0 0 / 0.12);
+  --ios-label: var(--foreground);
+  --ios-secondary-label: oklch(0.69 0.02 267);
+  --ios-tertiary-label: oklch(0.55 0.015 267);
+}
+
+/* ── Utopia fluid type scale ──────────────────────────────────────────────
+   Generated from: viewport 360→1240px, base 18→20px, ratio 1.2→1.333.
+   Theme-independent (NOT overridden in .dark). Usage: `text-(length:--step-1)`
+   in Tailwind v4, or style={{ fontSize: "var(--step-1)" }}.
+   Negative steps invert because the max ratio (1.333) > the min ratio (1.2). */
+:root {
+  --step--2: clamp(0.7035rem, 0.8131rem - 0.1414vw, 0.7813rem);
+  --step--1: clamp(0.9375rem, 0.9374rem + 0.0004vw, 0.9377rem);
+  --step-0: clamp(1.125rem, 1.0739rem + 0.2273vw, 1.25rem);
+  --step-1: clamp(1.35rem, 1.2207rem + 0.575vw, 1.6663rem);
+  --step-2: clamp(1.62rem, 1.3741rem + 1.0929vw, 2.2211rem);
+  --step-3: clamp(1.944rem, 1.5281rem + 1.8486vw, 2.9607rem);
+  --step-4: clamp(2.3328rem, 1.6726rem + 2.9343vw, 3.9467rem);
+  --step-5: clamp(2.7994rem, 1.7924rem + 4.4755vw, 5.2609rem);
 }
 
 @layer base {
@@ -301,6 +378,7 @@
     color: var(--color-primary);
     text-decoration: underline;
     text-underline-offset: var(--spacing);
+    cursor: pointer;
   }
   .typography blockquote:not(.not-typography blockquote) {
     margin-top: calc(var(--spacing) * 6);
@@ -482,6 +560,22 @@
 }
 
 @layer utils {
+  .bg-section-glow {
+    background-image:
+      radial-gradient(
+        900px circle at 75% 12%,
+        rgb(0 85 255 / 0.18),
+        transparent 60%
+      ),
+      radial-gradient(
+        820px circle at 15% 85%,
+        rgb(41 112 255 / 0.14),
+        transparent 60%
+      );
+  }
+  .bg-hero-portfolio {
+    background-image: url("/images/background/bg-portfolio-hero.webp");
+  }
   .text-gradient {
     @apply bg-clip-text text-transparent;
   }
@@ -493,6 +587,19 @@
       linear-gradient(90deg, var(--bg-grid-color) 1px, transparent 1px),
       linear-gradient(180deg, var(--bg-grid-color) 1px, transparent 1px);
     background-size: 64px 64px; /* Taille de la grille */
+  }
+}
+
+/* Respecte prefers-reduced-motion : neutralise transitions/animations CSS
+   (hover scale, fondu, etc.) et passe le scroll en auto. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -582,4 +689,8 @@ html.dark .shiki span {
   & pre {
     margin: 0 !important;
   }
+}
+
+@utility bg-hero-portfolio {
+  background-image: url("/images/background/bg-portfolio-hero.webp");
 }

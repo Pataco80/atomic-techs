@@ -12,12 +12,24 @@ type SectionLayoutProps = {
   /**
    * The variant of the section.
    * default = default background and foreground
+   * alt-section = alternating muted background (vertical section rhythm)
    * card = card background and card foreground
    * primary = primary background and primary foreground
    * invert = foreground background and background foreground
    * image = background image with foreground text. The background image will be blured.
    */
-  variant?: "default" | "card" | "primary" | "invert" | "image" | "transparent";
+  variant?:
+    | "default"
+    | "alt-section"
+    | "card"
+    | "primary"
+    | "invert"
+    | "image"
+    | "transparent";
+  /**
+   * Render a soft radial "circuit" glow behind the content.
+   */
+  glow?: boolean;
   /**
    * The class name of the div that contain colors.
    */
@@ -27,6 +39,7 @@ type SectionLayoutProps = {
 export const SectionLayout = ({
   size = "base",
   variant = "default",
+  glow = false,
   className,
   containerClassName,
   children,
@@ -37,6 +50,7 @@ export const SectionLayout = ({
       className={cn(
         {
           "bg-background text-foreground": variant === "default",
+          "bg-alt-section text-foreground": variant === "alt-section",
           "bg-card text-card-foreground": variant === "card",
           "bg-primary text-primary-foreground": variant === "primary",
           "bg-foreground text-background": variant === "invert",
@@ -44,10 +58,26 @@ export const SectionLayout = ({
             variant === "image",
           "text-foreground bg-transparent": variant === "transparent",
         },
+        glow && "relative overflow-hidden",
         containerClassName,
       )}
       {...props}
     >
+      {/* Halo masqué en haut/bas (12%) pour qu'il s'éteigne avant les bords et
+          ne coupe pas net là où un CircuitDivider se raccorde → couture
+          section↔divider invisible (comme le haloMask du SectionBackdrop Hygraph). */}
+      {glow ? (
+        <div
+          aria-hidden
+          className="bg-section-glow pointer-events-none absolute inset-0 opacity-60"
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)",
+            maskImage:
+              "linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)",
+          }}
+        />
+      ) : null}
       <div
         className={cn(
           "m-auto px-4 py-20 lg:py-28",
@@ -56,6 +86,7 @@ export const SectionLayout = ({
             "max-w-5xl": size === "base",
             "max-w-6xl": size === "lg",
           },
+          glow && "relative z-10",
           className,
         )}
       >

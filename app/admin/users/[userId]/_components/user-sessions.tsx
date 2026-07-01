@@ -17,17 +17,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Icon } from "@/components/shared/icons";
 import { authClient } from "@/lib/auth-client";
 import { unwrapSafePromise } from "@/lib/promises";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  Loader2,
-  Monitor,
-  Smartphone,
-  Tablet,
-  Trash2,
-  TrashIcon,
-} from "lucide-react";
 import { toast } from "sonner";
 
 type UserSessionsProps = {
@@ -94,7 +87,7 @@ export function UserSessions({ userId }: UserSessionsProps) {
   });
 
   const getDeviceIcon = (userAgent?: string | null) => {
-    if (!userAgent) return <Monitor className="size-4" />;
+    if (!userAgent) return <Icon name="monitor" className="size-4" />;
 
     const ua = userAgent.toLowerCase();
     if (
@@ -102,12 +95,12 @@ export function UserSessions({ userId }: UserSessionsProps) {
       ua.includes("android") ||
       ua.includes("iphone")
     ) {
-      return <Smartphone className="size-4" />;
+      return <Icon name="smartphone" className="size-4" />;
     }
     if (ua.includes("tablet") || ua.includes("ipad")) {
-      return <Tablet className="size-4" />;
+      return <Icon name="tablet" className="size-4" />;
     }
-    return <Monitor className="size-4" />;
+    return <Icon name="monitor" className="size-4" />;
   };
 
   const formatUserAgent = (userAgent?: string | null) => {
@@ -135,7 +128,7 @@ export function UserSessions({ userId }: UserSessionsProps) {
   };
 
   return (
-    <Card>
+    <Card className="bg-ios-card border-0 shadow-sm">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -151,7 +144,7 @@ export function UserSessions({ userId }: UserSessionsProps) {
               onClick={() => revokeAllSessionsMutation.mutate()}
               disabled={revokeAllSessionsMutation.isPending}
             >
-              <TrashIcon className="mr-2 size-4" />
+              <Icon name="trash" className="mr-2 size-4" />
               Revoke All Sessions
             </Button>
           )}
@@ -160,7 +153,7 @@ export function UserSessions({ userId }: UserSessionsProps) {
       <CardContent>
         {isLoading ? (
           <div className="flex items-center justify-center py-8">
-            <Loader2 className="size-6 animate-spin" />
+            <Icon name="loader" className="size-6 animate-spin" />
             <span className="ml-2">Loading sessions...</span>
           </div>
         ) : error ? (
@@ -172,7 +165,7 @@ export function UserSessions({ userId }: UserSessionsProps) {
             No active sessions found
           </div>
         ) : (
-          <div className="rounded-md border">
+          <div className="border-ios-separator overflow-hidden rounded-xl border">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -254,7 +247,7 @@ export function UserSessions({ userId }: UserSessionsProps) {
                         }
                         disabled={revokeSessionMutation.isPending}
                       >
-                        <Trash2 className="size-4" />
+                        <Icon name="trash" className="size-4" />
                       </Button>
                     </TableCell>
                   </TableRow>

@@ -1,24 +1,19 @@
-import { ContactSupportDialog } from "@/features/contact/support/contact-support-dialog";
-import Link from "next/link";
-import { Typography } from "../../components/nowts/typography";
-import { buttonVariants } from "../../components/ui/button";
+import { Button } from "@/components/nowts/button";
+import { Typography } from "@/components/nowts/typography";
 
 export function Page404() {
   return (
-    <main className="flex h-full flex-col items-center justify-center gap-8">
-      <div className="space-y-3 text-center">
+    <div className="flex flex-col items-center gap-8 text-center">
+      <div className="space-y-3">
         <Typography variant="code">404</Typography>
-        <Typography variant="h1">Page not found</Typography>
-        <Typography>
-          Sorry, we couldn't find the page you're looking for.
+        <Typography variant="h2">Page introuvable</Typography>
+        <Typography variant="muted" className="max-w-md">
+          Désolé, la page que vous cherchez n'existe pas ou a été déplacée.
         </Typography>
       </div>
-      <div className="flex items-center gap-4">
-        <Link href="/" className={buttonVariants({ variant: "invert" })}>
-          Go back home
-        </Link>
-        <ContactSupportDialog />
-      </div>
-    </main>
+      <Button href="/" size="lg">
+        Retour à l'accueil
+      </Button>
+    </div>
   );
 }

@@ -11,6 +11,11 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog as DialogRoot,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
@@ -27,9 +32,44 @@ export function DialogComponent(props: { dialog: Dialog }) {
   );
 
   if (dialog.type === "custom") {
+    const handleOpenChange = (open: boolean) => {
+      if (!open) {
+        dialog.onClose?.();
+        useDialogStore.getState().removeDialog(dialog.id);
+      }
+    };
+
+    // Dismissable surfaces (e.g. the command palette) use a regular Dialog:
+    // it closes on outside-click / Escape and shows a close button.
+    if (dialog.dismissible) {
+      return (
+        <DialogRoot open onOpenChange={handleOpenChange}>
+          <DialogContent
+            className={cn("rounded-xl", dialog.className)}
+            aria-describedby={undefined}
+          >
+            <DialogTitle className="sr-only">
+              {dialog.title ?? "Dialog"}
+            </DialogTitle>
+            {dialog.children}
+          </DialogContent>
+        </DialogRoot>
+      );
+    }
+
+    // Form sheets stay on AlertDialog: no accidental dismiss on outside-click,
+    // so in-progress form data is never lost.
     return (
-      <AlertDialog open={true}>
-        <AlertDialogContent>{dialog.children}</AlertDialogContent>
+      <AlertDialog open onOpenChange={handleOpenChange}>
+        <AlertDialogContent
+          className={cn("rounded-xl", dialog.className)}
+          aria-describedby={undefined}
+        >
+          <AlertDialogTitle className="sr-only">
+            {dialog.title ?? "Dialog"}
+          </AlertDialogTitle>
+          {dialog.children}
+        </AlertDialogContent>
       </AlertDialog>
     );
   }
@@ -55,7 +95,7 @@ export function DialogComponent(props: { dialog: Dialog }) {
 
   return (
     <AlertDialog open={true} onOpenChange={handleCancel}>
-      <AlertDialogContent>
+      <AlertDialogContent className="rounded-xl">
         <AlertDialogHeader
           className={cn({
             "flex flex-col items-center gap-2": dialog.style === "centered",

@@ -28,21 +28,23 @@ export const UserTable = async ({ searchParams }: UserTableProps) => {
 
   return (
     <>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>User</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Created</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {users.map((user) => (
-            <UserRow key={user.id} user={user} />
-          ))}
-        </TableBody>
-      </Table>
+      <div className="bg-ios-card overflow-hidden rounded-xl shadow-sm">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>User</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Created</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {users.map((user) => (
+              <UserRow key={user.id} user={user} />
+            ))}
+          </TableBody>
+        </Table>
+      </div>
 
       <AutomaticPagination
         currentPage={currentPage}

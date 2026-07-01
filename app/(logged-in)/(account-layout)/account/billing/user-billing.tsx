@@ -189,16 +189,16 @@ export function UserBilling(props: { subscription: UserActiveSubscription }) {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Icon className="text-primary size-4" />
-                      <Typography variant="muted" className="text-sm">
+                      <Typography variant="muted">
                         {limitConfig.getLabel(total)}
                       </Typography>
                     </div>
-                    <Typography variant="muted" className="text-xs">
+                    <Typography variant="muted">
                       {used.toLocaleString()} / {total.toLocaleString()}
                     </Typography>
                   </div>
                   <Progress value={percentage} className="h-1" />
-                  <Typography variant="muted" className="text-xs">
+                  <Typography variant="muted">
                     {limitConfig.description}
                   </Typography>
                 </div>

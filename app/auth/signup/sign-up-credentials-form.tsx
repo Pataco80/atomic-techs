@@ -25,7 +25,7 @@ export const SignUpCredentialsForm = () => {
       toast.error(error.message);
     },
     onSuccess: () => {
-      const newUrl = window.location.origin + getCallbackUrl("/app");
+      const newUrl = window.location.origin + getCallbackUrl("/studio");
       window.location.href = newUrl;
     },
   });

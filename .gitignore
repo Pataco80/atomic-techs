@@ -44,3 +44,8 @@ src/generated
 .playwright-mcp
 
 .conductor
+
+# APEX / Cowork workflow output (logs & reports) — keep untracked
+.claude/output/
+
+next-env.d.ts

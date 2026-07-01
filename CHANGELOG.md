@@ -1,3 +1,130 @@
+## 2026-07-01 - Project Gallery (alternating rows + lightbox) (Spec 07)
+
+### 🚀 **Features**
+
+- **FEAT: per-project image gallery** — each project can now carry an ordered set of visuals, each with a **title** and a **short description**, stored in a new relational `ProjectGalleryItem` model (`imageUrl`, `title`, `shortDescription`, `order`, soft-delete `deletedAt`, `@@index([projectId, order])`; Prisma migration `project_gallery_items`). `getProjects`/`getProjectBySlug` include the gallery (non-deleted, ordered).
+- **FEAT: gallery editor in the project form** (`gallery-editor.tsx`) — a new "Galerie" iOS grouped section with a drag-and-drop list of rows (image uploader + title + short description), an "Ajouter une image" button and an "Aucune image" empty state. Row order maps directly to the persisted `order` (`withOrder` helper). The create/update actions sync the gallery with the same `deleteMany`+recreate transaction used for `ProjectStack`, and **best-effort clean up the Vercel Blob** of any removed image (new `deleteFiles` on the file adapter, `removedImageUrls` helper) — a failed blob deletion never breaks the mutation.
+- **FEAT: public gallery on `/portfolio/[slug]`** (`project-gallery.tsx`) — visuals render as **alternating rows** (image/text swap sides on every other index, like the home `HighlightCard`), sorted by `order`. Clicking a visual opens a **lightbox** (`yet-another-react-lightbox` + Captions plugin) at that slide, using the item title as the caption. The section only renders when the project has at least one image.
+
+## 2026-06-30 - Home Hero, TipTap Links & Career Stack Badges (fixes)
+
+### 🐛 **Fixes**
+
+- **FIX: home hero text is light in both themes** — the hero forces a local `dark` context, but `--color-foreground` (a Tailwind v4 `@theme` token) is resolved once at `:root` and inherited frozen, so the nested `dark` class re-pointed `--foreground` without re-pointing `--color-foreground`. The bio paragraph (which uses `.typography { color: var(--color-foreground) }`) therefore showed the **light-mode foreground (dark, low-contrast) in light mode**. Fixed by rebinding `[--color-foreground:var(--foreground)]` on the hero section so all foreground-derived text uses the section's dark-mode value.
+- **FIX: TipTap links in the read-only renderer are clickable** — `.typography a` now gets `cursor: pointer`, and the renderer uses its own extension set with `Link.configure({ openOnClick: true })` (the editor keeps `openOnClick: false`). Links typed in the editor now open on the public site.
+- **FIX: link `href` was dropped on save (root cause)** — TipTap's `getJSON()` returns nodes whose `attrs` are non-plain objects that the React Server Action boundary silently serialised to `null`, so a link's `href` reached the server (and DB) as `null` even though it was present in the editor. `RichTextEditor` now round-trips the JSON through `JSON.parse(JSON.stringify(...))` in `onUpdate` before handing it to the form, producing a plain object that survives RSC. (Confirmed by tracing: client editor had the href, the server action received `attrs: null`.)
+- **FIX: career stack badges match the portfolio** — the "Stacks et logiciels" list on each `WorkExperience` item now renders with the shared `TechBadge` (blue-ribbon pill) used by the portfolio project cards and the hero, instead of a plain secondary `Badge`.
+
+## 2026-06-30 - Featured Stacks & Projects + Filterable Stack Input (Spec 06)
+
+### 🚀 **Features**
+
+- **FEAT: `featured` flag on stacks** — `StackItem` gains a `featured Boolean @default(false)` column (Prisma migration `stack_item_featured`, `@@index([order])` → `@@index([featured, order])`). The stack form gets a "Mis en avant" iOS `Toggle` in an "Options" group, and `toggleStackFeaturedAction` (authAction) lets the back-office flip it without re-opening the form.
+- **FEAT: stacks back-office is now a 2-card layout** (`stacks-list.tsx`) — **« Featured Stacks »** (featured only, drag-and-drop reordering, the order that drives the public site) and **« Stacks »** (the rest, static). Each row is an iOS `ListRow` with a star toggle (optimistic + `router.refresh`), edit and delete. The public home **"compétences"** section now renders **featured stacks only** (`getFeaturedStacks`), in DnD order — non-featured stacks are a back-office reserve, never shown publicly (hero + KnowTechs both fed from featured).
+- **FEAT: filterable stack input on the project form** (`stack-combobox.tsx`) — the "Technos" checkbox grid is replaced by a cmdk-based combobox: type to filter existing stacks (case/accent-insensitive), add with click **or** Enter, arrow-key navigation, no duplicates, "Aucune techno" empty state, and the "créez-en dans l'onglet Stacks" hint when there are none. The matches list renders **in-flow** (never clipped by the grouped-list card), and selected stacks appear as **light inline badges below the input**, removable (×) and **reorderable by drag-and-drop** (their order = the `stackItemIds` order). WCAG combobox semantics (input `role=combobox`/`aria-expanded`/`aria-controls`, options `role=option`, `aria-activedescendant`). **The `stackItemIds` array field, its Zod schema and the `ProjectStack` transaction are unchanged.**
+- **FEAT: project `featured` wiring** — `projects-list.tsx` mirrors the stacks 2-card layout (**« Featured Projects »** DnD + **« Projets »**), with a `toggleProjectFeaturedAction` star toggle on each row. The home **FeaturedProjects** section is fed by `getFeaturedProjects`, and **`/portfolio` now lists all projects featured-first** (`getProjects` orders by `[featured desc, order asc, createdAt desc]`).
+- DnD reorders **only** the Featured card for both stacks and projects (it drives the public `order`); non-featured items are never reordered. The drag handle sits **inside** the `ListRow` (in its `leading` slot, via a new `SortableRow` render-prop wrapper in `_components/sortable.tsx`) rather than bolted onto the row's left edge.
+- **FEAT: stacks on career events** — career events (`/studio/about` → Parcours) can now be tagged with the stacks used on the job, via the **same `StackCombobox`** as projects (moved to the shared `app/studio/_components/stack-combobox.tsx`). New `CareerEventStack` join table (mirrors `ProjectStack`, migration `career_event_stacks`); `stackItemIds` added to the career Zod schema and the create/update action (same `deleteMany`+`create` transaction as projects); `getCareerEvents` now includes the linked stacks. On the public site they render at the bottom of each `WorkExperience` item under a **"Stacks et logiciels"** heading as light secondary badges (Photoshop, Illustrator, Dreamweaver, etc.).
+
+### 🧪 **Testing**
+
+- Unit tests for `StackCombobox` (`__tests__/components/stack-combobox.test.tsx`): accent-insensitive filtering, add via click and Enter, removable chips, no-duplicate options, empty state, combobox a11y role.
+
+## 2026-06-30 - iOS Reskin Polish: Form Sheets, Admin & Layout (Spec 05 follow-up)
+
+### 🎨 **Style & Components**
+
+- **STYLE: CRUD form modals adopt the iOS 26 form-sheet pattern** — the bottom "save" button is gone; each sheet now has a sticky navigation header with a **cancel (X) on the left** and a **validate (✓) on the right** of the centered title, like the iPhone Calendar/Reminders "new" sheets. The checkmark keeps its automatic disabled-while-submitting state (still a `form.SubmitButton`). **Visual/UX only** — no validation, submit, mutation or schema logic changed.
+- **Form sheets now render through the Dialog Manager** (`src/features/dialog-manager`) via `dialogManager.custom({ className, children })` instead of a raw `<Dialog>` — the projects/stacks/career/content-page sheets call `dialogManager.custom` and close themselves with `dialogManager.close(id)`. By default the custom dialog renders inside `AlertDialogContent` (no outside-click dismiss → in-progress form data is never lost, and no forced close button so the iOS header is the only chrome) and gets a `sr-only` title for a11y. **No Shadcn primitive in `src/components/ui/` was modified.**
+- **Dialog Manager gains a `dismissible` option on `CustomDialogConfig`** — when `true` the custom dialog renders inside a regular `Dialog`/`DialogContent` (closes on outside-click, Escape **and** a visible close button) for surfaces like the command palette; when `false`/omitted it stays on the safe `AlertDialog`. All Dialog Manager surfaces (confirm/input/custom) are now `rounded-xl`.
+- **New `IosSheetHeader`** (`src/components/ios/sheet-header.tsx`): sticky, blurred `grid-cols-[1fr_auto_1fr]` form-sheet bar with `leading`/`trailing` slots.
+- **STYLE: user menu dropdown restyled iOS** (`src/features/auth/user-dropdown.tsx`) — blurred rounded-2xl card surface with rounded-xl pill rows; and the theme submenu's **Dark/Light icons were swapped** to the correct glyphs (Dark → moon, Light → sun).
+- **STYLE: `/admin` back-office reskinned to match the iOS aesthetic** — the admin sidebar is now a `GroupedList` of `ListRow`s with tinted `IconTile`s (Dashboard/Users/Feedback) and active-state highlighting, the shell surfaces use `bg-ios-grouped`, the dashboard is a grouped management list, list tables sit on `bg-ios-card` rounded surfaces, and detail cards use the iOS card surface. Large bold page titles throughout.
+- **`LayoutContent` gains a `size` prop** (`sm`/`default`/`lg`/`xl`) mirroring `Layout`, so wide pages can constrain inner content width for a better reading measure.
+- **Search command chips**: the `⌘`/shortcut chips in the studio command bar now use white text on a tinted surface (was hard-to-read black).
+- **Form-sheet header actions restyled** — the cancel (X) and validate (✓) buttons are now pill-shaped (`rounded-full`), borderless, with the **sidebar trigger's resting fill** (`bg-background` / `dark:bg-input/30` + `shadow-xs`) and icon-tinted on hover: **X turns destructive on hover**, ✓ gets the accent hover. Shared classes `iosSheetCancelButton`/`iosSheetSubmitButton` exported from `@/components/ios`.
+- **Primary "add" CTAs** (Nouvelle stack / Nouveau projet / Nouveau poste / Nouvelle page) are now `rounded-xl`.
+- **Command palette migrated to the Dialog Manager** — `app/studio/_navigation/app-command.tsx` no longer uses the Shadcn `CommandDialog` primitive; it renders the `cmdk` `Command` through `dialogManager.custom({ dismissible: true })` and toggles/closes via a tracked dialog id (outside-click, Escape and the close button all sync back through the optional `onClose` on `CustomDialogConfig`). The selected row now uses a soft iOS state (`bg-ios-separator/60`, `rounded-xl`) matching the sidebar active row instead of the harsh bright-blue accent. The Shadcn `DialogContent` close (X) is restyled to match the form-sheet cancel button (round, sidebar-trigger resting fill, destructive on hover) purely via `[&>button]` arbitrary-variant classes on the dialog `className` — **no `src/components/ui/` file modified.**
+- **Logout dropdown item** (`src/features/auth/user-dropdown-logout.tsx`) now gets the `rounded-xl` pill styling to match the other menu rows.
+- **`/admin` aligned with the `/studio` iOS design** — card surfaces that were `rounded-2xl` are now `rounded-xl` like the studio cards (user table, feedback table, user-details card); the user/feedback search filters adopt the studio sidebar search style (`rounded-full bg-background shadow-none`); and the remaining bare `<Card>`s (user sessions, auth providers, feedback detail) now use the iOS surface (`bg-ios-card border-0 shadow-sm`) instead of the default bordered white card. **Visual only.**
+- **User dropdown migrated to the shared `Icon` component** (`src/features/auth/user-dropdown.tsx`) — all seven raw `lucide-react` icons (Dashboard, Account Settings, Admin, Theme, Dark, Light, System) now render through `<Icon name="…" />` from the central `ICONS_REGISTRY`, with five new registry entries added (`dashboard`, `settings`, `sun-moon`, `sun-medium`, `monitor`). The menu-row icons also **turn white on hover/highlight** (and the Theme sub-trigger when its submenu is open) instead of staying muted-gray, via `focus:[&_svg]:!text-white data-[state=open]:[&_svg]:!text-white` on the shared `iosMenuItem` class. **Visual only.**
+- **iOS menu classes extracted to the shared kit** (`src/components/ios/menu.ts`, re-exported from `@/components/ios`): `iosMenuContent` (blurred rounded-2xl surface), `iosMenuItem` (rounded-xl pill + white-on-hover icon) and `iosMenuItemDestructive` (rounded-xl pill that keeps the destructive-red affordance). The user dropdown now imports these instead of defining them locally.
+- **`/admin` dropdown menus reskinned to match the user menu** — the user-row, user-detail and feedback-row action menus (`app/admin/**`) now use the shared `iosMenuContent`/`iosMenuItem` classes: blurred rounded card, rounded-xl pill rows, icons that turn white on hover, while the "Ban User" item keeps its destructive-red icon/text. **Visual only** — no mutation, query or auth logic changed.
+- **`/admin` nested tables softened** — the session and auth-provider tables inside the iOS detail cards (`user-sessions.tsx`, `user-providers.tsx`) swapped their heavy `rounded-md border` wrapper for an iOS hairline (`rounded-xl border-ios-separator overflow-hidden`) so they sit cleanly inside the card surface.
+- **`/admin` raw icons migrated to the shared `Icon` component** — every `lucide-react` glyph across the admin back-office (search filters, device/provider icons, session trash, action-menu icons, feedback review faces) now renders through `<Icon name="…" />`, with fourteen new registry entries added (`search`, `smartphone`, `tablet`, `trash`, `loader`, `ban`, `crown`, `eye`, `user-check`, `more-horizontal`, `angry`, `frown`, `meh`, `smile-plus`). The only raw lucide reference left in `/admin` is the structural `Icon` field of the shared `NavigationLink` type (never rendered — the sidebar draws its glyphs via `IconTile`). **Visual only.**
+
+### 🧪 **Testing**
+
+- Unit test for `IosSheetHeader` (`__tests__/components/ios/sheet-header.test.tsx`).
+
+## 2026-06-30 - Back-Office iOS "Réglages" Reskin (Spec 05)
+
+### 🎨 **Style & Components**
+
+- **STYLE: `/studio` back-office reskinned in an iOS "Settings" (Réglages) style** — grouped inset lists, neutral surfaces and soft depth across the whole back-office. **Visual/UX only**: no Prisma model, server action, Zod schema, query, route, auth or form/DnD/TipTap logic was touched, and the **public site (`app/(public)/`) keeps its portfolio aesthetic untouched**.
+- **New `--ios-*` theme tokens** (`app/globals.css`): grouped background, card, hairline separator and label/secondary/tertiary label colors, theme-aware for **both light and dark**, exposed as `bg-ios-card`, `text-ios-label`, etc.
+- **New `src/components/ios/` kit**: `IconTile` (tinted rounded glyph square rendering the shared `Icon`), `SectionHeader`/`SectionFooter`, `GroupedList` (rounded card with inset hairline separators), `ListRow` (static/button/link with focus-visible ring + chevron), `Toggle` (Radix Switch reskin), `SegmentedControl` (iOS pill tabs).
+- **iOS button variants** (`filled` / `tinted` / `plain`) added to the shared `Button` cva, and back-office glyphs added to the shared `ICONS_REGISTRY`.
+- **Reskinned surfaces**: sidebar/navigation/breadcrumb/upgrade-card shell, dashboard (stat cards + contacts + chart), all CRUD forms (projects, stacks, person, org, career, content-page) as `max-w-2xl` grouped sections with borderless rows, the project `featured` and career "poste actuel" switches as iOS `Toggle`s, the sortable project/stack lists and about career/content-page lists as soft cards, and the **About page Accordion replaced by an iOS `SegmentedControl`** (all panels stay mounted).
+
+### 🧪 **Testing**
+
+- Unit tests for the iOS kit (`__tests__/components/ios/`): `IconTile`, `GroupedList`, `ListRow`, `Toggle`, `SegmentedControl`, `SectionHeader`/`SectionFooter`.
+
+## 2026-06-26 - Public Portfolio Front + Contact + SEO (Spec 03)
+
+### 🚀 **New Features & Components**
+
+- **FEAT: Public portfolio front (feature-organized)** — new `app/(public)/` thin pages compose domain features under `src/features/` (home, projects, projects-details, work-experiences, knowtecks, content-page, seo) and shared primitives under `src/components/shared/` (section, section-title, animated circuit-divider); the base `contact` and `layout` features are extended, not duplicated.
+- **Home `/`** (replacing the starter landing): hero + bio (`RichTextRenderer`), **KnowTech** cards (stacks + seniority), **featured projects**, chronological **work experience** (with the parcours bio + socials), animated **CircuitDividers** between sections.
+- **Portfolio**: `/portfolio` paginated **12/page** (2/3 cols) and `/portfolio/[slug]` detail; `/legal` + `/changelog` render `ContentPage` bodies by slug.
+- **Public contact**: anonymous `<ContactForm>` (name/email/subject/message + **honeypot**) via the **public `action` client** (never `authAction`) → `Contact` row + sonner toast, **zero email**; submissions listed in `/studio`.
+
+### 🔍 **SEO, Theme & Infra**
+
+- `generateMetadata` per page, `app/sitemap.ts`, `app/robots.ts`, OpenGraph/Twitter, **JSON-LD** (Person/CreativeWork), canonical; **dark theme** by default; a11y AA + empty states.
+- Disabled `cacheComponents` (Next 16 Dynamic IO corrupted next-safe-action server actions); fixed TipTap links via `@tiptap/extension-link`.
+
+### 🧪 **Testing**
+
+- Unit tests for the pure helpers: `paginate` / `getTotalPages` and the JSON-LD builders.
+
+## 2026-06-25 - Portfolio Back-Office CRUD (Spec 02)
+
+### 🚀 **New Features & Components**
+
+- **FEAT: Full CRUD for the `/studio` back-office** — the **Projets**, **Stacks** and **À-propos** pages are now fully editable by the owner; every write goes through an `authAction` server action with Zod validation and soft-delete (`deletedAt`)
+- **Projets (`/studio/projects`)**: create / edit / delete projects with title, auto-generated (editable) slug, long description, **Vercel Blob image upload**, live & GitHub URLs, a `featured` switch and a display `order`; technologies are selected as **checkboxes** from existing stacks (writing the `ProjectStack` join) and the list supports **drag-and-drop reordering** (`@dnd-kit`)
+- **Stacks (`/studio/stacks`)**: create / edit / delete technologies with name, inline **SVG icon**, mastery date and drag-and-drop order; the list shows a **computed seniority** badge (`dayjs`)
+- **À-propos (`/studio/about`)**: a single accordion page managing the **PersonProfile** singleton (TipTap bios), the **OrgProfile** singleton (+ socials), the **CareerEvent** timeline (TipTap descriptions, chronological order, “poste actuel” open-ended dates, no DnD) and **ContentPage** entries (slug + title + TipTap body)
+
+### 🧪 **Testing**
+
+- Added unit tests for the pure helpers backing the feature: `slugify`, `computeSeniority`, `sortCareerEventsChrono` and `emptyToNull`
+
+## 2026-06-25 - Portfolio Back-Office Foundation (Spec 01)
+
+### 🚀 **New Features & Components**
+
+- **Portfolio Back-Office (`/studio`)**: The owner-only back-office lives at `/studio` — the authenticated dashboard (route renamed from `/app`) now hosts **Projets**, **Stacks**, and **À-propos** pages in the sidebar (Portfolio group) with French breadcrumb labels, on the existing responsive navigation and mobile Sheet drawer
+- **Administration shortcut**: the `/studio` sidebar gains an **Administration** group linking to the existing super-admin section (`/admin`, Users, Feedback), so the single owner starts from one place; `/admin` keeps its own shell
+- **Rich Text Editor & Renderer**: Minimal TipTap 3 editor (`RichTextEditor`) and a safe read-only renderer (`RichTextRenderer`) sharing one restricted schema; content is stored as JSON
+- **Utopia Fluid Type Scale**: Eight viewport-fluid `--step--2`…`--step-5` `clamp()` tokens added to the global theme for consistent responsive typography
+
+### 🗄️ **Database & Domain Model**
+
+- **Portfolio schema (mono-tenant)**: Added `Project`, `ProjectStack`, `StackItem`, `CareerEvent`, `PersonProfile`, `OrgProfile`, `Contact`, and `ContentPage` models in `prisma/schema/portfolio.prisma` with the `ContactSubject` enum; migration `20260625093533_portfolio_models`
+- Content is global (no `organizationId`/`userId`); `nanoid(11)` ids and soft-delete (`deletedAt`) on content entities
+
+### 🔐 **Authentication**
+
+- **Owner-only access**: The whole `/studio` section is gated by the existing `getRequiredAdmin()` guard (owner = the single `admin` user). Public sign-up is disabled via Better Auth (`emailAndPassword.disableSignUp: true`)
+- **Impersonation redirect fix**: starting an impersonation from `/admin` now lands on `/account` (reachable by any role) instead of the owner-only `/studio`, which would have thrown `unauthorized()` when the impersonated target is a non-admin user
+
+### 🧪 **Testing**
+
+- Added unit tests for the rich-text renderer (stored JSON → DOM, marks and headings) and the Utopia token contract in `app/globals.css`
+
 ## 2025-08-23 - Major Platform Updates & Infrastructure Improvements
 
 ### 🚀 **New Features & Components**

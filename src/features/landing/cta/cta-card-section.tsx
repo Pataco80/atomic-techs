@@ -11,12 +11,16 @@ export function CTASectionCard() {
     <SectionLayout>
       <Card className="relative isolate overflow-hidden py-24 text-center shadow-2xl lg:rounded-3xl">
         <Typography
+          variant="h2"
           as="h2"
-          className="text-4xl font-semibold tracking-tight text-balance text-white sm:text-5xl"
+          className="font-semibold tracking-tight text-balance text-white"
         >
           Boost your productivity today
         </Typography>
-        <Typography className="mx-auto mt-6 max-w-xl text-lg/8 text-pretty text-gray-300">
+        <Typography
+          variant="lead"
+          className="mx-auto mt-6 max-w-xl text-pretty text-gray-300"
+        >
           Create an account and start posting today.
         </Typography>
         <div className="mt-10 flex items-center justify-center gap-x-6">

@@ -55,4 +55,7 @@ export const fileAdapter: UploadFileAdapter = {
 
     return Promise.all(promises);
   },
+  deleteFiles: async () => {
+    // No-op: base64 data URLs live only in memory — there is nothing to clean up.
+  },
 };

@@ -16,10 +16,7 @@ export const CTAImageSection = () => {
         variant="image"
         className="flex min-h-[500px] flex-col items-center justify-center gap-4 text-white drop-shadow-md"
       >
-        <Typography
-          variant="h2"
-          className="text-center text-5xl font-extrabold"
-        >
+        <Typography variant="h2" className="text-center font-extrabold">
           Start getting a lot of followers
         </Typography>
         <Typography className="text-center font-bold">

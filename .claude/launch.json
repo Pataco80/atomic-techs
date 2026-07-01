@@ -1,0 +1,27 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "next-dev",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
+      "port": 3000
+    },
+    {
+      "name": "email-dev",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["email"],
+      "port": 3000
+    },
+    {
+      "name": "stripe-webhooks",
+      "runtimeExecutable": "stripe",
+      "runtimeArgs": [
+        "listen",
+        "--forward-to",
+        "localhost:3000/api/webhooks/stripe"
+      ],
+      "port": 3000
+    }
+  ]
+}

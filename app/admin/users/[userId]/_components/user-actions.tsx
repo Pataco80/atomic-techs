@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  iosMenuContent,
+  iosMenuItem,
+  iosMenuItemDestructive,
+} from "@/components/ios";
+import { Icon } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,8 +16,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { authClient } from "@/lib/auth-client";
 import { unwrapSafePromise } from "@/lib/promises";
+import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
-import { Ban, Crown, Eye, MoreHorizontal, UserCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -40,7 +46,8 @@ export function UserActions({ user }: UserActionsProps) {
     },
     onSuccess: () => {
       toast.success("Impersonation started");
-      router.push("/app");
+      // Land on the user-facing account area (any role) — /studio is owner-only.
+      router.push("/account");
     },
     onError: (error: Error) => {
       toast.error(`Failed to impersonate user: ${error.message}`);
@@ -116,23 +123,25 @@ export function UserActions({ user }: UserActionsProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">
-          <MoreHorizontal className="mr-2 size-4" />
+          <Icon name="more-horizontal" className="mr-2 size-4" />
           Actions
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className={iosMenuContent}>
         {!user.banned && (
           <DropdownMenuItem
+            className={iosMenuItem}
             onClick={() => impersonateMutation.mutate(user.id)}
             disabled={impersonateMutation.isPending}
           >
-            <Eye className="mr-2 size-4" />
+            <Icon name="eye" className="mr-2 size-4" />
             Impersonate User
           </DropdownMenuItem>
         )}
 
         {user.role !== "admin" && (
           <DropdownMenuItem
+            className={iosMenuItem}
             onClick={() =>
               setRoleMutation.mutate({
                 userId: user.id,
@@ -141,7 +150,7 @@ export function UserActions({ user }: UserActionsProps) {
             }
             disabled={setRoleMutation.isPending}
           >
-            <Crown className="mr-2 size-4" />
+            <Icon name="crown" className="mr-2 size-4" />
             Make Admin
           </DropdownMenuItem>
         )}
@@ -150,19 +159,23 @@ export function UserActions({ user }: UserActionsProps) {
 
         {user.banned ? (
           <DropdownMenuItem
+            className={iosMenuItem}
             onClick={() => unbanUserMutation.mutate(user.id)}
             disabled={unbanUserMutation.isPending}
           >
-            <UserCheck className="mr-2 size-4" />
+            <Icon name="user-check" className="mr-2 size-4" />
             Unban User
           </DropdownMenuItem>
         ) : (
           <DropdownMenuItem
             onClick={() => banUserMutation.mutate({ userId: user.id })}
             disabled={banUserMutation.isPending}
-            className="text-destructive focus:text-destructive"
+            className={cn(
+              iosMenuItemDestructive,
+              "text-destructive focus:text-destructive",
+            )}
           >
-            <Ban className="mr-2 size-4" />
+            <Icon name="ban" className="mr-2 size-4" />
             Ban User
           </DropdownMenuItem>
         )}

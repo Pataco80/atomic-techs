@@ -1,3 +1,4 @@
+import { Typography } from "@/components/nowts/typography";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,14 +37,14 @@ export default function GoodbyePage() {
       </CardHeader>
       <CardFooter className="border-t pt-6">
         <div className="w-full space-y-4 text-center">
-          <p className="text-muted-foreground text-sm">
+          <Typography variant="muted">
             Your account and all associated data have been permanently removed
             from our system.
-          </p>
-          <p className="text-muted-foreground text-sm">
+          </Typography>
+          <Typography variant="muted">
             If you change your mind, you're welcome to create a new account
             anytime.
-          </p>
+          </Typography>
           <Button asChild className="w-full">
             <Link href="/auth/signup">Create New Account</Link>
           </Button>
