@@ -72,7 +72,8 @@ function ExperienceItem({ event }: { event: CareerEventRecord }) {
           {event.endYear == null ? <Badge>Poste actuel</Badge> : null}
         </div>
         <Typography variant="small">
-          <span className="text-primary">@</span> {event.companyName}
+          <span className="text-primary align-text-top">@</span>{" "}
+          {event.companyName}
         </Typography>
         <Typography variant="tiny" className="text-muted-foreground font-mono">
           {period(event)}
