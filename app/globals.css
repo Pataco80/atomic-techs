@@ -576,6 +576,7 @@
   .bg-hero-portfolio {
     background-image: url("/images/background/bg-portfolio-hero.webp");
   }
+
   .text-gradient {
     @apply bg-clip-text text-transparent;
   }
@@ -588,6 +589,83 @@
       linear-gradient(180deg, var(--bg-grid-color) 1px, transparent 1px);
     background-size: 64px 64px; /* Taille de la grille */
   }
+}
+
+/* Project gallery lightbox — themed backdrop + glow (mirrors `.bg-section-glow`),
+   transparent centered bottom caption, and round "outline"-variant nav/close
+   buttons matching the site Button. Kept UNLAYERED on purpose: yarl's own CSS is
+   unlayered, and unlayered rules win over @layer ones regardless of specificity,
+   so overrides placed inside `@layer utils` would silently lose (e.g. the nav
+   `left`/`padding`). Scoped via the `.gallery-lightbox` root class. */
+.gallery-lightbox {
+  --yarl__color_backdrop: rgb(3 7 18 / 0.92);
+  /* Push the toolbar (close button) 1rem off the top/right edges so it aligns
+     with the nav buttons (`left`/`right: 1rem`) for a consistent frame. */
+  --yarl__toolbar_padding: 1rem;
+}
+.gallery-lightbox .yarl__container {
+  background-image:
+    radial-gradient(
+      900px circle at 75% 12%,
+      rgb(0 85 255 / 0.2),
+      transparent 60%
+    ),
+    radial-gradient(
+      820px circle at 15% 85%,
+      rgb(41 112 255 / 0.16),
+      transparent 60%
+    );
+}
+/* Outline-variant buttons (see `buttonVariants` in components/ui/button.tsx). */
+.gallery-lightbox .yarl__button {
+  display: inline-flex;
+  height: 44px;
+  width: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--input);
+  background: var(--background);
+  color: var(--foreground);
+  filter: none;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+.gallery-lightbox .yarl__button:hover {
+  border-color: var(--input);
+  background: var(--accent);
+  color: var(--accent-foreground);
+  transform: scale(1.05);
+}
+/* Nav buttons are vertically centered by yarl via `translateY(-50%)`; the hover
+   scale must preserve it, otherwise the button drops half its height on hover. */
+.gallery-lightbox .yarl__navigation_prev:hover,
+.gallery-lightbox .yarl__navigation_next:hover {
+  transform: translateY(-50%) scale(1.05);
+}
+/* Nav buttons anchored 1rem from the viewport edges (yarl's default edge padding
+   removed) so they sit clear of the padded slide image. */
+.gallery-lightbox .yarl__navigation_prev {
+  left: 1rem;
+}
+.gallery-lightbox .yarl__navigation_next {
+  right: 1rem;
+}
+.gallery-lightbox .yarl__slide_captions_container {
+  background: transparent;
+  padding-bottom: 2rem;
+}
+.gallery-lightbox .yarl__slide_description {
+  width: 100%;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 /* Respecte prefers-reduced-motion : neutralise transitions/animations CSS
